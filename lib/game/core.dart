@@ -21,10 +21,13 @@ class Hole extends Item {
 class Level {
   late List<List<Item?>> field;
   late int ballsCount;
+  late Size size;
 
   Level(this.field) {
     ballsCount = _countBallOnLevel();
   }
+
+  int elements() => (size.width * size.height).round();
 
   int _countBallOnLevel() {
     ballsCount = field.fold(

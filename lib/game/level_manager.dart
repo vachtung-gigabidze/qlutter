@@ -22,14 +22,21 @@ class LevelManager {
   static const int HOLE5_CELL = 66;
   static const int HOLE6_CELL = 77;
 
-  late BuildContext context;
   late LevelManager? instance;
+  late Future<Map<int, Level>> levels;
 
-  LevelManager build(BuildContext currentContext) {
-    context = currentContext;
+  LevelManager() {
+    levels = openLevels();
+  }
 
+  LevelManager build() {
     instance ??= LevelManager();
     return instance!;
+  }
+
+  Future<Level?> getLevel(int levelIndex) async {
+    return levels.then((value) => value[levelIndex]);
+    ;
   }
 
   Item? convertLegendToItem(int itemLegend) {
@@ -92,7 +99,7 @@ class LevelManager {
       level = int.parse(rows[rowNum]);
       rowNum++;
       int h = int.parse(rows[rowNum].split(' ')[1]);
-      //int w = int.parse(rows[rowNum].split(' ')[1]);
+      int w = int.parse(rows[rowNum].split(' ')[0]);
       rowNum++;
 
       List<List<Item?>> l = [];
@@ -104,7 +111,7 @@ class LevelManager {
         l.add(fieldRow);
         rowNum++;
       }
-      levels[level] = Level(l);
+      levels[level] = Level(l)..size = Size(w + .0, h + .0);
     }
     return Future.value(levels);
   }

@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
 
             // primarySwatch: Colors.blue,
-            colorSchemeSeed: Colors.green),
-        home: FieldView(context));
+            colorSchemeSeed: Colors.white),
+        home: FieldView());
   }
 }
