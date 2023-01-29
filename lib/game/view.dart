@@ -2,50 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 
-class FieldView extends StatelessWidget {
-  final double ROUND_RECT_SIZE = 0.15;
-  final int PADDING_DIVIDER = 4;
-  int paddingSize = 0;
-  late int elementSize;
-  late Field field;
-  late Size fieldSize;
-  late Size maxViewSize;
-  // BuildContext context;
+class FieldView extends StatefulWidget {
   late LevelManager lm;
 
   FieldView({super.key}) {
     lm = LevelManager();
   }
 
+  @override
+  State<FieldView> createState() => _FieldViewState();
+}
+
+class _FieldViewState extends State<FieldView> {
+  final double ROUND_RECT_SIZE = 0.15;
+
+  final int PADDING_DIVIDER = 4;
+
+  int paddingSize = 0;
+
+  late int elementSize;
+
+  late Future<Field?> field;
+
+  late Size fieldSize;
+
+  late Size maxViewSize;
+  late Future<Level?> level;
+  bool selected = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    field = widget.lm.getFiled(0);
+
+    super.initState();
+  }
+
   // Size countFieldSize() {
-  //   maxViewSize ??= Size(
-  //       MediaQuery.of(context).size.width, MediaQuery.of(context).size.height);
-
-  //   int horizontalElementsNum = field.level.field[0].length;
-  //   int verticalElementsNum = field.level.field.length;
-
-  //   int maxHorizontalElSize = maxViewSize.width ~/ horizontalElementsNum;
-  //   int maxVerticalElSize = maxViewSize.height ~/ verticalElementsNum;
-
-  //   elementSize = (maxHorizontalElSize < maxVerticalElSize)
-  //       ? maxHorizontalElSize
-  //       : maxVerticalElSize;
-
-  //   int newWidth = elementSize * horizontalElementsNum;
-  //   int newHeight = elementSize * verticalElementsNum;
-
-  //   return Size(newWidth as double, newHeight as double);
-  // }
-
   Widget _buildItem(Item item, double? t, double? r) {
     return AnimatedPositioned(
       top: t,
-      right: r,
+      right: selected && item is Ball ? 400 : r,
       duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
       child: BlockItem(
         item: item,
         selected: false,
-        onTap: () {},
+        onTap: () {
+          setState(() {
+            selected = !selected;
+          });
+        },
       ),
     );
   }
@@ -69,17 +76,17 @@ class FieldView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Level level = lm.openLevels()
-    final Future<Level?> level = lm.getLevel(0);
-    return FutureBuilder<Level?>(
-        future: level,
-        builder: (BuildContext context, AsyncSnapshot<Level?> snapshot) {
+
+    return FutureBuilder<Field?>(
+        future: field,
+        builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             return Center(
               child: SizedBox(
                 height: 600,
                 width: 600,
                 child: Stack(
-                  children: ch(snapshot.data!.field),
+                  children: ch(snapshot.data!.level.field),
                 ),
               ),
             );

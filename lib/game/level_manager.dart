@@ -34,8 +34,8 @@ class LevelManager {
     return instance!;
   }
 
-  Future<Level?> getLevel(int levelIndex) async {
-    return levels.then((value) => value[levelIndex]);
+  Future<Field?> getFiled(int levelIndex) async {
+    return levels.then((value) => Field(value[levelIndex]!));
     ;
   }
 
