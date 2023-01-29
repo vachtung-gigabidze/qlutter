@@ -22,7 +22,7 @@ class _FieldViewState extends State<FieldView> {
 
   late int elementSize;
 
-  late Future<Field?> field;
+  late Field field;
 
   late Size fieldSize;
 
@@ -32,26 +32,28 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    field = widget.lm.getFiled(0);
-
+    maxViewSize = const Size(600, 600);
+    fieldSize = const Size(100, 100);
     super.initState();
   }
 
-  // Size countFieldSize() {
   Widget _buildItem(Item item, double? t, double? r) {
     return AnimatedPositioned(
-      top: t,
-      right: selected && item is Ball ? 400 : r,
+      top: (t! * fieldSize.height),
+      right: (r! * fieldSize.height),
       duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
       child: BlockItem(
         item: item,
         selected: false,
         onTap: () {
-          setState(() {
-            selected = !selected;
-          });
+          if (item is Ball) {
+            setState(() {
+              field.moveItem(
+                  Coordinates(r.round(), t.round()), Direction.right);
+              // selected = !selected;
+            });
+          }
         },
       ),
     );
@@ -63,7 +65,7 @@ class _FieldViewState extends State<FieldView> {
     for (var row in fields) {
       for (Item? i in row) {
         if (i != null) {
-          children.add(_buildItem(i, t * 100, r * 100));
+          children.add(_buildItem(i, t, r));
         }
         r++;
       }
@@ -75,25 +77,22 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   Widget build(BuildContext context) {
-    // Level level = lm.openLevels()
-
     return FutureBuilder<Field?>(
-        future: field,
+        future: widget.lm.getFiled(0),
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
+            field = snapshot.data!;
             return Center(
               child: SizedBox(
-                height: 600,
-                width: 600,
+                height: maxViewSize.height,
+                width: maxViewSize.width,
                 child: Stack(
                   children: ch(snapshot.data!.level.field),
                 ),
               ),
             );
           } else {
-            return Container(
-              child: Text('No data'),
-            );
+            return const Text('No data');
           }
         });
   }
@@ -115,10 +114,6 @@ class BlockItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TextStyle textStyle = Theme.of(context).textTheme.headlineMedium!;
-    // if (selected) {
-    //   textStyle = textStyle.copyWith(color: Colors.lightGreenAccent[400]);
-    // }
     return (item is Ball)
         ? GestureDetector(
             // behavior: HitTestBehavior.,
