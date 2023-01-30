@@ -201,7 +201,7 @@ class Field {
     ];
   }
 
-  bool makeTurn(Coordinates coordinates, Direction direction) {
+  bool gameStep(Coordinates coordinates, Direction direction) {
     Coordinates? newCoordinates = moveItem(coordinates, direction);
     return newCoordinates != null && acceptHole(newCoordinates, direction);
   }
