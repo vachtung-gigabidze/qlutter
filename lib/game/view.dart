@@ -28,6 +28,9 @@ class _FieldViewState extends State<FieldView> {
   Item? selectedItem = null;
   bool showHover = false;
   late LevelManager lm;
+  List<Widget> walls = [];
+  List<Widget> holes = [];
+  List<Widget> balls = [];
 
   @override
   void initState() {
@@ -69,13 +72,12 @@ class _FieldViewState extends State<FieldView> {
     );
   }
 
-  Widget _buildHover(double t, double r, double h, double w, Coordinates c,
-      List<bool> directionMask) {
-    // List<bool> directionMask = [true, false, false, false];
-
+  Widget _buildHover(Coordinates c) {
+    List<bool> directionMask =
+        field!.canMove(Coordinates(c.horizontal, c.vertical));
     return Positioned(
-      top: t * fieldSize.height,
-      right: r * fieldSize.height,
+      top: (c.horizontal - 1) * fieldSize.height,
+      right: (c.vertical - 1) * fieldSize.height,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -93,8 +95,8 @@ class _FieldViewState extends State<FieldView> {
             //   });
             // },
             child: Container(
-              height: h,
-              width: w,
+              height: elementSize * 3,
+              width: elementSize * 3,
 
               child: Stack(
                   children: [
@@ -187,10 +189,10 @@ class _FieldViewState extends State<FieldView> {
   }
 
   List<Widget> generateFieldItem(List<List<Item?>> fields) {
-    List<Widget> wall = [];
-    List<Widget> hole = [];
-    List<Widget> balls = [];
-    Widget? hover;
+    balls = [];
+    holes = [];
+    walls = [];
+    Widget? hover = null;
 
     double t = 0, r = 0;
     for (var row in fields) {
@@ -200,17 +202,13 @@ class _FieldViewState extends State<FieldView> {
             balls.add(_buildItem(i, t, r));
             if (i.color == selectedItem?.color) {
               hover = _buildHover(
-                  t - 1,
-                  r - 1,
-                  elementSize * 3,
-                  elementSize * 3,
-                  Coordinates(t.toInt(), r.toInt()),
-                  field!.canMove(Coordinates(t.toInt(), r.toInt())));
+                Coordinates(t.toInt(), r.toInt()),
+              );
             }
           } else if (i is Hole) {
-            hole.add(_buildItem(i, t, r));
+            holes.add(_buildItem(i, t, r));
           } else {
-            wall.add(_buildItem(i, t, r));
+            walls.add(_buildItem(i, t, r));
           }
         }
         r++;
@@ -218,14 +216,14 @@ class _FieldViewState extends State<FieldView> {
       t++;
       r = 0;
     }
-    if (balls.isNotEmpty) {
-      wall.addAll(balls);
-    }
     if (hover != null && selectedItem != null) {
-      wall.add(hover);
+      walls.add(hover);
     }
-    wall.addAll(hole);
-    return wall;
+    walls.addAll(holes);
+    if (balls.isNotEmpty) {
+      walls.addAll(balls);
+    }
+    return walls;
   }
 
   Future<Field?> _getField(int level) async {

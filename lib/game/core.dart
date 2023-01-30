@@ -69,6 +69,7 @@ class Field {
           level.field[yCoord][xCoord]?.color ==
               level.field[yCoord][xCoord - 1]?.color) {
         level.field[yCoord][xCoord - 1] = level.field[yCoord][xCoord];
+
         level.field[yCoord][xCoord--] = null;
       }
     } catch (e) {
@@ -99,6 +100,7 @@ class Field {
           level.field[yCoord + 1][xCoord]?.color ==
               level.field[yCoord][xCoord]?.color) {
         level.field[yCoord + 1][xCoord] = level.field[yCoord][xCoord];
+
         level.field[yCoord++][xCoord] = null;
       }
     } catch (e) {
