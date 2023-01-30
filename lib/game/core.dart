@@ -104,26 +104,26 @@ class Field {
     int horizontal = coordinates.horizontal;
     int vertical = coordinates.vertical;
 
-    if (level.field[vertical][horizontal] == null) {
+    if (level.field[horizontal][vertical] == null) {
       return null;
     }
 
-    if (level.field[vertical][horizontal] is! Ball) {
+    if (level.field[horizontal][vertical] is! Ball) {
       return null;
     }
 
     switch (direction) {
       case Direction.right:
-        return moveRight(horizontal, vertical);
+        return moveRight(vertical, horizontal);
 
       case Direction.left:
-        return moveLeft(horizontal, vertical);
+        return moveLeft(vertical, horizontal);
 
       case Direction.up:
-        return moveUp(horizontal, vertical);
+        return moveUp(vertical, horizontal);
 
       case Direction.down:
-        return moveDown(horizontal, vertical);
+        return moveDown(vertical, horizontal);
       case Direction.nowhere:
         return null;
     }

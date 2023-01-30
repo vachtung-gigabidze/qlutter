@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:qlutter/game/core.dart';
 
 class LevelManager {
-  final String LEVELS_FOLDER = "classic";
-  final String LEVEL_FILE_EXTENSION = ".txt";
+  // final String LEVELS_FOLDER = "classic";
+  // final String LEVEL_FILE_EXTENSION = ".txt";
 
   static const int EMPTY_CELL = 0;
   static const int BLOCK_CELL = 1;
@@ -23,11 +23,10 @@ class LevelManager {
   static const int HOLE6_CELL = 77;
 
   late LevelManager? instance;
-  late Future<Map<int, Level>> levels;
+  Map<int, Level>? levels = null;
+  late Field? field;
 
-  LevelManager() {
-    levels = openLevels();
-  }
+  LevelManager() {}
 
   LevelManager build() {
     instance ??= LevelManager();
@@ -35,8 +34,12 @@ class LevelManager {
   }
 
   Future<Field?> getFiled(int levelIndex) async {
-    return levels.then((value) => Field(value[levelIndex]!));
-    ;
+    if (levels == null) {
+      levels = await openLevels();
+
+      field = Field(levels![levelIndex]!);
+    }
+    return Future.value(field);
   }
 
   Item? convertLegendToItem(int itemLegend) {
