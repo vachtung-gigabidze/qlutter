@@ -11,6 +11,7 @@ class Block extends Item {
 }
 
 class Ball extends Item {
+  bool get selected => true;
   Ball(Color color) : super(color: color);
 }
 

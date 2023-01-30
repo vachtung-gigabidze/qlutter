@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:qlutter/game/core.dart';
 
 class LevelManager {
-  final String LEVELS_FOLDER = "levels";
-  final String LEVEL_FILE_EXTENSION = ".lev";
+  final String LEVELS_FOLDER = "classic";
+  final String LEVEL_FILE_EXTENSION = ".txt";
 
   static const int EMPTY_CELL = 0;
   static const int BLOCK_CELL = 1;
