@@ -50,7 +50,9 @@ class Field {
 
   Coordinates moveRight(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord + 1] == null) {
+      while (level.field[yCoord][xCoord + 1] == null ||
+          level.field[yCoord][xCoord]?.color ==
+              level.field[yCoord][xCoord + 1]?.color) {
         level.field[yCoord][xCoord + 1] = level.field[yCoord][xCoord];
         level.field[yCoord][xCoord++] = null;
       }
@@ -63,7 +65,9 @@ class Field {
 
   Coordinates moveLeft(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord - 1] == null) {
+      while (level.field[yCoord][xCoord - 1] == null ||
+          level.field[yCoord][xCoord]?.color ==
+              level.field[yCoord][xCoord - 1]?.color) {
         level.field[yCoord][xCoord - 1] = level.field[yCoord][xCoord];
         level.field[yCoord][xCoord--] = null;
       }
@@ -76,7 +80,9 @@ class Field {
 
   Coordinates moveUp(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord - 1][xCoord] == null) {
+      while (level.field[yCoord - 1][xCoord] == null ||
+          level.field[yCoord][xCoord]?.color ==
+              level.field[yCoord - 1][xCoord]?.color) {
         level.field[yCoord - 1][xCoord] = level.field[yCoord][xCoord];
         level.field[yCoord--][xCoord] = null;
       }
@@ -89,7 +95,9 @@ class Field {
 
   Coordinates moveDown(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord + 1][xCoord] == null) {
+      while (level.field[yCoord + 1][xCoord] == null ||
+          level.field[yCoord + 1][xCoord]?.color ==
+              level.field[yCoord][xCoord]?.color) {
         level.field[yCoord + 1][xCoord] = level.field[yCoord][xCoord];
         level.field[yCoord++][xCoord] = null;
       }

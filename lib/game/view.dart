@@ -187,7 +187,8 @@ class _FieldViewState extends State<FieldView> {
   }
 
   List<Widget> generateFieldItem(List<List<Item?>> fields) {
-    List<Widget> children = [];
+    List<Widget> wall = [];
+    List<Widget> hole = [];
     List<Widget> balls = [];
     Widget? hover;
 
@@ -206,8 +207,10 @@ class _FieldViewState extends State<FieldView> {
                   Coordinates(t.toInt(), r.toInt()),
                   field!.canMove(Coordinates(t.toInt(), r.toInt())));
             }
+          } else if (i is Hole) {
+            hole.add(_buildItem(i, t, r));
           } else {
-            children.add(_buildItem(i, t, r));
+            wall.add(_buildItem(i, t, r));
           }
         }
         r++;
@@ -216,12 +219,13 @@ class _FieldViewState extends State<FieldView> {
       r = 0;
     }
     if (balls.isNotEmpty) {
-      children.addAll(balls);
+      wall.addAll(balls);
     }
     if (hover != null && selectedItem != null) {
-      children.add(hover);
+      wall.add(hover);
     }
-    return children;
+    wall.addAll(hole);
+    return wall;
   }
 
   Future<Field?> _getField(int level) async {
