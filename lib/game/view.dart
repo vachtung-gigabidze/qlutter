@@ -237,26 +237,34 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Field?>(
-        future: _getField(0),
-        builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
-          if (snapshot.hasData) {
-            field = snapshot.data!;
-            maxViewSize = Size(field!.level.size.height * fieldSize.height,
-                field!.level.size.width * fieldSize.width);
-            return Center(
-              child: SizedBox(
-                height: maxViewSize.height,
-                width: maxViewSize.width,
-                child: Stack(
-                  children: generateFieldItem(snapshot.data!.level.field),
-                ),
-              ),
-            );
-          } else {
-            return const Text('No data');
-          }
-        });
+    return Column(
+      children: [
+        Center(child: Text("Шаров: ${field?.ballsCount ?? 0}")),
+        const SizedBox(
+          height: 30,
+        ),
+        FutureBuilder<Field?>(
+            future: _getField(0),
+            builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
+              if (snapshot.hasData) {
+                field = snapshot.data!;
+                maxViewSize = Size(field!.level.size.height * fieldSize.height,
+                    field!.level.size.width * fieldSize.width);
+                return Center(
+                  child: SizedBox(
+                    height: maxViewSize.height,
+                    width: maxViewSize.width,
+                    child: Stack(
+                      children: generateFieldItem(snapshot.data!.level.field),
+                    ),
+                  ),
+                );
+              } else {
+                return const Text('No data');
+              }
+            }),
+      ],
+    );
   }
 }
 
