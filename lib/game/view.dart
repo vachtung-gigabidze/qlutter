@@ -17,7 +17,7 @@ class _FieldViewState extends State<FieldView> {
 
   int paddingSize = 0;
 
-  late int elementSize;
+  late double elementSize;
 
   Field? field = null;
 
@@ -25,14 +25,15 @@ class _FieldViewState extends State<FieldView> {
 
   late Size maxViewSize;
   late Future<Level?> level;
-  bool selected = false;
+  Item? selectedItem = null;
   bool showHover = false;
   late LevelManager lm;
 
   @override
   void initState() {
-    maxViewSize = const Size(600, 600);
-    fieldSize = const Size(100, 100);
+    elementSize = 45;
+    maxViewSize = Size(elementSize * 6, elementSize * 6);
+    fieldSize = Size(elementSize, elementSize);
     lm = LevelManager();
     super.initState();
   }
@@ -42,31 +43,36 @@ class _FieldViewState extends State<FieldView> {
       top: (t * fieldSize.height),
       right: (r * fieldSize.height),
       duration: const Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
+      curve: Curves.bounceOut,
       child: BlockItem(
         item: item,
+        elementSize: elementSize,
         selected: false,
         onHover: (bool value) {
-          setState(() {
-            showHover = value;
-          });
+          // setState(() {
+          //   showHover = value;
+          // });
         },
         onTap: () {
-          // if (!kIsWeb) {
-          //   if (item is Ball) {
-          //     setState(() {
-          //       field.moveItem(
-          //           Coordinates(r.round(), t.round()), Direction.right);
-          //       // selected = !selected;
-          //     });
-          //   }
-          // }
+          if (kIsWeb) {
+            if (item is Ball) {
+              setState(() {
+                //  field.moveItem(
+                //      Coordinates(r.round(), t.round()), Direction.right);
+                selectedItem = item;
+                //showHover = !showHover;
+              });
+            }
+          }
         },
       ),
     );
   }
 
-  Widget _buildHover(double t, double r, double h, double w, Coordinates c) {
+  Widget _buildHover(double t, double r, double h, double w, Coordinates c,
+      List<bool> directionMask) {
+    // List<bool> directionMask = [true, false, false, false];
+
     return Positioned(
       top: t * fieldSize.height,
       right: r * fieldSize.height,
@@ -75,90 +81,100 @@ class _FieldViewState extends State<FieldView> {
         child: InkWell(
             splashFactory: NoSplash.splashFactory,
             onHover: (bool value) {
-              setState(() {
-                showHover = value;
-              });
+              // setState(() {
+              //     showHover = value;
+              // });
             },
             onTap: () {},
             // onTap: () {
             //   setState(() {
-            //     field.moveItem(c, Direction.right);
-            //     showHover = false;
+            //     //  field.moveItem(c, Direction.right);
+            //     showHover = !showHover;
             //   });
             // },
             child: Container(
               height: h,
               width: w,
 
-              child: Stack(children: [
+              child: Stack(
+                  children: [
                 Positioned(
-                  top: 100,
+                  top: elementSize,
                   child: InkWell(
                     onTap: () {
                       setState(() {
                         field?.moveItem(c, Direction.right);
-                        showHover = false;
+                        selectedItem = null;
+                        // showHover = false;
                       });
                     },
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_back_outlined,
                       color: Colors.black,
-                      size: 100,
+                      size: elementSize,
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 100,
+                  top: elementSize,
                   right: 0,
                   child: InkWell(
                     onTap: () {
                       setState(() {
                         field?.moveItem(c, Direction.left);
-                        showHover = false;
+                        selectedItem = null;
+                        //showHover = false;
                       });
                     },
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_forward_outlined,
                       color: Colors.black,
-                      size: 100,
+                      size: elementSize,
                     ),
                   ),
                 ),
                 Positioned(
-                  top: 200,
-                  right: 100,
+                  top: elementSize * 2,
+                  right: elementSize,
                   child: InkWell(
                     onTap: () {
                       setState(() {
                         field?.moveItem(c, Direction.down);
-                        showHover = false;
+                        selectedItem = null;
+                        // showHover = false;
                       });
                     },
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_downward,
                       color: Colors.black,
-                      size: 100,
+                      size: elementSize,
                     ),
                   ),
                 ),
                 Positioned(
                   top: 0,
-                  right: 100,
+                  right: elementSize,
                   child: InkWell(
                     onTap: () {
                       setState(() {
                         field?.moveItem(c, Direction.up);
-                        showHover = false;
+                        selectedItem = null;
+                        // showHover = false;
                       });
                     },
-                    child: const Icon(
+                    child: Icon(
                       Icons.arrow_upward,
                       color: Colors.black,
-                      size: 100,
+                      size: elementSize,
                     ),
                   ),
                 ),
-              ]),
+              ]
+                      .asMap()
+                      .entries
+                      .where((e) => directionMask[e.key])
+                      .map((e) => e.value)
+                      .toList()),
               // decoration: BoxDecoration(
               //     color: Colors.transparent,
               //     border: Border.all(
@@ -170,7 +186,7 @@ class _FieldViewState extends State<FieldView> {
     );
   }
 
-  List<Widget> ch(List<List<Item?>> fields) {
+  List<Widget> generateFieldItem(List<List<Item?>> fields) {
     List<Widget> children = [];
     List<Widget> balls = [];
     Widget? hover;
@@ -181,8 +197,15 @@ class _FieldViewState extends State<FieldView> {
         if (i != null) {
           if (i is Ball) {
             balls.add(_buildItem(i, t, r));
-            hover = _buildHover(
-                t - 1, r - 1, 300, 300, Coordinates(t.toInt(), r.toInt()));
+            if (i.color == selectedItem?.color) {
+              hover = _buildHover(
+                  t - 1,
+                  r - 1,
+                  elementSize * 3,
+                  elementSize * 3,
+                  Coordinates(t.toInt(), r.toInt()),
+                  field!.canMove(Coordinates(t.toInt(), r.toInt())));
+            }
           } else {
             children.add(_buildItem(i, t, r));
           }
@@ -195,7 +218,7 @@ class _FieldViewState extends State<FieldView> {
     if (balls.isNotEmpty) {
       children.addAll(balls);
     }
-    if (hover != null && showHover) {
+    if (hover != null && selectedItem != null) {
       children.add(hover);
     }
     return children;
@@ -203,7 +226,7 @@ class _FieldViewState extends State<FieldView> {
 
   Future<Field?> _getField(int level) async {
     if (field == null) {
-      field = await lm.getFiled(0);
+      field = await lm.getFiled(level);
     }
     return Future.value(field);
   }
@@ -215,12 +238,14 @@ class _FieldViewState extends State<FieldView> {
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             field = snapshot.data!;
+            maxViewSize = Size(field!.level.size.height * fieldSize.height,
+                field!.level.size.width * fieldSize.width);
             return Center(
               child: SizedBox(
                 height: maxViewSize.height,
                 width: maxViewSize.width,
                 child: Stack(
-                  children: ch(snapshot.data!.level.field),
+                  children: generateFieldItem(snapshot.data!.level.field),
                 ),
               ),
             );
@@ -239,6 +264,7 @@ class BlockItem extends StatelessWidget {
     this.selected = false,
     this.removing = false,
     required this.item,
+    required this.elementSize,
   });
 
   final VoidCallback? onTap;
@@ -246,6 +272,7 @@ class BlockItem extends StatelessWidget {
   final Item? item;
   final bool selected;
   final bool removing;
+  final double elementSize;
 
   @override
   Widget build(BuildContext context) {
@@ -255,8 +282,8 @@ class BlockItem extends StatelessWidget {
               onHover: onHover,
               onTap: onTap,
               child: Container(
-                  height: 100,
-                  width: 100,
+                  height: elementSize,
+                  width: elementSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: item?.color,
@@ -264,8 +291,8 @@ class BlockItem extends StatelessWidget {
             ),
           )
         : Container(
-            height: 100,
-            width: 100,
+            height: elementSize,
+            width: elementSize,
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               color: item?.color,

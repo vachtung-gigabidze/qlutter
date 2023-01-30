@@ -26,7 +26,7 @@ class LevelManager {
   Map<int, Level>? levels = null;
   late Field? field;
 
-  LevelManager() {}
+  LevelManager();
 
   LevelManager build() {
     instance ??= LevelManager();

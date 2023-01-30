@@ -192,6 +192,15 @@ class Field {
     return ballsCount == 0;
   }
 
+  List<bool> canMove(Coordinates coordinates) {
+    return [
+      level.field[coordinates.horizontal][coordinates.vertical + 1] == null,
+      level.field[coordinates.horizontal][coordinates.vertical - 1] == null,
+      level.field[coordinates.horizontal + 1][coordinates.vertical] == null,
+      level.field[coordinates.horizontal - 1][coordinates.vertical] == null
+    ];
+  }
+
   bool makeTurn(Coordinates coordinates, Direction direction) {
     Coordinates? newCoordinates = moveItem(coordinates, direction);
     return newCoordinates != null && acceptHole(newCoordinates, direction);
