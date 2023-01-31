@@ -60,7 +60,7 @@ class _FieldViewState extends State<FieldView> {
         item: item,
         elementSize: elementSize,
         selected: false,
-        onHover: (bool value) {},
+        //onHover: (bool value) {},
         onTap: () {
           if (kIsWeb) {
             if (item is Ball) {
@@ -232,7 +232,7 @@ class _FieldViewState extends State<FieldView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Field?>(
-        future: _getField(4),
+        future: _getField(1),
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             field = snapshot.data!;
@@ -283,6 +283,8 @@ class BlockItem extends StatelessWidget {
     return (item is Ball)
         ? Material(
             child: InkWell(
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
               onHover: onHover,
               onTap: onTap,
               child: Container(

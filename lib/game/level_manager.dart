@@ -99,7 +99,7 @@ class LevelManager {
     List<String> rows = levelsFile.split('\n');
 
     int level = 0;
-    while (level != 60) {
+    while (level != 10) {
       level = int.parse(rows[rowNum]);
       rowNum++;
       int h = int.parse(rows[rowNum].split(' ')[1]);
