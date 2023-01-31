@@ -1,4 +1,4 @@
 # qlutter
 
 
-![plot](./assets/images/screen1.png)
+![plot](./images/Screen1.png)
