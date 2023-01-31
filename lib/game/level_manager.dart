@@ -116,7 +116,7 @@ class LevelManager {
         l.add(fieldRow);
         rowNum++;
       }
-      levels[level] = Level(l)..size = Size(w + .0, h + .0);
+      levels[level] = Level(l)..size = Size(h + .0, w + .0);
     }
     return Future.value(levels);
   }
