@@ -48,7 +48,7 @@ class LevelManager {
         return null;
 
       case BLOCK_CELL:
-        return Block(Colors.grey);
+        return Block();
 
       case BALL1_CELL:
         return Ball(Colors.green);

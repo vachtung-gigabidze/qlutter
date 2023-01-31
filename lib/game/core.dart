@@ -7,7 +7,7 @@ abstract class Item {
 }
 
 class Block extends Item {
-  Block(Color color) : super(color: color);
+  Block() : super(color: Colors.grey);
 }
 
 class Ball extends Item {
@@ -32,7 +32,12 @@ class Level {
 
   int _countBallOnLevel() {
     ballsCount = field.fold(
-        0, (pre, el) => el.fold(0, (pre, el) => (el is Ball) ? pre++ : pre));
+        0,
+        (int sum, List<Item?> el) =>
+            sum +
+            el.fold(0, (int pre, Item? item) {
+              return (item is Ball) ? pre + 1 : pre;
+            }));
 
     return ballsCount;
   }
@@ -50,9 +55,11 @@ class Field {
 
   Coordinates moveRight(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord + 1] == null ||
+      while (level.field[yCoord][xCoord + 1] ==
+              null /* ||
           level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord][xCoord + 1]?.color) {
+              level.field[yCoord][xCoord + 1]?.color*/
+          ) {
         level.field[yCoord][xCoord + 1] = level.field[yCoord][xCoord];
         level.field[yCoord][xCoord++] = null;
       }
@@ -65,9 +72,11 @@ class Field {
 
   Coordinates moveLeft(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord - 1] == null ||
+      while (level.field[yCoord][xCoord - 1] ==
+              null /*||
           level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord][xCoord - 1]?.color) {
+              level.field[yCoord][xCoord - 1]?.color*/
+          ) {
         level.field[yCoord][xCoord - 1] = level.field[yCoord][xCoord];
 
         level.field[yCoord][xCoord--] = null;
@@ -81,9 +90,11 @@ class Field {
 
   Coordinates moveUp(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord - 1][xCoord] == null ||
+      while (level.field[yCoord - 1][xCoord] ==
+              null /*||
           level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord - 1][xCoord]?.color) {
+              level.field[yCoord - 1][xCoord]?.color*/
+          ) {
         level.field[yCoord - 1][xCoord] = level.field[yCoord][xCoord];
         level.field[yCoord--][xCoord] = null;
       }
@@ -96,9 +107,11 @@ class Field {
 
   Coordinates moveDown(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord + 1][xCoord] == null ||
+      while (level.field[yCoord + 1][xCoord] ==
+              null /*||
           level.field[yCoord + 1][xCoord]?.color ==
-              level.field[yCoord][xCoord]?.color) {
+              level.field[yCoord][xCoord]?.color*/
+          ) {
         level.field[yCoord + 1][xCoord] = level.field[yCoord][xCoord];
 
         level.field[yCoord++][xCoord] = null;
@@ -139,19 +152,37 @@ class Field {
     }
   }
 
-  bool acceptBall(int horizontal, int vertical) {
+  bool isEdge(Coordinates coordItemNearly) {
+    return (coordItemNearly.horizontal == 0 ||
+        coordItemNearly.vertical == 0 ||
+        coordItemNearly.horizontal == level.size.height - 1 ||
+        coordItemNearly.vertical == level.size.height - 1 ||
+        coordItemNearly.horizontal == level.size.width - 1 ||
+        coordItemNearly.vertical == level.size.width - 1);
+  }
+
+  bool acceptBall(Coordinates coordItem, Coordinates coordItemNearly) {
     try {
-      // int horizontal = coordinates.horizontal;
-      // int vertical = coordinates.vertical;
+      Item? item = level.field[coordItem.horizontal][coordItem.vertical];
+      Item? itemNearly =
+          level.field[coordItemNearly.horizontal][coordItemNearly.vertical];
 
-      Item? upItem = level.field[vertical][horizontal];
-      Item? item = level.field[vertical][horizontal];
-
-      if (upItem == null || upItem is! Hole || !(upItem.color == item?.color)) {
+      if (itemNearly == null ||
+          itemNearly is! Hole ||
+          !(itemNearly.color == item?.color)) {
         return false;
       }
 
-      level.field[vertical][horizontal] = null;
+      if (isEdge(coordItemNearly)) {
+        level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+            Block();
+      } else {
+        level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+            null;
+      }
+
+      level.field[coordItem.horizontal][coordItem.vertical] = null;
+      catchBall();
     } catch (e) {
       throw Exception(e);
     }
@@ -159,31 +190,19 @@ class Field {
     return true;
   }
 
-  bool acceptHole(Coordinates coordinates, Direction direction) {
+  bool acceptHole(Coordinates coordinates) {
     bool isAccepted = false;
-    switch (direction) {
-      case Direction.up:
-        isAccepted =
-            acceptBall(coordinates.horizontal, coordinates.vertical - 1);
-        break;
 
-      case Direction.down:
-        isAccepted =
-            acceptBall(coordinates.horizontal, coordinates.vertical + 1);
-        break;
+    isAccepted = (acceptBall(coordinates,
+            Coordinates(coordinates.horizontal, coordinates.vertical - 1)) ||
+        acceptBall(coordinates,
+            Coordinates(coordinates.horizontal, coordinates.vertical + 1)) ||
+        acceptBall(coordinates,
+            Coordinates(coordinates.horizontal + 1, coordinates.vertical)) ||
+        acceptBall(coordinates,
+            Coordinates(coordinates.horizontal - 1, coordinates.vertical)));
 
-      case Direction.right:
-        isAccepted =
-            acceptBall(coordinates.horizontal + 1, coordinates.vertical);
-        break;
-
-      case Direction.left:
-        isAccepted =
-            acceptBall(coordinates.horizontal - 1, coordinates.vertical);
-        break;
-      case Direction.nowhere:
-        return false;
-    }
+    return isAccepted;
 
     if (!isAccepted) {
       return false;
@@ -211,10 +230,10 @@ class Field {
     ];
   }
 
-  bool gameStep(Coordinates coordinates, Direction direction) {
-    Coordinates? newCoordinates = moveItem(coordinates, direction);
-    return newCoordinates != null && acceptHole(newCoordinates, direction);
-  }
+  // bool gameStep(Coordinates coordinates, Direction direction) {
+  //   Coordinates? newCoordinates = moveItem(coordinates, direction);
+  //   return newCoordinates != null && acceptHole(newCoordinates);
+  // }
 }
 
 class Coordinates {

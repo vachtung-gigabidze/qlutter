@@ -41,33 +41,49 @@ class _FieldViewState extends State<FieldView> {
     super.initState();
   }
 
-  Widget _buildItem(Item item, double t, double r) {
+  Widget _buildBall(Item item, double t, double r, Key? key) {
     return AnimatedPositioned(
+      key: key,
       top: (t * fieldSize.height),
       right: (r * fieldSize.height),
       duration: const Duration(seconds: 1),
       curve: Curves.bounceOut,
+      onEnd: () {
+        if ((field!.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
+          setState(() {
+            //selectedItem = null;
+            //field!.level.field[t.toInt()][r.toInt()] = null;
+          });
+        }
+      },
       child: BlockItem(
         item: item,
         elementSize: elementSize,
         selected: false,
-        onHover: (bool value) {
-          // setState(() {
-          //   showHover = value;
-          // });
-        },
+        onHover: (bool value) {},
         onTap: () {
           if (kIsWeb) {
             if (item is Ball) {
               setState(() {
-                //  field.moveItem(
-                //      Coordinates(r.round(), t.round()), Direction.right);
                 selectedItem = item;
-                //showHover = !showHover;
               });
             }
           }
         },
+      ),
+    );
+  }
+
+  Widget _buildItem(Item item, double t, double r) {
+    return Positioned(
+      top: (t * fieldSize.height),
+      right: (r * fieldSize.height),
+      child: BlockItem(
+        item: item,
+        elementSize: elementSize,
+        selected: false,
+        onHover: null,
+        onTap: null,
       ),
     );
   }
@@ -82,22 +98,11 @@ class _FieldViewState extends State<FieldView> {
         color: Colors.transparent,
         child: InkWell(
             splashFactory: NoSplash.splashFactory,
-            onHover: (bool value) {
-              // setState(() {
-              //     showHover = value;
-              // });
-            },
+            onHover: (bool value) {},
             onTap: () {},
-            // onTap: () {
-            //   setState(() {
-            //     //  field.moveItem(c, Direction.right);
-            //     showHover = !showHover;
-            //   });
-            // },
-            child: Container(
+            child: SizedBox(
               height: elementSize * 3,
               width: elementSize * 3,
-
               child: Stack(
                   children: [
                 Positioned(
@@ -107,7 +112,6 @@ class _FieldViewState extends State<FieldView> {
                       setState(() {
                         field?.moveItem(c, Direction.right);
                         selectedItem = null;
-                        // showHover = false;
                       });
                     },
                     child: Icon(
@@ -125,7 +129,6 @@ class _FieldViewState extends State<FieldView> {
                       setState(() {
                         field?.moveItem(c, Direction.left);
                         selectedItem = null;
-                        //showHover = false;
                       });
                     },
                     child: Icon(
@@ -143,7 +146,6 @@ class _FieldViewState extends State<FieldView> {
                       setState(() {
                         field?.moveItem(c, Direction.down);
                         selectedItem = null;
-                        // showHover = false;
                       });
                     },
                     child: Icon(
@@ -177,12 +179,6 @@ class _FieldViewState extends State<FieldView> {
                       .where((e) => directionMask[e.key])
                       .map((e) => e.value)
                       .toList()),
-              // decoration: BoxDecoration(
-              //     color: Colors.transparent,
-              //     border: Border.all(
-              //       color: Colors.black,
-              //       width: 5,
-              //     )),
             )),
       ),
     );
@@ -199,7 +195,7 @@ class _FieldViewState extends State<FieldView> {
       for (Item? i in row) {
         if (i != null) {
           if (i is Ball) {
-            balls.add(_buildItem(i, t, r));
+            balls.add(_buildBall(i, t, r, Key('Ball' + i.color.toString())));
             if (i.color == selectedItem?.color) {
               hover = _buildHover(
                 Coordinates(t.toInt(), r.toInt()),
@@ -235,20 +231,20 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(child: Text("Шаров: ${field?.ballsCount ?? 0}")),
-        const SizedBox(
-          height: 30,
-        ),
-        FutureBuilder<Field?>(
-            future: _getField(0),
-            builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
-              if (snapshot.hasData) {
-                field = snapshot.data!;
-                maxViewSize = Size(field!.level.size.height * fieldSize.height,
-                    field!.level.size.width * fieldSize.width);
-                return Center(
+    return FutureBuilder<Field?>(
+        future: _getField(0),
+        builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
+          if (snapshot.hasData) {
+            field = snapshot.data!;
+            maxViewSize = Size(field!.level.size.height * fieldSize.height,
+                field!.level.size.width * fieldSize.width);
+            return Column(
+              children: [
+                Center(child: Text("Шаров: ${field?.ballsCount ?? 0}")),
+                const SizedBox(
+                  height: 30,
+                ),
+                Center(
                   child: SizedBox(
                     height: maxViewSize.height,
                     width: maxViewSize.width,
@@ -256,13 +252,13 @@ class _FieldViewState extends State<FieldView> {
                       children: generateFieldItem(snapshot.data!.level.field),
                     ),
                   ),
-                );
-              } else {
-                return const Text('No data');
-              }
-            }),
-      ],
-    );
+                ),
+              ],
+            );
+          } else {
+            return const Text('No data');
+          }
+        });
   }
 }
 
