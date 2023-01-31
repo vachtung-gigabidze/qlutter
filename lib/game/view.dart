@@ -25,7 +25,7 @@ class _FieldViewState extends State<FieldView> {
 
   late Size maxViewSize;
   late Future<Level?> level;
-  Item? selectedItem = null;
+  Ball? selectedItem = null;
   bool showHover = false;
   late LevelManager lm;
   List<Widget> walls = [];
@@ -196,7 +196,7 @@ class _FieldViewState extends State<FieldView> {
         if (i != null) {
           if (i is Ball) {
             balls.add(_buildBall(i, t, r, Key('Ball${i.id}')));
-            if (i.color == selectedItem?.color) {
+            if (i.id == selectedItem?.id) {
               hover = _buildHover(
                 Coordinates(t.toInt(), r.toInt()),
               );
@@ -232,7 +232,7 @@ class _FieldViewState extends State<FieldView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Field?>(
-        future: _getField(5),
+        future: _getField(4),
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             field = snapshot.data!;
