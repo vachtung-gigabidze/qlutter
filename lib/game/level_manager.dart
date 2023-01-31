@@ -6,21 +6,21 @@ class LevelManager {
   // final String LEVELS_FOLDER = "classic";
   // final String LEVEL_FILE_EXTENSION = ".txt";
 
-  static const int EMPTY_CELL = 0;
-  static const int BLOCK_CELL = 1;
-  static const int BALL1_CELL = 2;
-  static const int BALL2_CELL = 3;
-  static const int BALL3_CELL = 4;
-  static const int BALL4_CELL = 5;
-  static const int BALL5_CELL = 6;
-  static const int BALL6_CELL = 7;
+  static const int emptyCell = 0;
+  static const int blockCell = 1;
+  static const int ballCall1 = 2;
+  static const int ballCell2 = 3;
+  static const int ballCell3 = 4;
+  static const int ballCell4 = 5;
+  static const int ballCell5 = 6;
+  static const int ballCell6 = 7;
 
-  static const int HOLE1_CELL = 22;
-  static const int HOLE2_CELL = 33;
-  static const int HOLE3_CELL = 44;
-  static const int HOLE4_CELL = 55;
-  static const int HOLE5_CELL = 66;
-  static const int HOLE6_CELL = 77;
+  static const int holeCell1 = 22;
+  static const int holeCell2 = 33;
+  static const int holeCell3 = 44;
+  static const int holeCell4 = 55;
+  static const int holeCell5 = 66;
+  static const int holeCell6 = 77;
 
   late LevelManager? instance;
   Map<int, Level>? levels = null;
@@ -44,46 +44,46 @@ class LevelManager {
 
   Item? convertLegendToItem(int itemLegend, int id) {
     switch (itemLegend) {
-      case EMPTY_CELL:
+      case emptyCell:
         return null;
 
-      case BLOCK_CELL:
+      case blockCell:
         return Block();
 
-      case BALL1_CELL:
+      case ballCall1:
         return Ball(Colors.green, id);
 
-      case BALL2_CELL:
+      case ballCell2:
         return Ball(Colors.red, id);
 
-      case BALL3_CELL:
+      case ballCell3:
         return Ball(Colors.blue, id);
 
-      case BALL4_CELL:
+      case ballCell4:
         return Ball(Colors.yellow, id);
 
-      case BALL5_CELL:
+      case ballCell5:
         return Ball(Colors.purple, id);
 
-      case BALL6_CELL:
+      case ballCell6:
         return Ball(Colors.cyan, id);
 
-      case HOLE1_CELL:
+      case holeCell1:
         return Hole(Colors.green);
 
-      case HOLE2_CELL:
+      case holeCell2:
         return Hole(Colors.red);
 
-      case HOLE3_CELL:
+      case holeCell3:
         return Hole(Colors.blue);
 
-      case HOLE4_CELL:
+      case holeCell4:
         return Hole(Colors.yellow);
 
-      case HOLE5_CELL:
+      case holeCell5:
         return Hole(Colors.purple);
 
-      case HOLE6_CELL:
+      case holeCell6:
         return Hole(Colors.cyan);
     }
 

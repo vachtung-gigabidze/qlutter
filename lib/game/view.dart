@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
+
+import 'dart:html';
 
 class FieldView extends StatefulWidget {
   const FieldView({super.key});
@@ -19,13 +23,13 @@ class _FieldViewState extends State<FieldView> {
 
   late double elementSize;
 
-  Field? field = null;
+  Field? field;
 
   late Size fieldSize;
 
   late Size maxViewSize;
   late Future<Level?> level;
-  Ball? selectedItem = null;
+  Ball? selectedItem;
   bool showHover = false;
   late LevelManager lm;
   List<Widget> walls = [];
@@ -35,7 +39,7 @@ class _FieldViewState extends State<FieldView> {
   @override
   void initState() {
     elementSize = 45;
-    maxViewSize = Size(elementSize * 6, elementSize * 6);
+    maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
     lm = LevelManager();
     super.initState();
@@ -97,6 +101,8 @@ class _FieldViewState extends State<FieldView> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
             splashFactory: NoSplash.splashFactory,
             onHover: (bool value) {},
             onTap: () {},
@@ -188,7 +194,7 @@ class _FieldViewState extends State<FieldView> {
     balls = [];
     holes = [];
     walls = [];
-    Widget? hover = null;
+    Widget? hover;
 
     double t = 0, r = 0;
     for (var row in fields) {
@@ -223,24 +229,42 @@ class _FieldViewState extends State<FieldView> {
   }
 
   Future<Field?> _getField(int level) async {
-    if (field == null) {
-      field = await lm.getFiled(level);
-    }
+    field ??= await lm.getFiled(level);
     return Future.value(field);
+  }
+
+  void setSize(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    double m = min<double>(width, height);
+    double i = max<double>(field!.level.size.height, field!.level.size.width);
+
+    elementSize = m / i;
+    fieldSize = Size(elementSize, elementSize);
+    maxViewSize = Size(field!.level.size.height * elementSize,
+        field!.level.size.width * elementSize);
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Field?>(
-        future: _getField(1),
+        future: _getField(7),
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             field = snapshot.data!;
-            maxViewSize = Size(field!.level.size.height * fieldSize.height,
-                field!.level.size.width * fieldSize.width);
+            setSize(context);
             return Column(
               children: [
-                Center(child: Text("Шаров: ${field?.ballsCount ?? 0}")),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text("Шаров: ${field?.ballsCount ?? 0}"),
+                    Text("Уровень: 1"),
+                  ],
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -271,7 +295,7 @@ class BlockItem extends StatelessWidget {
     required this.elementSize,
   });
 
-  final VoidCallback? onTap;
+  final void Function()? onTap;
   final void Function(bool)? onHover;
   final Item? item;
   final bool selected;
