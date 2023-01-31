@@ -30,6 +30,7 @@ class _FieldViewState extends State<FieldView> {
   late Size maxViewSize;
   late Future<Level?> level;
   Ball? selectedItem;
+  late int selectedLevel;
   bool showHover = false;
   late LevelManager lm;
   List<Widget> walls = [];
@@ -38,6 +39,7 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   void initState() {
+    selectedLevel = 1;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
@@ -247,40 +249,60 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Field?>(
-        future: _getField(7),
-        builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
-          if (snapshot.hasData) {
-            field = snapshot.data!;
-            setSize(context);
-            return Column(
-              children: [
-                const SizedBox(
-                  height: 30,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Column(
+      children: [
+        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedLevel--;
+                });
+              },
+              icon: const Icon(Icons.keyboard_arrow_left)),
+          Text("Уровень: $selectedLevel"),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedLevel++;
+                });
+              },
+              icon: const Icon(Icons.keyboard_arrow_right))
+        ]),
+        FutureBuilder<Field?>(
+            future: _getField(selectedLevel),
+            builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
+              if (snapshot.hasData) {
+                field = snapshot.data!;
+                setSize(context);
+                return Column(
                   children: [
-                    Text("Шаров: ${field?.ballsCount ?? 0}"),
-                    Text("Уровень: 1"),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text("Шаров: ${field?.ballsCount ?? 0}"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SizedBox(
+                      height: maxViewSize.height,
+                      width: maxViewSize.width,
+                      child: Stack(
+                        children: generateFieldItem(snapshot.data!.level.field),
+                      ),
+                    ),
                   ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  height: maxViewSize.height,
-                  width: maxViewSize.width,
-                  child: Stack(
-                    children: generateFieldItem(snapshot.data!.level.field),
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return const Text('No data');
-          }
-        });
+                );
+              } else {
+                return const Text('No data');
+              }
+            }),
+      ],
+    );
   }
 }
 
