@@ -42,7 +42,7 @@ class LevelManager {
     return Future.value(field);
   }
 
-  Item? convertLegendToItem(int itemLegend) {
+  Item? convertLegendToItem(int itemLegend, int id) {
     switch (itemLegend) {
       case EMPTY_CELL:
         return null;
@@ -51,22 +51,22 @@ class LevelManager {
         return Block();
 
       case BALL1_CELL:
-        return Ball(Colors.green);
+        return Ball(Colors.green, id);
 
       case BALL2_CELL:
-        return Ball(Colors.red);
+        return Ball(Colors.red, id);
 
       case BALL3_CELL:
-        return Ball(Colors.blue);
+        return Ball(Colors.blue, id);
 
       case BALL4_CELL:
-        return Ball(Colors.yellow);
+        return Ball(Colors.yellow, id);
 
       case BALL5_CELL:
-        return Ball(Colors.purple);
+        return Ball(Colors.purple, id);
 
       case BALL6_CELL:
-        return Ball(Colors.cyan);
+        return Ball(Colors.cyan, id);
 
       case HOLE1_CELL:
         return Hole(Colors.green);
@@ -94,6 +94,7 @@ class LevelManager {
     String levelsFile = await rootBundle.loadString('assets/classic.txt');
     Map<int, Level> levels = <int, Level>{};
     int rowNum = 0;
+    int elementId = 0;
 
     List<String> rows = levelsFile.split('\n');
 
@@ -109,7 +110,8 @@ class LevelManager {
       for (var i = 0; i < h; i++) {
         List<Item?> fieldRow = [];
         for (int element in rows[rowNum].split(' ').map((e) => int.parse(e))) {
-          fieldRow.add(convertLegendToItem(element));
+          elementId++;
+          fieldRow.add(convertLegendToItem(element, elementId));
         }
         l.add(fieldRow);
         rowNum++;

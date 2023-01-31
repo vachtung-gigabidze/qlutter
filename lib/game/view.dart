@@ -195,7 +195,7 @@ class _FieldViewState extends State<FieldView> {
       for (Item? i in row) {
         if (i != null) {
           if (i is Ball) {
-            balls.add(_buildBall(i, t, r, Key('Ball' + i.color.toString())));
+            balls.add(_buildBall(i, t, r, Key('Ball${i.id}')));
             if (i.color == selectedItem?.color) {
               hover = _buildHover(
                 Coordinates(t.toInt(), r.toInt()),
@@ -232,7 +232,7 @@ class _FieldViewState extends State<FieldView> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Field?>(
-        future: _getField(0),
+        future: _getField(4),
         builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
           if (snapshot.hasData) {
             field = snapshot.data!;
@@ -244,13 +244,11 @@ class _FieldViewState extends State<FieldView> {
                 const SizedBox(
                   height: 30,
                 ),
-                Center(
-                  child: SizedBox(
-                    height: maxViewSize.height,
-                    width: maxViewSize.width,
-                    child: Stack(
-                      children: generateFieldItem(snapshot.data!.level.field),
-                    ),
+                SizedBox(
+                  height: maxViewSize.height,
+                  width: maxViewSize.width,
+                  child: Stack(
+                    children: generateFieldItem(snapshot.data!.level.field),
                   ),
                 ),
               ],
