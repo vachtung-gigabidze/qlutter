@@ -21,11 +21,12 @@ class Hole extends Item {
 }
 
 class Level {
+  int levelId;
   late List<List<Item?>> field;
   late int ballsCount;
   late Size size;
 
-  Level(this.field) {
+  Level(this.field, this.levelId) {
     ballsCount = _countBallOnLevel();
   }
 
@@ -205,13 +206,13 @@ class Field {
 
     return isAccepted;
 
-    if (!isAccepted) {
-      return false;
-    }
+    // if (!isAccepted) {
+    //   return false;
+    // }
 
-    catchBall();
+    // catchBall();
 
-    return checkWin();
+    // return checkWin();
   }
 
   catchBall() {

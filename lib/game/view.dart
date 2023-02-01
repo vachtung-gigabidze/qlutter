@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 
-import 'dart:html';
+// import 'dart:html';
 
 class FieldView extends StatefulWidget {
   const FieldView({super.key});
@@ -39,12 +39,12 @@ class _FieldViewState extends State<FieldView> {
 
   @override
   void initState() {
+    super.initState();
     selectedLevel = 1;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
     lm = LevelManager();
-    super.initState();
   }
 
   Widget _buildBall(Item item, double t, double r, Key? key) {
@@ -230,8 +230,10 @@ class _FieldViewState extends State<FieldView> {
     return walls;
   }
 
-  Future<Field?> _getField(int level) async {
-    field ??= await lm.getFiled(level);
+  Future<Field?> _getField() async {
+    if (field != null || field?.level.levelId != selectedLevel) {
+      field = await lm.getFiled(selectedLevel);
+    }
     return Future.value(field);
   }
 
@@ -239,7 +241,8 @@ class _FieldViewState extends State<FieldView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double m = min<double>(width, height);
-    double i = max<double>(field!.level.size.height, field!.level.size.width);
+    m *= .7;
+    double i = max<double>(field!.level.size.width, field!.level.size.width);
 
     elementSize = m / i;
     fieldSize = Size(elementSize, elementSize);
@@ -269,7 +272,8 @@ class _FieldViewState extends State<FieldView> {
               icon: const Icon(Icons.keyboard_arrow_right))
         ]),
         FutureBuilder<Field?>(
-            future: _getField(selectedLevel),
+            initialData: field,
+            future: _getField(),
             builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
               if (snapshot.hasData) {
                 field = snapshot.data!;

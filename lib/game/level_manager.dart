@@ -23,7 +23,7 @@ class LevelManager {
   static const int holeCell6 = 77;
 
   late LevelManager? instance;
-  Map<int, Level>? levels = null;
+  Map<int, Level>? levels;
   late Field? field;
 
   LevelManager();
@@ -37,6 +37,8 @@ class LevelManager {
     if (levels == null) {
       levels = await openLevels();
 
+      field = Field(levels![levelIndex]!);
+    } else if (field?.level.levelId != levelIndex) {
       field = Field(levels![levelIndex]!);
     }
     return Future.value(field);
@@ -116,7 +118,7 @@ class LevelManager {
         l.add(fieldRow);
         rowNum++;
       }
-      levels[level] = Level(l)..size = Size(h + .0, w + .0);
+      levels[level] = Level(l, level)..size = Size(h + .0, w + .0);
     }
     return Future.value(levels);
   }
