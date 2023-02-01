@@ -241,8 +241,8 @@ class _FieldViewState extends State<FieldView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double m = min<double>(width, height);
-    m *= .7;
-    double i = max<double>(field!.level.size.width, field!.level.size.width);
+    m *= .9;
+    double i = max<double>(field!.level.size.height, field!.level.size.width);
 
     elementSize = m / i;
     fieldSize = Size(elementSize, elementSize);
