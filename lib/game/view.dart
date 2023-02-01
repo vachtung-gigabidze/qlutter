@@ -332,6 +332,7 @@ class BlockItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return (item is Ball)
         ? Material(
+            color: Colors.transparent,
             child: InkWell(
               hoverColor: Colors.transparent,
               splashColor: Colors.transparent,
