@@ -93,7 +93,7 @@ class LevelManager {
   }
 
   Future<Map<int, Level>> openLevels() async {
-    String levelsFile = await rootBundle.loadString('assets/classic.txt');
+    String levelsFile = await rootBundle.loadString('classic.txt');
     Map<int, Level> levels = <int, Level>{};
     int rowNum = 0;
     int elementId = 0;

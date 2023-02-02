@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/game/view.dart';
+import 'package:flutter/services.dart';
+import 'package:qlutter/game/field_view.dart';
+import 'package:qlutter/game/ui/splash_sceen_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  runApp(const Qlutter());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Qlutter extends StatelessWidget {
+  const Qlutter({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Qlutter',
         theme: ThemeData(
-            useMaterial3: true,
+          useMaterial3: true,
 
-            // primarySwatch: Colors.blue,
-            colorSchemeSeed: Colors.white),
-        home: Scaffold(body: FieldView()));
+          primarySwatch: Colors.blue,
+          //colorSchemeSeed: Colors.white
+        ),
+        home: Scaffold(body: SplashScreenPage()));
   }
 }

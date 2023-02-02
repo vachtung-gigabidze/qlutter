@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
+import 'package:qlutter/game/ui/block_item.dart';
 
 // import 'dart:html';
 
@@ -15,18 +16,10 @@ class FieldView extends StatefulWidget {
 }
 
 class _FieldViewState extends State<FieldView> {
-  // final double ROUND_RECT_SIZE = 0.15;
-
-  // final int PADDING_DIVIDER = 4;
-
   int paddingSize = 0;
-
   late double elementSize;
-
   Field? field;
-
   late Size fieldSize;
-
   late Size maxViewSize;
   late Future<Level?> level;
   Ball? selectedItem;
@@ -56,10 +49,7 @@ class _FieldViewState extends State<FieldView> {
       curve: Curves.bounceOut,
       onEnd: () {
         if ((field!.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          setState(() {
-            //selectedItem = null;
-            //field!.level.field[t.toInt()][r.toInt()] = null;
-          });
+          setState(() {});
         }
       },
       child: BlockItem(
@@ -307,52 +297,5 @@ class _FieldViewState extends State<FieldView> {
             }),
       ],
     );
-  }
-}
-
-class BlockItem extends StatelessWidget {
-  const BlockItem({
-    super.key,
-    this.onTap,
-    this.onHover,
-    this.selected = false,
-    this.removing = false,
-    required this.item,
-    required this.elementSize,
-  });
-
-  final void Function()? onTap;
-  final void Function(bool)? onHover;
-  final Item? item;
-  final bool selected;
-  final bool removing;
-  final double elementSize;
-
-  @override
-  Widget build(BuildContext context) {
-    return (item is Ball)
-        ? Material(
-            color: Colors.transparent,
-            child: InkWell(
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onHover: onHover,
-              onTap: onTap,
-              child: Container(
-                  height: elementSize,
-                  width: elementSize,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: item?.color,
-                  )),
-            ),
-          )
-        : Container(
-            height: elementSize,
-            width: elementSize,
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              color: item?.color,
-            ));
   }
 }
