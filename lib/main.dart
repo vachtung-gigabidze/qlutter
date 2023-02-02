@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qlutter/game/field_view.dart';
 import 'package:qlutter/game/ui/splash_sceen_page.dart';
 
 void main() {

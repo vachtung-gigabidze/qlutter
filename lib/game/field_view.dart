@@ -317,13 +317,13 @@ class FieldViewState extends State<FieldView> {
                 onTap: () {
                   Navigator.pop(context);
                   Timer(
-                      Duration(milliseconds: 200),
+                      const Duration(milliseconds: 200),
                       () => showAnimatedDialog<void>(
                           animationType: DialogTransitionType.fadeScale,
                           barrierDismissible: true,
-                          duration: Duration(milliseconds: 350),
+                          duration: const Duration(milliseconds: 350),
                           context: outerContext,
-                          builder: (_) => AlertAbout()));
+                          builder: (_) => const AlertAbout()));
                 },
               ),
             ],

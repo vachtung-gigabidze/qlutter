@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/field_view.dart';
 import 'package:qlutter/game/styles.dart';
@@ -10,7 +12,7 @@ class AlertAccentColorsState extends StatefulWidget {
   AlertAccentColorsState(this.currentAccentColor);
 
   String get accentColor {
-    return AlertAccentColors.accentColor!;
+    return AlertAccentColors.accentColor ?? "no";
   }
 
   set accentColor(String color) {
@@ -38,12 +40,12 @@ class AlertAccentColors extends State<AlertAccentColorsState> {
         style: TextStyle(color: Styles.foregroundColor),
       )),
       backgroundColor: Styles.secondaryBackgroundColor,
-      contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       children: <Widget>[
         for (String color in accentColors)
           SimpleDialogOption(
             onPressed: () {
-              if (color != this.currentAccentColor) {
+              if (color != currentAccentColor) {
                 setState(() {
                   accentColor = color;
                 });
@@ -54,7 +56,7 @@ class AlertAccentColors extends State<AlertAccentColorsState> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 15,
-                    color: color == this.currentAccentColor
+                    color: color == currentAccentColor
                         ? Styles.primaryColor
                         : Styles.foregroundColor)),
           ),
@@ -71,6 +73,8 @@ class AlertAbout extends StatelessWidget {
       "https://github.com/vachtung-gigabidze/qlutter/";
   static const String licenseURL =
       "https://github.com/vachtung-gigabidze/qlutter/blob/main/LICENSE";
+
+  const AlertAbout({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +95,7 @@ class AlertAbout extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('icon/icon_round.png',
+              Image.asset('icon/icon_foreground.png',
                   height: 48.0, width: 48.0, fit: BoxFit.contain),
               Text(
                 '   Qlutter',
@@ -127,10 +131,10 @@ class AlertAbout extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  await launch(AlertAbout.releasesURL);
+                  await launchUrl(Uri.parse(AlertAbout.releasesURL));
                 },
                 child: Text(
-                  Qlutter.versionNumber + ' ',
+                  '${Qlutter.versionNumber} ',
                   style: TextStyle(
                       color: Styles.primaryColor,
                       fontFamily: 'roboto',
@@ -138,7 +142,7 @@ class AlertAbout extends StatelessWidget {
                 ),
               ),
               Text(
-                FieldViewState.platform!,
+                FieldViewState.platform ?? "web",
                 style: TextStyle(
                     color: Styles.foregroundColor,
                     fontFamily: 'roboto',
@@ -170,7 +174,7 @@ class AlertAbout extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  await launch(AlertAbout.authorURL);
+                  await launchUrl(Uri.parse(AlertAbout.authorURL));
                 },
                 child: Text(
                   'vachtung-gigabidze',
@@ -206,7 +210,7 @@ class AlertAbout extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  await launch(AlertAbout.licenseURL);
+                  await launchUrl(Uri.parse(AlertAbout.licenseURL));
                 },
                 child: Text(
                   'GNU GPLv3',
@@ -235,7 +239,7 @@ class AlertAbout extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () async {
-                  await launch(AlertAbout.sourceURL);
+                  await launchUrl(Uri.parse(AlertAbout.sourceURL));
                 },
                 child: Text(
                   'Source Code',
