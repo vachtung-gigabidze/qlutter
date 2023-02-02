@@ -20,15 +20,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 2,
-      navigateAfterSeconds: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            foregroundColor: Styles.primaryBackgroundColor,
-            backgroundColor: Styles.primaryColor,
-            onPressed: () => {}, //showOptionModalSheet(context),
-            child: Icon(Icons.menu_rounded),
-          ),
-          backgroundColor: Styles.primaryBackgroundColor,
-          body: FieldView()),
+      navigateAfterSeconds: FieldView(),
       title: Text(
         '\nQlutter',
         style: TextStyle(
@@ -37,7 +29,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             color: Styles.foregroundColor),
       ),
       image: Image.asset('icon/icon_foreground.png'),
-      photoSize: 50,
+      photoSize: 100,
       backgroundColor: Styles.primaryBackgroundColor,
       loaderColor: Styles.primaryColor,
       loadingText: const Text(

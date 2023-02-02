@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -241,67 +242,171 @@ class _FieldViewState extends State<FieldView> {
         field!.level.size.width * elementSize);
   }
 
+  showOptionModalSheet(BuildContext context) {
+    BuildContext outerContext = context;
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Styles.secondaryBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(10),
+          ),
+        ),
+        builder: (context) {
+          final TextStyle customStyle =
+              TextStyle(inherit: false, color: Styles.foregroundColor);
+          return Wrap(
+            children: [
+              ListTile(
+                leading: Icon(Icons.refresh, color: Styles.foregroundColor),
+                title: Text('Restart Game', style: customStyle),
+                onTap: () {
+                  Navigator.pop(context);
+                  Timer(Duration(milliseconds: 200), () => restartGame());
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.invert_colors_on_rounded,
+                    color: Styles.foregroundColor),
+                title: Text('Switch Theme', style: customStyle),
+                onTap: () {
+                  Navigator.pop(context);
+                  Timer(Duration(milliseconds: 200), () {
+                    changeTheme('switch');
+                  });
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.color_lens_outlined,
+                    color: Styles.foregroundColor),
+                title: Text('Change Accent Color', style: customStyle),
+                onTap: () {
+                  Navigator.pop(context);
+                  // Timer(
+                  //     Duration(milliseconds: 200),
+                  //     () => showAnimatedDialog<void>(
+                  //             animationType: DialogTransitionType.fadeScale,
+                  //             barrierDismissible: true,
+                  //             duration: Duration(milliseconds: 350),
+                  //             context: outerContext,
+                  //             builder: (_) => AlertAccentColorsState(
+                  //                 currentAccentColor)).whenComplete(() {
+                  //           if (AlertAccentColorsState.accentColor != null) {
+                  //             Timer(Duration(milliseconds: 300), () {
+                  //               currentAccentColor =
+                  //                   AlertAccentColorsState.accentColor;
+                  //               changeAccentColor(
+                  //                   currentAccentColor.toString());
+                  //               AlertAccentColorsState.accentColor = null;
+                  //               setPrefs('currentAccentColor');
+                  //             });
+                  //           }
+                  //         }));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.info_outline_rounded,
+                    color: Styles.foregroundColor),
+                title: Text('About', style: customStyle),
+                onTap: () {
+                  Navigator.pop(context);
+                  // Timer(
+                  //     Duration(milliseconds: 200),
+                  //     () => showAnimatedDialog<void>(
+                  //         animationType: DialogTransitionType.fadeScale,
+                  //         barrierDismissible: true,
+                  //         duration: Duration(milliseconds: 350),
+                  //         context: outerContext,
+                  //         builder: (_) => AlertAbout()));
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                selectedLevel--;
-              });
-            },
-            icon: const Icon(Icons.keyboard_arrow_left),
-            color: Styles.foregroundColor,
-          ),
-          Text("Уровень: $selectedLevel",
-              style: TextStyle(color: Styles.foregroundColor)),
-          IconButton(
+    return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(56.0),
+          child: AppBar(
+            centerTitle: true,
+            title: Text('Qlutter'),
+            backgroundColor: Styles.primaryColor,
+          )),
+      floatingActionButton: FloatingActionButton(
+        foregroundColor: Styles.primaryBackgroundColor,
+        backgroundColor: Styles.primaryColor,
+        onPressed: () => showOptionModalSheet(context),
+        child: const Icon(Icons.menu_rounded),
+      ),
+      backgroundColor: Styles.primaryBackgroundColor,
+      body: Column(
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            IconButton(
               onPressed: () {
                 setState(() {
-                  selectedLevel++;
+                  selectedLevel--;
                 });
               },
-              icon: const Icon(Icons.keyboard_arrow_right),
-              color: Styles.foregroundColor)
-        ]),
-        FutureBuilder<Field?>(
-            initialData: field,
-            future: _getField(),
-            builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
-              if (snapshot.hasData) {
-                field = snapshot.data!;
-                setSize(context);
-                return Column(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text("Шаров: ${field?.ballsCount ?? 0}",
-                            style: TextStyle(color: Styles.foregroundColor)),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    SizedBox(
-                      height: maxViewSize.height,
-                      width: maxViewSize.width,
-                      child: Stack(
-                        children: generateFieldItem(snapshot.data!.level.field),
+              icon: const Icon(Icons.keyboard_arrow_left),
+              color: Styles.foregroundColor,
+            ),
+            Text("Уровень: $selectedLevel",
+                style: TextStyle(color: Styles.foregroundColor)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    selectedLevel++;
+                  });
+                },
+                icon: const Icon(Icons.keyboard_arrow_right),
+                color: Styles.foregroundColor)
+          ]),
+          FutureBuilder<Field?>(
+              initialData: field,
+              future: _getField(),
+              builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
+                if (snapshot.hasData) {
+                  field = snapshot.data!;
+                  setSize(context);
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    ),
-                  ],
-                );
-              } else {
-                return const Text('No data');
-              }
-            }),
-      ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text("Шаров: ${field?.ballsCount ?? 0}",
+                              style: TextStyle(color: Styles.foregroundColor)),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        height: maxViewSize.height,
+                        width: maxViewSize.width,
+                        child: Stack(
+                          children:
+                              generateFieldItem(snapshot.data!.level.field),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Text('No data');
+                }
+              }),
+        ],
+      ),
     );
   }
+
+  restartGame() {}
+
+  void changeTheme(String s) {}
 }
