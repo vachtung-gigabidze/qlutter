@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
+import 'package:qlutter/game/styles.dart';
 import 'package:qlutter/game/ui/block_item.dart';
 
 // import 'dart:html';
@@ -114,7 +115,7 @@ class _FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_back_outlined,
-                      color: Colors.black,
+                      color: Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -131,7 +132,7 @@ class _FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_forward_outlined,
-                      color: Colors.black,
+                      color: Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -148,7 +149,7 @@ class _FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_downward,
-                      color: Colors.black,
+                      color: Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -166,7 +167,7 @@ class _FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_upward,
-                      color: Colors.black,
+                      color: Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -246,20 +247,24 @@ class _FieldViewState extends State<FieldView> {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           IconButton(
-              onPressed: () {
-                setState(() {
-                  selectedLevel--;
-                });
-              },
-              icon: const Icon(Icons.keyboard_arrow_left)),
-          Text("Уровень: $selectedLevel"),
+            onPressed: () {
+              setState(() {
+                selectedLevel--;
+              });
+            },
+            icon: const Icon(Icons.keyboard_arrow_left),
+            color: Styles.foregroundColor,
+          ),
+          Text("Уровень: $selectedLevel",
+              style: TextStyle(color: Styles.foregroundColor)),
           IconButton(
               onPressed: () {
                 setState(() {
                   selectedLevel++;
                 });
               },
-              icon: const Icon(Icons.keyboard_arrow_right))
+              icon: const Icon(Icons.keyboard_arrow_right),
+              color: Styles.foregroundColor)
         ]),
         FutureBuilder<Field?>(
             initialData: field,
@@ -276,7 +281,8 @@ class _FieldViewState extends State<FieldView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("Шаров: ${field?.ballsCount ?? 0}"),
+                        Text("Шаров: ${field?.ballsCount ?? 0}",
+                            style: TextStyle(color: Styles.foregroundColor)),
                       ],
                     ),
                     const SizedBox(

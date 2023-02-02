@@ -20,8 +20,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 2,
-      navigateAfterSeconds:
-          Scaffold(backgroundColor: Colors.black87, body: FieldView()),
+      navigateAfterSeconds: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            foregroundColor: Styles.primaryBackgroundColor,
+            backgroundColor: Styles.primaryColor,
+            onPressed: () => {}, //showOptionModalSheet(context),
+            child: Icon(Icons.menu_rounded),
+          ),
+          backgroundColor: Styles.primaryBackgroundColor,
+          body: FieldView()),
       title: Text(
         '\nQlutter',
         style: TextStyle(

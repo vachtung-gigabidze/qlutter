@@ -24,6 +24,6 @@ class Qlutter extends StatelessWidget {
           primarySwatch: Colors.blue,
           //colorSchemeSeed: Colors.white
         ),
-        home: Scaffold(body: SplashScreenPage()));
+        home: SplashScreenPage());
   }
 }
