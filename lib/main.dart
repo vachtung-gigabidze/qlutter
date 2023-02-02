@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlutter/game/field_view.dart';
@@ -11,6 +12,7 @@ void main() {
 }
 
 class Qlutter extends StatelessWidget {
+  static String versionNumber = '1.0.0';
   const Qlutter({super.key});
 
   @override

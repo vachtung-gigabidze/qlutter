@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 import 'package:qlutter/game/styles.dart';
+import 'package:qlutter/game/ui/alerts.dart';
 import 'package:qlutter/game/ui/block_item.dart';
 
 // import 'dart:html';
@@ -14,10 +16,14 @@ class FieldView extends StatefulWidget {
   const FieldView({super.key});
 
   @override
-  State<FieldView> createState() => _FieldViewState();
+  State<FieldView> createState() => FieldViewState();
 }
 
-class _FieldViewState extends State<FieldView> {
+class FieldViewState extends State<FieldView> {
+  static String? currentTheme;
+  static String? currentAccentColor;
+  static String? platform;
+
   int paddingSize = 0;
   late double elementSize;
   Field? field;
@@ -247,7 +253,7 @@ class _FieldViewState extends State<FieldView> {
     showModalBottomSheet(
         context: context,
         backgroundColor: Styles.secondaryBackgroundColor,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(10),
           ),
@@ -262,7 +268,7 @@ class _FieldViewState extends State<FieldView> {
                 title: Text('Restart Game', style: customStyle),
                 onTap: () {
                   Navigator.pop(context);
-                  Timer(Duration(milliseconds: 200), () => restartGame());
+                  Timer(const Duration(milliseconds: 200), () => restartGame());
                 },
               ),
               ListTile(
@@ -271,7 +277,7 @@ class _FieldViewState extends State<FieldView> {
                 title: Text('Switch Theme', style: customStyle),
                 onTap: () {
                   Navigator.pop(context);
-                  Timer(Duration(milliseconds: 200), () {
+                  Timer(const Duration(milliseconds: 200), () {
                     changeTheme('switch');
                   });
                 },
@@ -281,16 +287,16 @@ class _FieldViewState extends State<FieldView> {
                     color: Styles.foregroundColor),
                 title: Text('Change Accent Color', style: customStyle),
                 onTap: () {
-                  Navigator.pop(context);
+                  // Navigator.pop(context);
                   // Timer(
-                  //     Duration(milliseconds: 200),
+                  //     const Duration(milliseconds: 200),
                   //     () => showAnimatedDialog<void>(
                   //             animationType: DialogTransitionType.fadeScale,
                   //             barrierDismissible: true,
                   //             duration: Duration(milliseconds: 350),
                   //             context: outerContext,
                   //             builder: (_) => AlertAccentColorsState(
-                  //                 currentAccentColor)).whenComplete(() {
+                  //                 currentAccentColor!)).whenComplete(() {
                   //           if (AlertAccentColorsState.accentColor != null) {
                   //             Timer(Duration(milliseconds: 300), () {
                   //               currentAccentColor =
@@ -310,14 +316,14 @@ class _FieldViewState extends State<FieldView> {
                 title: Text('About', style: customStyle),
                 onTap: () {
                   Navigator.pop(context);
-                  // Timer(
-                  //     Duration(milliseconds: 200),
-                  //     () => showAnimatedDialog<void>(
-                  //         animationType: DialogTransitionType.fadeScale,
-                  //         barrierDismissible: true,
-                  //         duration: Duration(milliseconds: 350),
-                  //         context: outerContext,
-                  //         builder: (_) => AlertAbout()));
+                  Timer(
+                      Duration(milliseconds: 200),
+                      () => showAnimatedDialog<void>(
+                          animationType: DialogTransitionType.fadeScale,
+                          barrierDismissible: true,
+                          duration: Duration(milliseconds: 350),
+                          context: outerContext,
+                          builder: (_) => AlertAbout()));
                 },
               ),
             ],
@@ -332,7 +338,7 @@ class _FieldViewState extends State<FieldView> {
           preferredSize: const Size.fromHeight(56.0),
           child: AppBar(
             centerTitle: true,
-            title: Text('Qlutter'),
+            title: const Text('Qlutter'),
             backgroundColor: Styles.primaryColor,
           )),
       floatingActionButton: FloatingActionButton(
