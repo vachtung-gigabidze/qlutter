@@ -29,21 +29,21 @@ class FieldViewState extends State<FieldView> {
   late Size maxViewSize;
   late Future<Level?> level;
   Ball? selectedItem;
-  late int selectedLevel;
+  late int? selectedLevel;
   bool showHover = false;
   late LevelManager lm;
   List<Widget> walls = [];
   List<Widget> holes = [];
   List<Widget> balls = [];
   late bool refresh;
-  static String? currentTheme;
-  static String? currentAccentColor;
+  late String? currentTheme;
+  late String? currentAccentColor;
 
   @override
   void initState() {
     super.initState();
     refresh = false;
-    selectedLevel = 1;
+    //selectedLevel = 1;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
@@ -64,6 +64,10 @@ class FieldViewState extends State<FieldView> {
       if (currentAccentColor == null) {
         currentAccentColor = 'Blue';
         setPrefs('currentAccentColor');
+      }
+      if (selectedLevel == null) {
+        selectedLevel = 0;
+        setPrefs('selectedLevel');
       }
 
       changeTheme('set');
@@ -258,7 +262,7 @@ class FieldViewState extends State<FieldView> {
     }
 
     if (field == null || field?.level.levelId != selectedLevel) {
-      field = await lm.getFiled(selectedLevel);
+      field = await lm.getFiled(selectedLevel!);
       fieldCopy = lm.copyField(field!);
     }
 
@@ -281,6 +285,7 @@ class FieldViewState extends State<FieldView> {
   Future<void> getPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
+      selectedLevel = prefs.getInt('selectedLevel');
       currentTheme = prefs.getString('currentTheme');
       currentAccentColor = prefs.getString('currentAccentColor');
     });
@@ -292,6 +297,8 @@ class FieldViewState extends State<FieldView> {
       prefs.setString('currentTheme', currentTheme ?? "");
     } else if (property == 'currentAccentColor') {
       prefs.setString('currentAccentColor', currentAccentColor ?? "");
+    } else if (property == 'selectedLevel') {
+      prefs.setInt('selectedLevel', selectedLevel ?? 0);
     }
   }
 
@@ -421,7 +428,8 @@ class FieldViewState extends State<FieldView> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  selectedLevel--;
+                  selectedLevel = selectedLevel! - 1;
+                  setPrefs('selectedLevel');
                 });
               },
               icon: const Icon(Icons.keyboard_arrow_left),
@@ -432,7 +440,8 @@ class FieldViewState extends State<FieldView> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    selectedLevel++;
+                    selectedLevel = selectedLevel! + 1;
+                    setPrefs('selectedLevel');
                   });
                 },
                 icon: const Icon(Icons.keyboard_arrow_right),
