@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:qlutter/game/ui/splash_sceen_page.dart';
+import 'package:qlutter/game/ui/splashscreen/splash_sceen_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +12,9 @@ void main() {
 
 class Qlutter extends StatelessWidget {
   static String versionNumber = '1.0.0';
+  static String platform =
+      'web-${defaultTargetPlatform.toString().replaceFirst("TargetPlatform.", "").toLowerCase()}';
+
   const Qlutter({super.key});
 
   @override

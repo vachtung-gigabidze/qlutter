@@ -7,8 +7,9 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 import 'package:qlutter/game/styles.dart';
-import 'package:qlutter/game/ui/alerts.dart';
+import 'package:qlutter/game/ui/alerts/about.dart';
 import 'package:qlutter/game/ui/block_item.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'dart:html';
 
@@ -20,13 +21,10 @@ class FieldView extends StatefulWidget {
 }
 
 class FieldViewState extends State<FieldView> {
-  static String? currentTheme;
-  static String? currentAccentColor;
-  static String? platform;
-
   int paddingSize = 0;
   late double elementSize;
   Field? field;
+  Field? fieldCopy;
   late Size fieldSize;
   late Size maxViewSize;
   late Future<Level?> level;
@@ -37,15 +35,40 @@ class FieldViewState extends State<FieldView> {
   List<Widget> walls = [];
   List<Widget> holes = [];
   List<Widget> balls = [];
+  late bool refresh;
+  static String? currentTheme;
+  static String? currentAccentColor;
 
   @override
   void initState() {
     super.initState();
+    refresh = false;
     selectedLevel = 1;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
     lm = LevelManager();
+
+    getPrefs().whenComplete(() {
+      if (currentTheme == null) {
+        if (MediaQuery.maybeOf(context)?.platformBrightness != null) {
+          currentTheme =
+              MediaQuery.of(context).platformBrightness == Brightness.light
+                  ? 'light'
+                  : 'dark';
+        } else {
+          currentTheme = 'dark';
+        }
+        setPrefs('currentTheme');
+      }
+      if (currentAccentColor == null) {
+        currentAccentColor = 'Blue';
+        setPrefs('currentAccentColor');
+      }
+
+      changeTheme('set');
+      changeAccentColor(currentAccentColor!, true);
+    });
   }
 
   Widget _buildBall(Item item, double t, double r, Key? key) {
@@ -229,9 +252,16 @@ class FieldViewState extends State<FieldView> {
   }
 
   Future<Field?> _getField() async {
-    if (field != null || field?.level.levelId != selectedLevel) {
-      field = await lm.getFiled(selectedLevel);
+    if (refresh) {
+      refresh = false;
+      return Future.value(lm.copyField(fieldCopy!));
     }
+
+    if (field == null || field?.level.levelId != selectedLevel) {
+      field = await lm.getFiled(selectedLevel);
+      fieldCopy = lm.copyField(field!);
+    }
+
     return Future.value(field);
   }
 
@@ -246,6 +276,42 @@ class FieldViewState extends State<FieldView> {
     fieldSize = Size(elementSize, elementSize);
     maxViewSize = Size(field!.level.size.height * elementSize,
         field!.level.size.width * elementSize);
+  }
+
+  Future<void> getPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      currentTheme = prefs.getString('currentTheme');
+      currentAccentColor = prefs.getString('currentAccentColor');
+    });
+  }
+
+  setPrefs(String property) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (property == 'currentTheme') {
+      prefs.setString('currentTheme', currentTheme ?? "");
+    } else if (property == 'currentAccentColor') {
+      prefs.setString('currentAccentColor', currentAccentColor ?? "");
+    }
+  }
+
+  void changeAccentColor(String color, [bool firstRun = false]) {
+    setState(() {
+      if (Styles.accentColors.keys.contains(color)) {
+        Styles.primaryColor = Styles.accentColors[color]!;
+      } else {
+        currentAccentColor = 'Blue';
+        Styles.primaryColor = Styles.accentColors[color]!;
+      }
+      if (color == 'Red') {
+        Styles.secondaryColor = Styles.orange;
+      } else {
+        Styles.secondaryColor = Styles.lightRed;
+      }
+      if (!firstRun) {
+        setPrefs('currentAccentColor');
+      }
+    });
   }
 
   showOptionModalSheet(BuildContext context) {
@@ -265,10 +331,11 @@ class FieldViewState extends State<FieldView> {
             children: [
               ListTile(
                 leading: Icon(Icons.refresh, color: Styles.foregroundColor),
-                title: Text('Restart Game', style: customStyle),
+                title: Text('Restart Level', style: customStyle),
                 onTap: () {
                   Navigator.pop(context);
-                  Timer(const Duration(milliseconds: 200), () => restartGame());
+                  Timer(
+                      const Duration(milliseconds: 200), () => restartLevel());
                 },
               ),
               ListTile(
@@ -377,6 +444,7 @@ class FieldViewState extends State<FieldView> {
               builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
                 if (snapshot.hasData) {
                   field = snapshot.data!;
+
                   setSize(context);
                   return Column(
                     children: [
@@ -412,7 +480,38 @@ class FieldViewState extends State<FieldView> {
     );
   }
 
-  restartGame() {}
+  restartLevel() {
+    setState(() {
+      refresh = true;
+    });
+  }
 
-  void changeTheme(String s) {}
+  void changeTheme(String mode) {
+    setState(() {
+      if (currentTheme == 'light') {
+        if (mode == 'switch') {
+          Styles.primaryBackgroundColor = Styles.darkGrey;
+          Styles.secondaryBackgroundColor = Styles.grey;
+          Styles.foregroundColor = Styles.white;
+          currentTheme = 'dark';
+        } else if (mode == 'set') {
+          Styles.primaryBackgroundColor = Styles.white;
+          Styles.secondaryBackgroundColor = Styles.white;
+          Styles.foregroundColor = Styles.darkGrey;
+        }
+      } else if (currentTheme == 'dark') {
+        if (mode == 'switch') {
+          Styles.primaryBackgroundColor = Styles.white;
+          Styles.secondaryBackgroundColor = Styles.white;
+          Styles.foregroundColor = Styles.darkGrey;
+          currentTheme = 'light';
+        } else if (mode == 'set') {
+          Styles.primaryBackgroundColor = Styles.darkGrey;
+          Styles.secondaryBackgroundColor = Styles.grey;
+          Styles.foregroundColor = Styles.white;
+        }
+      }
+      setPrefs('currentTheme');
+    });
+  }
 }

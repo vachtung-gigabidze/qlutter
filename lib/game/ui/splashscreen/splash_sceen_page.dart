@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/field_view.dart';
 import 'package:qlutter/game/styles.dart';
-import 'package:qlutter/game/ui/splash.dart';
+import 'package:qlutter/game/ui/splashscreen/splash.dart';
 
 class SplashScreenPage extends StatefulWidget {
-  SplashScreenPage({Key? key}) : super(key: key);
+  const SplashScreenPage({Key? key}) : super(key: key);
 
   @override
   _SplashScreenPageState createState() => _SplashScreenPageState();

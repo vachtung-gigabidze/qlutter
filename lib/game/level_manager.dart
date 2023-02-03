@@ -44,6 +44,13 @@ class LevelManager {
     return Future.value(field);
   }
 
+  Field copyField(Field field) {
+    Field newField = Field(Level(
+        field.level.field.map((row) => [...row]).toList(), field.level.levelId)
+      ..size = field.level.size);
+    return newField;
+  }
+
   Item? convertLegendToItem(int itemLegend, int id) {
     switch (itemLegend) {
       case emptyCell:
