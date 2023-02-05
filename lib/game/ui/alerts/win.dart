@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qlutter/game/styles.dart';
 
-class AlertGameOver extends StatelessWidget {
+class AlertLevelComplete extends StatelessWidget {
   static bool newGame = false;
   static bool restartGame = false;
+  static int? levelNumber;
 
-  const AlertGameOver({Key? key}) : super(key: key);
+  const AlertLevelComplete({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +14,11 @@ class AlertGameOver extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Styles.secondaryBackgroundColor,
       title: Text(
-        'Game Over',
+        'Congratulation!! Level complete.',
         style: TextStyle(color: Styles.foregroundColor),
       ),
       content: Text(
-        'You successfully solved the Sudoku',
+        'You successfully solved Level $levelNumber',
         style: TextStyle(color: Styles.foregroundColor),
       ),
       actions: [
@@ -29,7 +30,7 @@ class AlertGameOver extends StatelessWidget {
             Navigator.pop(context);
             restartGame = true;
           },
-          child: const Text('Restart Game'),
+          child: const Text('Restart Level'),
         ),
         TextButton(
           style: ButtonStyle(
@@ -39,7 +40,7 @@ class AlertGameOver extends StatelessWidget {
             Navigator.pop(context);
             newGame = true;
           },
-          child: const Text('New Game'),
+          child: const Text('Next Level'),
         ),
       ],
     );

@@ -6,11 +6,11 @@ class AlertAccentColorsState extends StatefulWidget {
 
   AlertAccentColorsState(this.currentAccentColor, {super.key});
 
-  String get accentColor {
+  static String? get accentColor {
     return AlertAccentColors.accentColor ?? "no";
   }
 
-  set accentColor(String color) {
+  static set accentColor(String? color) {
     AlertAccentColors.accentColor = color;
   }
 

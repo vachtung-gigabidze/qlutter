@@ -26,10 +26,16 @@ dev_dependencies:
 flutter:  
   uses-material-design: true
 
-assets:
-      - assets/icon/icon_foreground.png
-      # - assets/icon/icon_round.png
-      - assets/classic.txt
+  fonts:
+      - family: Roboto
+        fonts:
+          - asset: fonts/Roboto-Regular.ttf
+          - asset: fonts/Roboto-Bold.ttf
+            weight: 700
+  assets:
+        - assets/icon/icon_foreground.png
+        # - assets/icon/icon_round.png
+        - assets/classic.txt
 
 flutter_native_splash:
   color: "#121212"

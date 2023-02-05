@@ -8,6 +8,7 @@ import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 import 'package:qlutter/game/styles.dart';
 import 'package:qlutter/game/ui/alerts/about.dart';
+import 'package:qlutter/game/ui/alerts/accent_colors.dart';
 import 'package:qlutter/game/ui/block_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,7 +44,7 @@ class FieldViewState extends State<FieldView> {
   void initState() {
     super.initState();
     refresh = false;
-    //selectedLevel = 1;
+    selectedLevel = null;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
@@ -361,27 +362,27 @@ class FieldViewState extends State<FieldView> {
                     color: Styles.foregroundColor),
                 title: Text('Change Accent Color', style: customStyle),
                 onTap: () {
-                  // Navigator.pop(context);
-                  // Timer(
-                  //     const Duration(milliseconds: 200),
-                  //     () => showAnimatedDialog<void>(
-                  //             animationType: DialogTransitionType.fadeScale,
-                  //             barrierDismissible: true,
-                  //             duration: Duration(milliseconds: 350),
-                  //             context: outerContext,
-                  //             builder: (_) => AlertAccentColorsState(
-                  //                 currentAccentColor!)).whenComplete(() {
-                  //           if (AlertAccentColorsState.accentColor != null) {
-                  //             Timer(Duration(milliseconds: 300), () {
-                  //               currentAccentColor =
-                  //                   AlertAccentColorsState.accentColor;
-                  //               changeAccentColor(
-                  //                   currentAccentColor.toString());
-                  //               AlertAccentColorsState.accentColor = null;
-                  //               setPrefs('currentAccentColor');
-                  //             });
-                  //           }
-                  //         }));
+                  Navigator.pop(context);
+                  Timer(
+                      const Duration(milliseconds: 200),
+                      () => showAnimatedDialog<void>(
+                              animationType: DialogTransitionType.fadeScale,
+                              barrierDismissible: true,
+                              duration: const Duration(milliseconds: 350),
+                              context: outerContext,
+                              builder: (_) => AlertAccentColorsState(
+                                  currentAccentColor!)).whenComplete(() {
+                            if (AlertAccentColorsState.accentColor != null) {
+                              Timer(const Duration(milliseconds: 300), () {
+                                currentAccentColor =
+                                    AlertAccentColorsState.accentColor;
+                                changeAccentColor(
+                                    currentAccentColor.toString());
+                                AlertAccentColorsState.accentColor = null;
+                                setPrefs('currentAccentColor');
+                              });
+                            }
+                          }));
                 },
               ),
               ListTile(
