@@ -7,8 +7,6 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:qlutter/game/core.dart';
 import 'package:qlutter/game/level_manager.dart';
 import 'package:qlutter/game/styles.dart';
-import 'package:qlutter/game/ui/alerts/about.dart';
-import 'package:qlutter/game/ui/alerts/accent_colors.dart';
 import 'package:qlutter/game/ui/alerts/alerts.dart';
 import 'package:qlutter/game/ui/block_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,15 +29,15 @@ class FieldViewState extends State<FieldView> {
   late Size maxViewSize;
   late Future<Level?> level;
   Ball? selectedItem;
-  late int? selectedLevel;
+  int? selectedLevel;
   bool showHover = false;
   late LevelManager lm;
   List<Widget> walls = [];
   List<Widget> holes = [];
   List<Widget> balls = [];
   late bool refresh;
-  late String? currentTheme;
-  late String? currentAccentColor;
+  String? currentTheme;
+  String? currentAccentColor;
 
   @override
   void initState() {
