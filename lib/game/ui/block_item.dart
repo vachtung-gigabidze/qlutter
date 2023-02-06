@@ -10,10 +10,12 @@ class BlockItem extends StatelessWidget {
     this.removing = false,
     required this.item,
     required this.elementSize,
+    this.onPanUpdate,
   });
 
   final void Function()? onTap;
   final void Function(bool)? onHover;
+  final void Function(DragUpdateDetails)? onPanUpdate;
   final Item? item;
   final bool selected;
   final bool removing;
@@ -24,10 +26,11 @@ class BlockItem extends StatelessWidget {
     return (item is Ball)
         ? Material(
             color: Colors.transparent,
-            child: InkWell(
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onHover: onHover,
+            child: GestureDetector(
+              onPanUpdate: onPanUpdate,
+              //hoverColor: Colors.transparent,
+              //splashColor: Colors.transparent,
+              //onHover: onHover,
               onTap: onTap,
               child: Container(
                   height: elementSize,

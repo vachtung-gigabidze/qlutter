@@ -113,20 +113,45 @@ class FieldViewState extends State<FieldView> {
           setState(() {});
         }
       },
-      child: BlockItem(
-        item: item,
-        elementSize: elementSize,
-        selected: false,
-        //onHover: (bool value) {},
-        onTap: () {
-          if (kIsWeb) {
-            if (item is Ball) {
-              setState(() {
-                selectedItem = item;
-              });
-            }
+      child: GestureDetector(
+        onPanUpdate: (details) {
+          if (details.delta.dx > 0) {
+            field?.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
+          }
+          if (details.delta.dx < 0) {
+            field?.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
           }
         },
+        child: BlockItem(
+          item: item,
+          elementSize: elementSize,
+          selected: false, //onHover: (bool value) {},
+          onPanUpdate: (DragUpdateDetails details) {
+            if (!kIsWeb) {
+              if (details.delta.dx > 0) {
+                setState(() {
+                  field?.moveItem(
+                      Coordinates(t.toInt(), r.toInt()), Direction.right);
+                });
+              }
+              if (details.delta.dx < 0) {
+                setState(() {
+                  field?.moveItem(
+                      Coordinates(t.toInt(), r.toInt()), Direction.left);
+                });
+              }
+            }
+          },
+          onTap: () {
+            if (kIsWeb) {
+              if (item is Ball) {
+                setState(() {
+                  selectedItem = item;
+                });
+              }
+            }
+          },
+        ),
       ),
     );
   }
