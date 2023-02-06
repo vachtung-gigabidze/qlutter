@@ -24,6 +24,7 @@ class Level {
   int levelId;
   late List<List<Item?>> field;
   late int ballsCount;
+  late Map<Color, int> colorsBall;
   late Size size;
 
   Level(this.field, this.levelId) {
@@ -33,11 +34,15 @@ class Level {
   int elements() => (size.width * size.height).round();
 
   int _countBallOnLevel() {
+    colorsBall = <Color, int>{};
     ballsCount = field.fold(
         0,
         (int sum, List<Item?> el) =>
             sum +
             el.fold(0, (int pre, Item? item) {
+              if (item != null && item is Ball) {
+                colorsBall[item.color] = (colorsBall[item.color] ?? 0) + 1;
+              }
               return (item is Ball) ? pre + 1 : pre;
             }));
 
@@ -157,6 +162,7 @@ class Field {
   }
 
   bool isEdge(Coordinates coordItemNearly) {
+    //TODO: need check null cell until not edge field
     return (coordItemNearly.horizontal == 0 ||
         coordItemNearly.vertical == 0 ||
         coordItemNearly.horizontal == level.size.height - 1 ||
@@ -177,12 +183,14 @@ class Field {
         return false;
       }
 
-      if (isEdge(coordItemNearly)) {
-        level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
-            Block();
-      } else {
-        level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
-            null;
+      if (isLastColorBall(item!.color)) {
+        if (isEdge(coordItemNearly)) {
+          level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+              Block();
+        } else {
+          level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+              null;
+        }
       }
 
       level.field[coordItem.horizontal][coordItem.vertical] = null;
@@ -232,6 +240,12 @@ class Field {
       level.field[coordinates.horizontal + 1][coordinates.vertical] == null,
       level.field[coordinates.horizontal - 1][coordinates.vertical] == null
     ];
+  }
+
+  bool isLastColorBall(Color color) {
+    // assert(level.colorsBall[color] == 0, "Color Ball map error");
+    level.colorsBall.update(color, (value) => value -= 1);
+    return (level.colorsBall[color] == 0);
   }
 
   // bool gameStep(Coordinates coordinates, Direction direction) {

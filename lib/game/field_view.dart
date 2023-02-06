@@ -85,7 +85,9 @@ class FieldViewState extends State<FieldView> {
       curve: Curves.bounceOut,
       onEnd: () {
         if ((field!.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          setState(() {});
+          setState(() {
+            //   if (field!.checkWin()) {}
+          });
         }
       },
       child: BlockItem(
@@ -461,16 +463,16 @@ class FieldViewState extends State<FieldView> {
                       const SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text("Шаров: ${field?.ballsCount ?? 0}",
-                              style: TextStyle(color: Styles.foregroundColor)),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //   children: [
+                      //     Text("Шаров: ${field?.ballsCount ?? 0}",
+                      //         style: TextStyle(color: Styles.foregroundColor)),
+                      //   ],
+                      // ),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
                       SizedBox(
                         height: maxViewSize.height,
                         width: maxViewSize.width,
