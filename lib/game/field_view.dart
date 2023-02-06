@@ -9,6 +9,7 @@ import 'package:qlutter/game/level_manager.dart';
 import 'package:qlutter/game/styles.dart';
 import 'package:qlutter/game/ui/alerts/about.dart';
 import 'package:qlutter/game/ui/alerts/accent_colors.dart';
+import 'package:qlutter/game/ui/alerts/alerts.dart';
 import 'package:qlutter/game/ui/block_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -76,6 +77,27 @@ class FieldViewState extends State<FieldView> {
     });
   }
 
+  showWinDialog() {
+    Timer(const Duration(milliseconds: 500), () {
+      showAnimatedDialog<void>(
+          animationType: DialogTransitionType.fadeScale,
+          barrierDismissible: true,
+          duration: const Duration(milliseconds: 350),
+          context: context,
+          builder: (_) => const AlertLevelComplete()).whenComplete(() {
+        if (AlertLevelComplete.newGame) {
+          nextLevel();
+          AlertLevelComplete.newGame = false;
+        } else if (AlertLevelComplete.restartGame) {
+          restartLevel();
+          AlertLevelComplete.restartGame = false;
+        } else {
+          showWinDialog();
+        }
+      });
+    });
+  }
+
   Widget _buildBall(Item item, double t, double r, Key? key) {
     return AnimatedPositioned(
       key: key,
@@ -85,9 +107,10 @@ class FieldViewState extends State<FieldView> {
       curve: Curves.bounceOut,
       onEnd: () {
         if ((field!.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          setState(() {
-            //   if (field!.checkWin()) {}
-          });
+          if (field!.checkWin()) {
+            showWinDialog();
+          }
+          setState(() {});
         }
       },
       child: BlockItem(
@@ -430,22 +453,16 @@ class FieldViewState extends State<FieldView> {
           Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             IconButton(
               onPressed: () {
-                setState(() {
-                  selectedLevel = selectedLevel! - 1;
-                  setPrefs('selectedLevel');
-                });
+                prevLevel();
               },
               icon: const Icon(Icons.keyboard_arrow_left),
               color: Styles.foregroundColor,
             ),
-            Text("Уровень: $selectedLevel",
+            Text((selectedLevel! > 0) ? "Уровень: $selectedLevel" : "Обучение",
                 style: TextStyle(color: Styles.foregroundColor)),
             IconButton(
                 onPressed: () {
-                  setState(() {
-                    selectedLevel = selectedLevel! + 1;
-                    setPrefs('selectedLevel');
-                  });
+                  nextLevel();
                 },
                 icon: const Icon(Icons.keyboard_arrow_right),
                 color: Styles.foregroundColor)
@@ -495,6 +512,20 @@ class FieldViewState extends State<FieldView> {
   restartLevel() {
     setState(() {
       refresh = true;
+    });
+  }
+
+  prevLevel() {
+    setState(() {
+      selectedLevel = selectedLevel! - 1;
+      setPrefs('selectedLevel');
+    });
+  }
+
+  nextLevel() {
+    setState(() {
+      selectedLevel = selectedLevel! + 1;
+      setPrefs('selectedLevel');
     });
   }
 

@@ -14,11 +14,13 @@ class AlertLevelComplete extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       backgroundColor: Styles.secondaryBackgroundColor,
       title: Text(
-        'Congratulation!! Level complete.',
+        'Congratulation!!',
         style: TextStyle(color: Styles.foregroundColor),
       ),
       content: Text(
-        'You successfully solved Level $levelNumber',
+        (levelNumber != null && levelNumber! > 0)
+            ? 'You successfully solved $levelNumber level'
+            : 'You successfully solved tutorial',
         style: TextStyle(color: Styles.foregroundColor),
       ),
       actions: [
