@@ -55,8 +55,14 @@ enum Direction { left, right, up, down, nowhere }
 class Field {
   Level level;
   late int ballsCount;
+  late int moveCount;
+  late DateTime? start;
+  late DateTime? end;
 
   Field(this.level) {
+    start = null;
+    end = null;
+    moveCount = 0;
     ballsCount = level._countBallOnLevel();
   }
 
@@ -135,6 +141,8 @@ class Field {
   Coordinates? moveItem(Coordinates coordinates, Direction direction) {
     int horizontal = coordinates.horizontal;
     int vertical = coordinates.vertical;
+
+    start ??= DateTime.now();
 
     if (level.field[horizontal][vertical] == null) {
       return null;
@@ -230,7 +238,11 @@ class Field {
   }
 
   checkWin() {
-    return ballsCount == 0;
+    if (ballsCount == 0) {
+      end ??= DateTime.now();
+      return true;
+    }
+    return false;
   }
 
   List<bool> canMove(Coordinates coordinates) {
