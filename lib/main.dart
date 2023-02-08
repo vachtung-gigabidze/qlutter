@@ -38,6 +38,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/game/core/level_manager.dart';
 
 import 'game/ads/ads_controller.dart';
 import 'game/app_lifecycle/app_lifecycle.dart';
@@ -227,6 +228,12 @@ class Qlutter extends StatelessWidget {
     return AppLifecycleObserver(
       child: MultiProvider(
         providers: [
+          // Provider<LevelManager>.value(value: LevelManager()..readLevels()),
+          FutureProvider<LevelManager>(
+              create: (_) => LevelManager()..readLevels(),
+              initialData: LevelManager()),
+          // Provider<LevelManager>(
+          //     lazy: false, create: (context) => LevelManager()..readLevels()),
           ChangeNotifierProvider(
             create: (context) {
               var progress = PlayerProgress(playerProgressPersistence);

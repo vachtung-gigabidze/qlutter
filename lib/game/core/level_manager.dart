@@ -20,7 +20,7 @@ class LevelManager {
   static const int holeCell6 = 77;
 
   late LevelManager? instance;
-  Map<int, Level>? levels;
+  late Map<int, Level>? levels;
   late Field? field;
 
   LevelManager();
@@ -28,6 +28,10 @@ class LevelManager {
   LevelManager build() {
     instance ??= LevelManager();
     return instance!;
+  }
+
+  readLevels() async {
+    levels = await openLevels();
   }
 
   Future<Field?> getFiled(int levelIndex) async {
@@ -97,33 +101,36 @@ class LevelManager {
   }
 
   Future<Map<int, Level>> openLevels() async {
-    String levelsFile = await rootBundle.loadString('assets/classic.txt');
-    Map<int, Level> levels = <int, Level>{};
-    int rowNum = 0;
-    int elementId = 0;
+    try {
+      String levelsFile = await rootBundle.loadString('assets/classic.txt');
+      levels = <int, Level>{};
+      int rowNum = 0;
+      int elementId = 0;
 
-    List<String> rows = levelsFile.split('\n');
+      List<String> rows = levelsFile.split('\n');
 
-    int level = 0;
-    while (level != 10) {
-      level = int.parse(rows[rowNum]);
-      rowNum++;
-      int h = int.parse(rows[rowNum].split(' ')[1]);
-      int w = int.parse(rows[rowNum].split(' ')[0]);
-      rowNum++;
-
-      List<List<Item?>> l = [];
-      for (var i = 0; i < h; i++) {
-        List<Item?> fieldRow = [];
-        for (int element in rows[rowNum].split(' ').map((e) => int.parse(e))) {
-          elementId++;
-          fieldRow.add(convertLegendToItem(element, elementId));
-        }
-        l.add(fieldRow);
+      int level = 0;
+      while (level != 10) {
+        level = int.parse(rows[rowNum]);
         rowNum++;
+        int h = int.parse(rows[rowNum].split(' ')[1]);
+        int w = int.parse(rows[rowNum].split(' ')[0]);
+        rowNum++;
+
+        List<List<Item?>> l = [];
+        for (var i = 0; i < h; i++) {
+          List<Item?> fieldRow = [];
+          for (int element
+              in rows[rowNum].split(' ').map((e) => int.parse(e))) {
+            elementId++;
+            fieldRow.add(convertLegendToItem(element, elementId));
+          }
+          l.add(fieldRow);
+          rowNum++;
+        }
+        levels![level] = Level(l, level)..size = Size(h + .0, w + .0);
       }
-      levels[level] = Level(l, level)..size = Size(h + .0, w + .0);
-    }
+    } catch (e) {}
     return Future.value(levels);
   }
 }

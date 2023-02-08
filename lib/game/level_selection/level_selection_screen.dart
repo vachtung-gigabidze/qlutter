@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/game/core/level_manager.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
@@ -20,6 +21,7 @@ class LevelSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
     final playerProgress = context.watch<PlayerProgress>();
+    final levelManager = context.read<LevelManager>();
 
     return Scaffold(
       backgroundColor: palette.backgroundLevelSelection,
@@ -40,19 +42,19 @@ class LevelSelectionScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  for (final level in gameLevels)
+                  for (final level in levelManager.levels!.values)
                     ListTile(
                       enabled: playerProgress.highestLevelReached >=
-                          level.number - 1,
+                          level.levelId - 1,
                       onTap: () {
                         final audioController = context.read<AudioController>();
                         audioController.playSfx(SfxType.buttonTap);
 
                         GoRouter.of(context)
-                            .go('/play/session/${level.number}');
+                            .go('/play/session/${level.levelId}');
                       },
-                      leading: Text(level.number.toString()),
-                      title: Text('Level #${level.number}'),
+                      leading: Text(level.levelId.toString()),
+                      title: Text('Level #${level.levelId}'),
                     )
                 ],
               ),

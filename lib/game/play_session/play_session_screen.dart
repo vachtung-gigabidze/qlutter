@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
+// import 'package:qlutter/game/core/core.dart';
 
 import '../ads/ads_controller.dart';
 import '../audio/audio_controller.dart';
@@ -49,7 +50,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => LevelState(
-            goal: widget.level.difficulty,
+            goal: 1, //widget.level.difficulty,
             onWin: _playerWon,
           ),
         ),
@@ -76,7 +77,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       ),
                     ),
                     const Spacer(),
-                    Text('Drag the slider to ${widget.level.difficulty}%'
+                    Text('Drag the slider to %'
                         ' or above!'),
                     Consumer<LevelState>(
                       builder: (context, levelState, child) => Slider(
@@ -139,7 +140,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
     final score = Score(
       widget.level.number,
-      widget.level.difficulty,
+      1, //widget.level.difficulty,
       DateTime.now().difference(_startOfPlay),
     );
 
