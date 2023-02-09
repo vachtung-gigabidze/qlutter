@@ -34,7 +34,7 @@ class LevelManager {
     levels = await openLevels();
   }
 
-  Future<Field?> getFiled(int levelIndex) async {
+  Future<Field?> getFiledAsync(int levelIndex) async {
     if (levels == null) {
       levels = await openLevels();
 
@@ -43,6 +43,13 @@ class LevelManager {
       field = Field(levels![levelIndex]!);
     }
     return Future.value(field);
+  }
+
+  Field? getFiled(int levelIndex) {
+    if (levels != null && field?.level.levelId != levelIndex) {
+      field = Field(levels![levelIndex]!);
+    }
+    return field;
   }
 
   Field copyField(Field field) {
@@ -128,7 +135,10 @@ class LevelManager {
           l.add(fieldRow);
           rowNum++;
         }
-        levels![level] = Level(l, level)..size = Size(h + .0, w + .0);
+        levels![level] = Level(
+          l,
+          level,
+        )..size = Size(h + .0, w + .0);
       }
     } catch (e) {}
     return Future.value(levels);

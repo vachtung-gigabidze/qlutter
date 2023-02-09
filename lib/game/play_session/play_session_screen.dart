@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
+import 'package:qlutter/game/core/core.dart';
+import 'package:qlutter/game/core/field_view.dart';
+import 'package:qlutter/game/core/level_manager.dart';
 // import 'package:qlutter/game/core/core.dart';
 
 import '../ads/ads_controller.dart';
@@ -23,9 +26,9 @@ import '../style/confetti.dart';
 import '../style/palette.dart';
 
 class PlaySessionScreen extends StatefulWidget {
-  final GameLevel level;
+  final int levelNumber;
 
-  const PlaySessionScreen(this.level, {super.key});
+  const PlaySessionScreen(this.levelNumber, {super.key});
 
   @override
   State<PlaySessionScreen> createState() => _PlaySessionScreenState();
@@ -41,10 +44,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   bool _duringCelebration = false;
 
   late DateTime _startOfPlay;
+  late Level level;
 
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
+    //level = context.read<LevelManager>().levels![widget.levelNumber]!;
 
     return MultiProvider(
       providers: [
@@ -77,18 +82,21 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       ),
                     ),
                     const Spacer(),
-                    Text('Drag the slider to %'
-                        ' or above!'),
-                    Consumer<LevelState>(
-                      builder: (context, levelState, child) => Slider(
-                        label: 'Level Progress',
-                        autofocus: true,
-                        value: levelState.progress / 100,
-                        onChanged: (value) =>
-                            levelState.setProgress((value * 100).round()),
-                        onChangeEnd: (value) => levelState.evaluate(),
-                      ),
+                    FieldView(
+                      level: level,
                     ),
+                    // Text('Drag the slider to %'
+                    //     ' or above!'),
+                    // Consumer<LevelState>(
+                    //   builder: (context, levelState, child) => Slider(
+                    //     label: 'Level Progress',
+                    //     autofocus: true,
+                    //     value: levelState.progress / 100,
+                    //     onChanged: (value) =>
+                    //         levelState.setProgress((value * 100).round()),
+                    //     onChangeEnd: (value) => levelState.evaluate(),
+                    //   ),
+                    // ),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -124,6 +132,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   void initState() {
     super.initState();
 
+    level = context.read<LevelManager>().levels![widget.levelNumber]!;
+
     _startOfPlay = DateTime.now();
 
     // Preload ad for the win screen.
@@ -136,16 +146,16 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   }
 
   Future<void> _playerWon() async {
-    _log.info('Level ${widget.level.number} won');
+    _log.info('Level ${widget.levelNumber} won');
 
     final score = Score(
-      widget.level.number,
+      widget.levelNumber,
       1, //widget.level.difficulty,
       DateTime.now().difference(_startOfPlay),
     );
 
     final playerProgress = context.read<PlayerProgress>();
-    playerProgress.setLevelReached(widget.level.number);
+    playerProgress.setLevelReached(widget.levelNumber);
 
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
@@ -161,12 +171,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     final gamesServicesController = context.read<GamesServicesController?>();
     if (gamesServicesController != null) {
       // Award achievement.
-      if (widget.level.awardsAchievement) {
-        await gamesServicesController.awardAchievement(
-          android: widget.level.achievementIdAndroid!,
-          iOS: widget.level.achievementIdIOS!,
-        );
-      }
+      // if (widget.level.awardsAchievement) {
+      //   await gamesServicesController.awardAchievement(
+      //     android: widget.level.achievementIdAndroid!,
+      //     iOS: widget.level.achievementIdIOS!,
+      //   );
+      // }
 
       // Send score to leaderboard.
       await gamesServicesController.submitLeaderboardScore(score);

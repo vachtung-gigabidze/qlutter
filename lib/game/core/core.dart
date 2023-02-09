@@ -66,6 +66,13 @@ class Field {
     ballsCount = level._countBallOnLevel();
   }
 
+  static Field copyField(Field field) {
+    Field newField = Field(Level(
+        field.level.field.map((row) => [...row]).toList(), field.level.levelId)
+      ..size = field.level.size);
+    return newField;
+  }
+
   Coordinates moveRight(int xCoord, int yCoord) {
     try {
       while (level.field[yCoord][xCoord + 1] ==

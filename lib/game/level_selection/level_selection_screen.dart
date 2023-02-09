@@ -44,8 +44,8 @@ class LevelSelectionScreen extends StatelessWidget {
                 children: [
                   for (final level in levelManager.levels!.values)
                     ListTile(
-                      enabled: playerProgress.highestLevelReached >=
-                          level.levelId - 1,
+                      enabled:
+                          playerProgress.highestLevelReached >= level.levelId,
                       onTap: () {
                         final audioController = context.read<AudioController>();
                         audioController.playSfx(SfxType.buttonTap);
@@ -54,7 +54,9 @@ class LevelSelectionScreen extends StatelessWidget {
                             .go('/play/session/${level.levelId}');
                       },
                       leading: Text(level.levelId.toString()),
-                      title: Text('Level #${level.levelId}'),
+                      title: Text(level.levelId == 0
+                          ? 'Tutorial'
+                          : 'Level #${level.levelId}'),
                     )
                 ],
               ),

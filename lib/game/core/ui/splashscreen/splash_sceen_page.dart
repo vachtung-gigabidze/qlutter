@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:qlutter/game/core/field_view.dart';
 import 'package:qlutter/game/core/styles.dart';
 import 'package:qlutter/game/core/ui/splashscreen/splash.dart';
+import 'package:qlutter/main.dart';
 
 class SplashScreenPage extends StatefulWidget {
-  const SplashScreenPage({Key? key}) : super(key: key);
+  final Object? naviagateScreen;
+  const SplashScreenPage({Key? key, this.naviagateScreen}) : super(key: key);
 
   @override
   _SplashScreenPageState createState() => _SplashScreenPageState();
@@ -20,7 +22,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return SplashScreen(
       seconds: 2,
-      navigateAfterSeconds: FieldView(),
+      navigateAfterSeconds: widget.naviagateScreen,
       title: Text(
         '\nQlutter',
         style: TextStyle(

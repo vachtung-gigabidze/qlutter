@@ -1,100 +1,107 @@
-import 'dart:async';
+// import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+// import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+// import 'package:provider/provider.dart';
 import 'package:qlutter/game/core/core.dart';
-import 'package:qlutter/game/core/level_manager.dart';
+// import 'package:qlutter/game/core/level_manager.dart';
 import 'package:qlutter/game/core/styles.dart';
-import 'package:qlutter/game/core/ui/alerts/alerts.dart';
+// import 'package:qlutter/game/core/ui/alerts/alerts.dart';
 import 'package:qlutter/game/core/ui/block_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'dart:html';
 
 class FieldView extends StatefulWidget {
-  const FieldView({super.key});
+  final Level level;
+
+  FieldView({super.key, required this.level});
 
   @override
   State<FieldView> createState() => FieldViewState();
 }
 
 class FieldViewState extends State<FieldView> {
-  int paddingSize = 0;
+  // int paddingSize = 0;
   late double elementSize;
-  Field? field;
-  Field? fieldCopy;
+  late Field field;
+  late Field fieldCopy;
   late Size fieldSize;
   late Size maxViewSize;
-  late Future<Level?> level;
+  // //late Future<Level?> level;
   Ball? selectedItem;
-  int? selectedLevel;
+  // int? selectedLevel;
   bool showHover = false;
-  late LevelManager lm;
+  // late LevelManager lm;
   List<Widget> walls = [];
   List<Widget> holes = [];
   List<Widget> balls = [];
   late bool refresh;
-  String? currentTheme;
-  String? currentAccentColor;
+  // String? currentTheme;
+  // String? currentAccentColor;
 
   @override
   void initState() {
     super.initState();
+
+    field = Field(widget.level);
+    fieldCopy = Field.copyField(field);
+
     refresh = false;
-    selectedLevel = null;
+    // selectedLevel = null;
     elementSize = 45;
     maxViewSize = const Size(0, 0);
     fieldSize = Size(elementSize, elementSize);
-    lm = LevelManager();
+    // lm = LevelManager();
 
-    getPrefs().whenComplete(() {
-      if (currentTheme == null) {
-        if (MediaQuery.maybeOf(context)?.platformBrightness != null) {
-          currentTheme =
-              MediaQuery.of(context).platformBrightness == Brightness.light
-                  ? 'light'
-                  : 'dark';
-        } else {
-          currentTheme = 'dark';
-        }
-        setPrefs('currentTheme');
-      }
-      if (currentAccentColor == null) {
-        currentAccentColor = 'Blue';
-        setPrefs('currentAccentColor');
-      }
-      if (selectedLevel == null) {
-        selectedLevel = 0;
-        setPrefs('selectedLevel');
-      }
+    // getPrefs().whenComplete(() {
+    //   if (currentTheme == null) {
+    //     if (MediaQuery.maybeOf(context)?.platformBrightness != null) {
+    //       currentTheme =
+    //           MediaQuery.of(context).platformBrightness == Brightness.light
+    //               ? 'light'
+    //               : 'dark';
+    //     } else {
+    //       currentTheme = 'dark';
+    //     }
+    //     setPrefs('currentTheme');
+    //   }
+    //   if (currentAccentColor == null) {
+    //     currentAccentColor = 'Blue';
+    //     setPrefs('currentAccentColor');
+    //   }
+    //   if (selectedLevel == null) {
+    //     selectedLevel = 0;
+    //     setPrefs('selectedLevel');
+    //   }
 
-      changeTheme('set');
-      changeAccentColor(currentAccentColor!, true);
-    });
+    //   changeTheme('set');
+    //   changeAccentColor(currentAccentColor!, true);
+    // });
   }
 
-  showWinDialog() {
-    Timer(const Duration(milliseconds: 500), () {
-      showAnimatedDialog<void>(
-          animationType: DialogTransitionType.fadeScale,
-          barrierDismissible: true,
-          duration: const Duration(milliseconds: 350),
-          context: context,
-          builder: (_) => const AlertLevelComplete()).whenComplete(() {
-        if (AlertLevelComplete.newGame) {
-          nextLevel();
-          AlertLevelComplete.newGame = false;
-        } else if (AlertLevelComplete.restartGame) {
-          restartLevel();
-          AlertLevelComplete.restartGame = false;
-        } else {
-          showWinDialog();
-        }
-      });
-    });
-  }
+  // showWinDialog() {
+  //   Timer(const Duration(milliseconds: 500), () {
+  //     showAnimatedDialog<void>(
+  //         animationType: DialogTransitionType.fadeScale,
+  //         barrierDismissible: true,
+  //         duration: const Duration(milliseconds: 350),
+  //         context: context,
+  //         builder: (_) => const AlertLevelComplete()).whenComplete(() {
+  //       if (AlertLevelComplete.newGame) {
+  //         nextLevel();
+  //         AlertLevelComplete.newGame = false;
+  //       } else if (AlertLevelComplete.restartGame) {
+  //         restartLevel();
+  //         AlertLevelComplete.restartGame = false;
+  //       } else {
+  //         showWinDialog();
+  //       }
+  //     });
+  //   });
+  // }
 
   Widget _buildBall(Item item, double t, double r, Key? key) {
     return AnimatedPositioned(
@@ -104,20 +111,20 @@ class FieldViewState extends State<FieldView> {
       duration: const Duration(seconds: 1),
       curve: Curves.bounceOut,
       onEnd: () {
-        if ((field!.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          if (field!.checkWin()) {
-            showWinDialog();
-          }
-          setState(() {});
+        if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
+          // if (field!.checkWin()) {
+          //   showWinDialog();
+          // }
+          //setState(() {});
         }
       },
       child: GestureDetector(
         onPanUpdate: (details) {
           if (details.delta.dx > 0) {
-            field?.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
+            field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
           }
           if (details.delta.dx < 0) {
-            field?.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
+            field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
           }
         },
         child: BlockItem(
@@ -128,13 +135,13 @@ class FieldViewState extends State<FieldView> {
             if (!kIsWeb) {
               if (details.delta.dx > 0) {
                 setState(() {
-                  field?.moveItem(
+                  field.moveItem(
                       Coordinates(t.toInt(), r.toInt()), Direction.right);
                 });
               }
               if (details.delta.dx < 0) {
                 setState(() {
-                  field?.moveItem(
+                  field.moveItem(
                       Coordinates(t.toInt(), r.toInt()), Direction.left);
                 });
               }
@@ -170,7 +177,7 @@ class FieldViewState extends State<FieldView> {
 
   Widget _buildHover(Coordinates c) {
     List<bool> directionMask =
-        field!.canMove(Coordinates(c.horizontal, c.vertical));
+        field.canMove(Coordinates(c.horizontal, c.vertical));
     return Positioned(
       top: (c.horizontal - 1) * fieldSize.height,
       right: (c.vertical - 1) * fieldSize.height,
@@ -192,7 +199,7 @@ class FieldViewState extends State<FieldView> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        field?.moveItem(c, Direction.right);
+                        field.moveItem(c, Direction.right);
                         selectedItem = null;
                       });
                     },
@@ -209,7 +216,7 @@ class FieldViewState extends State<FieldView> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        field?.moveItem(c, Direction.left);
+                        field.moveItem(c, Direction.left);
                         selectedItem = null;
                       });
                     },
@@ -226,7 +233,7 @@ class FieldViewState extends State<FieldView> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        field?.moveItem(c, Direction.down);
+                        field.moveItem(c, Direction.down);
                         selectedItem = null;
                       });
                     },
@@ -243,7 +250,7 @@ class FieldViewState extends State<FieldView> {
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        field?.moveItem(c, Direction.up);
+                        field.moveItem(c, Direction.up);
                         selectedItem = null;
                         // showHover = false;
                       });
@@ -304,280 +311,283 @@ class FieldViewState extends State<FieldView> {
     return walls;
   }
 
-  Future<Field?> _getField() async {
-    if (refresh) {
-      refresh = false;
-      return Future.value(lm.copyField(fieldCopy!));
-    }
+  // Future<Field?> _getField() async {
+  //   if (refresh) {
+  //     refresh = false;
+  //     return Future.value(lm.copyField(fieldCopy!));
+  //   }
 
-    if (field == null || field?.level.levelId != selectedLevel) {
-      field = await lm.getFiled(selectedLevel!);
-      fieldCopy = lm.copyField(field!);
-    }
+  //   if (field == null || field?.level.levelId != selectedLevel) {
+  //     field = await lm.getFiled(selectedLevel!);
+  //     fieldCopy = lm.copyField(field!);
+  //   }
 
-    return Future.value(field);
-  }
+  //   return Future.value(field);
+  // }
 
   void setSize(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double m = min<double>(width, height);
-    m *= .9;
-    double i = max<double>(field!.level.size.height, field!.level.size.width);
+    m *= .8;
+    double i = max<double>(field.level.size.height, field.level.size.width);
 
     elementSize = m / i;
     fieldSize = Size(elementSize, elementSize);
-    maxViewSize = Size(field!.level.size.height * elementSize,
-        field!.level.size.width * elementSize);
+    maxViewSize = Size(field.level.size.height * elementSize,
+        field.level.size.width * elementSize);
   }
 
-  Future<void> getPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      selectedLevel = prefs.getInt('selectedLevel');
-      currentTheme = prefs.getString('currentTheme');
-      currentAccentColor = prefs.getString('currentAccentColor');
-    });
-  }
+  // Future<void> getPrefs() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     selectedLevel = prefs.getInt('selectedLevel');
+  //     currentTheme = prefs.getString('currentTheme');
+  //     currentAccentColor = prefs.getString('currentAccentColor');
+  //   });
+  // }
 
-  setPrefs(String property) async {
-    final prefs = await SharedPreferences.getInstance();
-    if (property == 'currentTheme') {
-      prefs.setString('currentTheme', currentTheme ?? "");
-    } else if (property == 'currentAccentColor') {
-      prefs.setString('currentAccentColor', currentAccentColor ?? "");
-    } else if (property == 'selectedLevel') {
-      prefs.setInt('selectedLevel', selectedLevel ?? 0);
-    }
-  }
+  // setPrefs(String property) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   if (property == 'currentTheme') {
+  //     prefs.setString('currentTheme', currentTheme ?? "");
+  //   } else if (property == 'currentAccentColor') {
+  //     prefs.setString('currentAccentColor', currentAccentColor ?? "");
+  //   } else if (property == 'selectedLevel') {
+  //     prefs.setInt('selectedLevel', selectedLevel ?? 0);
+  //   }
+  // }
 
-  void changeAccentColor(String color, [bool firstRun = false]) {
-    setState(() {
-      if (Styles.accentColors.keys.contains(color)) {
-        Styles.primaryColor = Styles.accentColors[color]!;
-      } else {
-        currentAccentColor = 'Blue';
-        Styles.primaryColor = Styles.accentColors[color]!;
-      }
-      if (color == 'Red') {
-        Styles.secondaryColor = Styles.orange;
-      } else {
-        Styles.secondaryColor = Styles.lightRed;
-      }
-      if (!firstRun) {
-        setPrefs('currentAccentColor');
-      }
-    });
-  }
+  // void changeAccentColor(String color, [bool firstRun = false]) {
+  //   setState(() {
+  //     if (Styles.accentColors.keys.contains(color)) {
+  //       Styles.primaryColor = Styles.accentColors[color]!;
+  //     } else {
+  //       currentAccentColor = 'Blue';
+  //       Styles.primaryColor = Styles.accentColors[color]!;
+  //     }
+  //     if (color == 'Red') {
+  //       Styles.secondaryColor = Styles.orange;
+  //     } else {
+  //       Styles.secondaryColor = Styles.lightRed;
+  //     }
+  //     if (!firstRun) {
+  //       setPrefs('currentAccentColor');
+  //     }
+  //   });
+  // }
 
-  showOptionModalSheet(BuildContext context) {
-    BuildContext outerContext = context;
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Styles.secondaryBackgroundColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10),
-          ),
-        ),
-        builder: (context) {
-          final TextStyle customStyle =
-              TextStyle(inherit: false, color: Styles.foregroundColor);
-          return Wrap(
-            children: [
-              ListTile(
-                leading: Icon(Icons.refresh, color: Styles.foregroundColor),
-                title: Text('Restart Level', style: customStyle),
-                onTap: () {
-                  Navigator.pop(context);
-                  Timer(
-                      const Duration(milliseconds: 200), () => restartLevel());
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.invert_colors_on_rounded,
-                    color: Styles.foregroundColor),
-                title: Text('Switch Theme', style: customStyle),
-                onTap: () {
-                  Navigator.pop(context);
-                  Timer(const Duration(milliseconds: 200), () {
-                    changeTheme('switch');
-                  });
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.color_lens_outlined,
-                    color: Styles.foregroundColor),
-                title: Text('Change Accent Color', style: customStyle),
-                onTap: () {
-                  Navigator.pop(context);
-                  Timer(
-                      const Duration(milliseconds: 200),
-                      () => showAnimatedDialog<void>(
-                              animationType: DialogTransitionType.fadeScale,
-                              barrierDismissible: true,
-                              duration: const Duration(milliseconds: 350),
-                              context: outerContext,
-                              builder: (_) => AlertAccentColorsState(
-                                  currentAccentColor!)).whenComplete(() {
-                            if (AlertAccentColorsState.accentColor != null) {
-                              Timer(const Duration(milliseconds: 300), () {
-                                currentAccentColor =
-                                    AlertAccentColorsState.accentColor;
-                                changeAccentColor(
-                                    currentAccentColor.toString());
-                                AlertAccentColorsState.accentColor = null;
-                                setPrefs('currentAccentColor');
-                              });
-                            }
-                          }));
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.info_outline_rounded,
-                    color: Styles.foregroundColor),
-                title: Text('About', style: customStyle),
-                onTap: () {
-                  Navigator.pop(context);
-                  Timer(
-                      const Duration(milliseconds: 200),
-                      () => showAnimatedDialog<void>(
-                          animationType: DialogTransitionType.fadeScale,
-                          barrierDismissible: true,
-                          duration: const Duration(milliseconds: 350),
-                          context: outerContext,
-                          builder: (_) => const AlertAbout()));
-                },
-              ),
-            ],
-          );
-        });
-  }
+  // showOptionModalSheet(BuildContext context) {
+  //   BuildContext outerContext = context;
+  //   showModalBottomSheet(
+  //       context: context,
+  //       backgroundColor: Styles.secondaryBackgroundColor,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(
+  //           top: Radius.circular(10),
+  //         ),
+  //       ),
+  //       builder: (context) {
+  //         final TextStyle customStyle =
+  //             TextStyle(inherit: false, color: Styles.foregroundColor);
+  //         return Wrap(
+  //           children: [
+  //             ListTile(
+  //               leading: Icon(Icons.refresh, color: Styles.foregroundColor),
+  //               title: Text('Restart Level', style: customStyle),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 Timer(
+  //                     const Duration(milliseconds: 200), () => restartLevel());
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.invert_colors_on_rounded,
+  //                   color: Styles.foregroundColor),
+  //               title: Text('Switch Theme', style: customStyle),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 Timer(const Duration(milliseconds: 200), () {
+  //                   changeTheme('switch');
+  //                 });
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.color_lens_outlined,
+  //                   color: Styles.foregroundColor),
+  //               title: Text('Change Accent Color', style: customStyle),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 Timer(
+  //                     const Duration(milliseconds: 200),
+  //                     () => showAnimatedDialog<void>(
+  //                             animationType: DialogTransitionType.fadeScale,
+  //                             barrierDismissible: true,
+  //                             duration: const Duration(milliseconds: 350),
+  //                             context: outerContext,
+  //                             builder: (_) => AlertAccentColorsState(
+  //                                 currentAccentColor!)).whenComplete(() {
+  //                           if (AlertAccentColorsState.accentColor != null) {
+  //                             Timer(const Duration(milliseconds: 300), () {
+  //                               currentAccentColor =
+  //                                   AlertAccentColorsState.accentColor;
+  //                               changeAccentColor(
+  //                                   currentAccentColor.toString());
+  //                               AlertAccentColorsState.accentColor = null;
+  //                               setPrefs('currentAccentColor');
+  //                             });
+  //                           }
+  //                         }));
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: Icon(Icons.info_outline_rounded,
+  //                   color: Styles.foregroundColor),
+  //               title: Text('About', style: customStyle),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //                 Timer(
+  //                     const Duration(milliseconds: 200),
+  //                     () => showAnimatedDialog<void>(
+  //                         animationType: DialogTransitionType.fadeScale,
+  //                         barrierDismissible: true,
+  //                         duration: const Duration(milliseconds: 350),
+  //                         context: outerContext,
+  //                         builder: (_) => const AlertAbout()));
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(56.0),
-          child: AppBar(
-            centerTitle: true,
-            title: const Text('Qlutter'),
-            backgroundColor: Styles.primaryColor,
-          )),
-      floatingActionButton: FloatingActionButton(
-        foregroundColor: Styles.primaryBackgroundColor,
-        backgroundColor: Styles.primaryColor,
-        onPressed: () => showOptionModalSheet(context),
-        child: const Icon(Icons.menu_rounded),
-      ),
-      backgroundColor: Styles.primaryBackgroundColor,
-      body: Column(
-        children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            IconButton(
-              onPressed: () {
-                prevLevel();
-              },
-              icon: const Icon(Icons.keyboard_arrow_left),
-              color: Styles.foregroundColor,
-            ),
-            Text((selectedLevel! > 0) ? "Уровень: $selectedLevel" : "Обучение",
-                style: TextStyle(color: Styles.foregroundColor)),
-            IconButton(
-                onPressed: () {
-                  nextLevel();
-                },
-                icon: const Icon(Icons.keyboard_arrow_right),
-                color: Styles.foregroundColor)
-          ]),
-          FutureBuilder<Field?>(
-              initialData: field,
-              future: _getField(),
-              builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
-                if (snapshot.hasData) {
-                  field = snapshot.data!;
+    setSize(context);
+    //final level = context.read<LevelManager>().levels![level]
+    return
+        // Scaffold(
+        //   appBar: PreferredSize(
+        //       preferredSize: const Size.fromHeight(56.0),
+        //       child: AppBar(
+        //         centerTitle: true,
+        //         title: const Text('Qlutter'),
+        //         backgroundColor: Styles.primaryColor,
+        //       )),
+        //   floatingActionButton: FloatingActionButton(
+        //     foregroundColor: Styles.primaryBackgroundColor,
+        //     backgroundColor: Styles.primaryColor,
+        //     onPressed: () => showOptionModalSheet(context),
+        //     child: const Icon(Icons.menu_rounded),
+        //   ),
+        //   backgroundColor: Styles.primaryBackgroundColor,
+        //   body: Column(
+        //     children: [
+        //       Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+        //         IconButton(
+        //           onPressed: () {
+        //             prevLevel();
+        //           },
+        //           icon: const Icon(Icons.keyboard_arrow_left),
+        //           color: Styles.foregroundColor,
+        //         ),
+        //         Text((selectedLevel! > 0) ? "Уровень: $selectedLevel" : "Обучение",
+        //             style: TextStyle(color: Styles.foregroundColor)),
+        //         IconButton(
+        //             onPressed: () {
+        //               nextLevel();
+        //             },
+        //             icon: const Icon(Icons.keyboard_arrow_right),
+        //             color: Styles.foregroundColor)
+        //       ]),
+        // FutureBuilder<Field?>(
+        //     initialData: field,
+        //     future: _getField(),
+        //     builder: (BuildContext context, AsyncSnapshot<Field?> snapshot) {
+        //       if (snapshot.hasData) {
+        //         field = snapshot.data!;
 
-                  setSize(context);
-                  return Column(
-                    children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //   children: [
-                      //     Text("Шаров: ${field?.ballsCount ?? 0}",
-                      //         style: TextStyle(color: Styles.foregroundColor)),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 30,
-                      // ),
-                      SizedBox(
-                        height: maxViewSize.height,
-                        width: maxViewSize.width,
-                        child: Stack(
-                          children:
-                              generateFieldItem(snapshot.data!.level.field),
-                        ),
-                      ),
-                    ],
-                  );
-                } else {
-                  return const Text('No data');
-                }
-              }),
-        ],
+        //         setSize(context);
+        //         return Column(
+        //           children: [
+        //             const SizedBox(
+        //               height: 30,
+        //             ),
+        //             // Row(
+        //             //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //             //   children: [
+        //             //     Text("Шаров: ${field?.ballsCount ?? 0}",
+        //             //         style: TextStyle(color: Styles.foregroundColor)),
+        //             //   ],
+        //             // ),
+        //             // const SizedBox(
+        //             //   height: 30,
+        //             // ),
+        SizedBox(
+      height: maxViewSize.height,
+      width: maxViewSize.width,
+      child: Stack(
+        // children: generateFieldItem(snapshot.data!.level.field),
+        children: generateFieldItem(field.level.field),
       ),
     );
+    //       ],
+    //     );
+    //   } else {
+    //     return const Text('No data');
+    //   }
+    // }),
+    //     ],
+    //   ),
+    // );
   }
 
-  restartLevel() {
-    setState(() {
-      refresh = true;
-    });
-  }
+  // restartLevel() {
+  //   setState(() {
+  //     refresh = true;
+  //   });
+  // }
 
-  prevLevel() {
-    setState(() {
-      selectedLevel = selectedLevel! - 1;
-      setPrefs('selectedLevel');
-    });
-  }
+  // prevLevel() {
+  //   setState(() {
+  //     selectedLevel = selectedLevel! - 1;
+  //     setPrefs('selectedLevel');
+  //   });
+  // }
 
-  nextLevel() {
-    setState(() {
-      selectedLevel = selectedLevel! + 1;
-      setPrefs('selectedLevel');
-    });
-  }
+  // nextLevel() {
+  //   setState(() {
+  //     selectedLevel = selectedLevel! + 1;
+  //     setPrefs('selectedLevel');
+  //   });
+  // }
 
-  void changeTheme(String mode) {
-    setState(() {
-      if (currentTheme == 'light') {
-        if (mode == 'switch') {
-          Styles.primaryBackgroundColor = Styles.darkGrey;
-          Styles.secondaryBackgroundColor = Styles.grey;
-          Styles.foregroundColor = Styles.white;
-          currentTheme = 'dark';
-        } else if (mode == 'set') {
-          Styles.primaryBackgroundColor = Styles.white;
-          Styles.secondaryBackgroundColor = Styles.white;
-          Styles.foregroundColor = Styles.darkGrey;
-        }
-      } else if (currentTheme == 'dark') {
-        if (mode == 'switch') {
-          Styles.primaryBackgroundColor = Styles.white;
-          Styles.secondaryBackgroundColor = Styles.white;
-          Styles.foregroundColor = Styles.darkGrey;
-          currentTheme = 'light';
-        } else if (mode == 'set') {
-          Styles.primaryBackgroundColor = Styles.darkGrey;
-          Styles.secondaryBackgroundColor = Styles.grey;
-          Styles.foregroundColor = Styles.white;
-        }
-      }
-      setPrefs('currentTheme');
-    });
-  }
+  // void changeTheme(String mode) {
+  //   setState(() {
+  //     if (currentTheme == 'light') {
+  //       if (mode == 'switch') {
+  //         Styles.primaryBackgroundColor = Styles.darkGrey;
+  //         Styles.secondaryBackgroundColor = Styles.grey;
+  //         Styles.foregroundColor = Styles.white;
+  //         currentTheme = 'dark';
+  //       } else if (mode == 'set') {
+  //         Styles.primaryBackgroundColor = Styles.white;
+  //         Styles.secondaryBackgroundColor = Styles.white;
+  //         Styles.foregroundColor = Styles.darkGrey;
+  //       }
+  //     } else if (currentTheme == 'dark') {
+  //       if (mode == 'switch') {
+  //         Styles.primaryBackgroundColor = Styles.white;
+  //         Styles.secondaryBackgroundColor = Styles.white;
+  //         Styles.foregroundColor = Styles.darkGrey;
+  //         currentTheme = 'light';
+  //       } else if (mode == 'set') {
+  //         Styles.primaryBackgroundColor = Styles.darkGrey;
+  //         Styles.secondaryBackgroundColor = Styles.grey;
+  //         Styles.foregroundColor = Styles.white;
+  //       }
+  //     }
+  //     setPrefs('currentTheme');
+  //   });
+  // }
 }

@@ -135,6 +135,8 @@ void guardedMain() {
   //   inAppPurchaseController.restorePurchases();
   // }
 
+  LevelManager? levelManager = LevelManager()..readLevels();
+
   runApp(
     Qlutter(
       settingsPersistence: LocalStorageSettingsPersistence(),
@@ -142,6 +144,7 @@ void guardedMain() {
       inAppPurchaseController: inAppPurchaseController,
       adsController: adsController,
       gamesServicesController: gamesServicesController,
+      levelManager: levelManager,
     ),
   );
 }
@@ -168,11 +171,10 @@ class Qlutter extends StatelessWidget {
                     path: 'session/:level',
                     pageBuilder: (context, state) {
                       final levelNumber = int.parse(state.params['level']!);
-                      final level = gameLevels
-                          .singleWhere((e) => e.number == levelNumber);
+                      //final level = levelManager.levels![levelNumber];
                       return buildMyTransition<void>(
                         child: PlaySessionScreen(
-                          level,
+                          levelNumber,
                           key: const Key('play session'),
                         ),
                         color: context.watch<Palette>().backgroundPlaySession,
@@ -214,12 +216,15 @@ class Qlutter extends StatelessWidget {
 
   final AdsController? adsController;
 
+  final LevelManager levelManager;
+
   const Qlutter({
     required this.playerProgressPersistence,
     required this.settingsPersistence,
     required this.inAppPurchaseController,
     required this.adsController,
     required this.gamesServicesController,
+    required this.levelManager,
     super.key,
   });
 
@@ -229,9 +234,7 @@ class Qlutter extends StatelessWidget {
       child: MultiProvider(
         providers: [
           // Provider<LevelManager>.value(value: LevelManager()..readLevels()),
-          FutureProvider<LevelManager>(
-              create: (_) => LevelManager()..readLevels(),
-              initialData: LevelManager()),
+          Provider<LevelManager>.value(value: levelManager),
           // Provider<LevelManager>(
           //     lazy: false, create: (context) => LevelManager()..readLevels()),
           ChangeNotifierProvider(
