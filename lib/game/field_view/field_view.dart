@@ -9,7 +9,7 @@ import 'package:qlutter/game/core/core.dart';
 // import 'package:qlutter/game/core/level_manager.dart';
 import 'package:qlutter/game/core/styles.dart';
 // import 'package:qlutter/game/core/ui/alerts/alerts.dart';
-import 'package:qlutter/game/core/ui/block_item.dart';
+import 'package:qlutter/game/field_view/components/block_item.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'dart:html';

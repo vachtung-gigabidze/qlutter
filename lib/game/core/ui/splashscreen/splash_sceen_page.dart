@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/game/core/field_view.dart';
+import 'package:qlutter/game/field_view/field_view.dart';
 import 'package:qlutter/game/core/styles.dart';
 import 'package:qlutter/game/core/ui/splashscreen/splash.dart';
 import 'package:qlutter/main.dart';

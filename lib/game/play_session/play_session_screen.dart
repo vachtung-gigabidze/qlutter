@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
 import 'package:qlutter/game/core/core.dart';
-import 'package:qlutter/game/core/field_view.dart';
+import 'package:qlutter/game/field_view/field_view.dart';
 import 'package:qlutter/game/core/level_manager.dart';
 // import 'package:qlutter/game/core/core.dart';
 
