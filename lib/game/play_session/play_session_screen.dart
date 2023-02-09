@@ -20,7 +20,7 @@ import '../game_internals/level_state.dart';
 import '../games_services/games_services.dart';
 import '../games_services/score.dart';
 import '../in_app_purchase/in_app_purchase.dart';
-import '../level_selection/levels.dart';
+// import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 import '../style/confetti.dart';
 import '../style/palette.dart';
@@ -55,7 +55,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => LevelState(
-            goal: 1, //widget.level.difficulty,
+            goal: false, //widget.level.difficulty,
             onWin: _playerWon,
           ),
         ),
@@ -82,8 +82,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                       ),
                     ),
                     const Spacer(),
-                    FieldView(
-                      level: level,
+                    Consumer<LevelState>(
+                      builder: (context, levelState, child) => FieldView(
+                        level: level,
+                        onChanged: (value) => levelState.setProgress(value),
+                        onWin: () => levelState.evaluate(),
+                      ),
                     ),
                     // Text('Drag the slider to %'
                     //     ' or above!'),
@@ -155,7 +159,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     );
 
     final playerProgress = context.read<PlayerProgress>();
-    playerProgress.setLevelReached(widget.levelNumber);
+    playerProgress.setLevelReached(widget.levelNumber + 1);
 
     // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);

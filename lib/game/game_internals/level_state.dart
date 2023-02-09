@@ -7,22 +7,22 @@ import 'package:flutter/foundation.dart';
 class LevelState extends ChangeNotifier {
   final VoidCallback onWin;
 
-  final int goal;
+  final bool goal;
 
-  LevelState({required this.onWin, this.goal = 100});
+  LevelState({required this.onWin, this.goal = false});
 
-  int _progress = 0;
+  bool _progress = false;
 
-  int get progress => _progress;
+  bool get progress => _progress;
 
-  void setProgress(int value) {
+  void setProgress(bool value) {
     _progress = value;
     notifyListeners();
   }
 
   void evaluate() {
-    if (_progress >= goal) {
-      onWin();
-    }
+    //if (_progress != goal) {
+    onWin();
+    // }
   }
 }

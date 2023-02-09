@@ -16,8 +16,14 @@ import 'package:qlutter/game/core/ui/block_item.dart';
 
 class FieldView extends StatefulWidget {
   final Level level;
+  final Function(bool) onChanged;
+  final VoidCallback onWin;
 
-  FieldView({super.key, required this.level});
+  FieldView(
+      {super.key,
+      required this.level,
+      required this.onChanged,
+      required this.onWin});
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -112,7 +118,12 @@ class FieldViewState extends State<FieldView> {
       curve: Curves.bounceOut,
       onEnd: () {
         if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          // if (field!.checkWin()) {
+          if (field.checkWin()) {
+            widget.onChanged(true);
+            widget.onWin();
+          } else {
+            widget.onChanged(false);
+          }
           //   showWinDialog();
           // }
           //setState(() {});
