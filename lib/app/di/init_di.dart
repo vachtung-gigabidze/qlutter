@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:qlutter/app/di/init_di.config.dart';
+// import 'package:qlutter/app/di/init_di.config.dart';
 
 final locator = GetIt.instance;
 

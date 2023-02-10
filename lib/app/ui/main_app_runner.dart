@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
 import 'package:qlutter/app/domain/app_runner.dart';
-import 'package:path_provider/path_provider.dart';
 
 class MainAppRunner implements AppRunner {
   final String env;
