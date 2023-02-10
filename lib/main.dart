@@ -38,29 +38,29 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
-import 'package:qlutter/game/core/level_manager.dart';
+import 'package:qlutter/feature/level_manager/level_manager.dart';
 
 // import 'game/ads/ads_controller.dart';
-import 'game/app_lifecycle/app_lifecycle.dart';
-import 'game/audio/audio_controller.dart';
+import 'feature/app_lifecycle/app_lifecycle.dart';
+import 'feature/audio/audio_controller.dart';
 // import 'game/crashlytics/crashlytics.dart';
-import 'game/games_services/games_services.dart';
-import 'game/games_services/score.dart';
+import 'feature/games_services/games_services.dart';
+import 'feature/games_services/score.dart';
 // import 'game/in_app_purchase/in_app_purchase.dart';
-import 'game/level_selection/level_selection_screen.dart';
-import 'game/main_menu/main_menu_screen.dart';
-import 'game/play_session/play_session_screen.dart';
-import 'game/player_progress/persistence/local_storage_player_progress_persistence.dart';
-import 'game/player_progress/persistence/player_progress_persistence.dart';
-import 'game/player_progress/player_progress.dart';
-import 'game/settings/persistence/local_storage_settings_persistence.dart';
-import 'game/settings/persistence/settings_persistence.dart';
-import 'game/settings/settings.dart';
-import 'game/settings/settings_screen.dart';
-import 'game/style/my_transition.dart';
-import 'game/style/palette.dart';
-import 'game/style/snack_bar.dart';
-import 'game/win_game/win_game_screen.dart';
+import 'feature/level_selection/level_selection_screen.dart';
+import 'feature/main_menu/main_menu_screen.dart';
+import 'feature/play_session/play_session_screen.dart';
+import 'feature/player_progress/persistence/local_storage_player_progress_persistence.dart';
+import 'feature/player_progress/persistence/player_progress_persistence.dart';
+import 'feature/player_progress/player_progress.dart';
+import 'feature/settings/persistence/local_storage_settings_persistence.dart';
+import 'feature/settings/persistence/settings_persistence.dart';
+import 'feature/settings/settings.dart';
+import 'feature/settings/settings_screen.dart';
+import 'feature/style/my_transition.dart';
+import 'feature/style/palette.dart';
+import 'feature/style/snack_bar.dart';
+import 'feature/win_game/win_game_screen.dart';
 
 Future<void> main() async {
   // To enable Firebase Crashlytics, uncomment the following lines and
