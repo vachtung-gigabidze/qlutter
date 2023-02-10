@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:qlutter/game/core.dart';
-import 'package:qlutter/game/level_manager.dart';
+import 'package:qlutter/game/core/core.dart';
+import 'package:qlutter/game/core/level_manager.dart';
 
 void main() {
   test('LevelManager Test', () async {
