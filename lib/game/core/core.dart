@@ -4,6 +4,11 @@ abstract class Item {
   Color color;
 
   Item({required this.color});
+
+  int get hashCode => Object.hash(runtimeType, color);
+
+  @override
+  bool operator ==(other) => other is Item && other.color == color;
 }
 
 class Block extends Item {

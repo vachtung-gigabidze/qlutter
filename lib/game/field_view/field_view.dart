@@ -3,25 +3,28 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 // import 'package:provider/provider.dart';
 import 'package:qlutter/game/core/core.dart';
 // import 'package:qlutter/game/core/level_manager.dart';
-import 'package:qlutter/game/core/styles.dart';
+// import 'package:qlutter/game/core/styles.dart';
 // import 'package:qlutter/game/core/ui/alerts/alerts.dart';
 import 'package:qlutter/game/field_view/components/block_item.dart';
+import 'package:qlutter/game/style/palette.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'dart:html';
 
 class FieldView extends StatefulWidget {
-  final Level level;
+  //final Level level;
+  final Field field;
   final Function(bool) onChanged;
   final VoidCallback onWin;
 
   FieldView(
       {super.key,
-      required this.level,
+      required this.field,
       required this.onChanged,
       required this.onWin});
 
@@ -33,7 +36,7 @@ class FieldViewState extends State<FieldView> {
   // int paddingSize = 0;
   late double elementSize;
   late Field field;
-  late Field fieldCopy;
+  //late Field fieldCopy;
   late Size fieldSize;
   late Size maxViewSize;
   // //late Future<Level?> level;
@@ -45,6 +48,7 @@ class FieldViewState extends State<FieldView> {
   List<Widget> holes = [];
   List<Widget> balls = [];
   late bool refresh;
+  Palette? palette;
   // String? currentTheme;
   // String? currentAccentColor;
 
@@ -52,8 +56,9 @@ class FieldViewState extends State<FieldView> {
   void initState() {
     super.initState();
 
-    field = Field(widget.level);
-    fieldCopy = Field.copyField(field);
+    field = widget.field;
+
+    //fieldCopy = Field.copyField(field);
 
     refresh = false;
     // selectedLevel = null;
@@ -216,7 +221,7 @@ class FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_back_outlined,
-                      color: Styles.foregroundColor,
+                      color: palette?.ink, // Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -233,7 +238,7 @@ class FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_forward_outlined,
-                      color: Styles.foregroundColor,
+                      color: palette?.ink, // Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -250,7 +255,7 @@ class FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_downward,
-                      color: Styles.foregroundColor,
+                      color: palette?.ink, // Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -268,7 +273,7 @@ class FieldViewState extends State<FieldView> {
                     },
                     child: Icon(
                       Icons.arrow_upward,
-                      color: Styles.foregroundColor,
+                      color: palette?.ink, // Styles.foregroundColor,
                       size: elementSize,
                     ),
                   ),
@@ -474,6 +479,7 @@ class FieldViewState extends State<FieldView> {
 
   @override
   Widget build(BuildContext context) {
+    palette ??= context.watch<Palette>();
     setSize(context);
     //final level = context.read<LevelManager>().levels![level]
     return

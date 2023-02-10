@@ -4,7 +4,7 @@
 
 import 'dart:async';
 
-import 'package:games_services/games_services.dart' as gs;
+// import 'package:games_services/games_services.dart' as gs;
 import 'package:logging/logging.dart';
 
 import 'score.dart';
@@ -36,12 +36,12 @@ class GamesServicesController {
     }
 
     try {
-      await gs.GamesServices.unlock(
-        achievement: gs.Achievement(
-          androidID: android,
-          iOSID: iOS,
-        ),
-      );
+      // await gs.GamesServices.unlock(
+      //   achievement: gs.Achievement(
+      //     androidID: android,
+      //     iOSID: iOS,
+      //   ),
+      // );
     } catch (e) {
       _log.severe('Cannot award achievement: $e');
     }
@@ -50,12 +50,12 @@ class GamesServicesController {
   /// Signs into the underlying games service.
   Future<void> initialize() async {
     try {
-      await gs.GamesServices.signIn();
-      // The API is unclear so we're checking to be sure. The above call
-      // returns a String, not a boolean, and there's no documentation
-      // as to whether every non-error result means we're safely signed in.
-      final signedIn = await gs.GamesServices.isSignedIn;
-      _signedInCompleter.complete(signedIn);
+      // await gs.GamesServices.signIn();
+      // // The API is unclear so we're checking to be sure. The above call
+      // // returns a String, not a boolean, and there's no documentation
+      // // as to whether every non-error result means we're safely signed in.
+      // final signedIn = await gs.GamesServices.isSignedIn;
+      // _signedInCompleter.complete(signedIn);
     } catch (e) {
       _log.severe('Cannot log into GamesServices: $e');
       _signedInCompleter.complete(false);
@@ -70,7 +70,7 @@ class GamesServicesController {
     }
 
     try {
-      await gs.GamesServices.showAchievements();
+      // await gs.GamesServices.showAchievements();
     } catch (e) {
       _log.severe('Cannot show achievements: $e');
     }
@@ -84,11 +84,11 @@ class GamesServicesController {
     }
 
     try {
-      await gs.GamesServices.showLeaderboards(
-        // TODO: When ready, change both these leaderboard IDs.
-        iOSLeaderboardID: "some_id_from_app_store",
-        androidLeaderboardID: "sOmE_iD_fRoM_gPlAy",
-      );
+      // await gs.GamesServices.showLeaderboards(
+      //   // TODO: When ready, change both these leaderboard IDs.
+      //   iOSLeaderboardID: "some_id_from_app_store",
+      //   androidLeaderboardID: "sOmE_iD_fRoM_gPlAy",
+      // );
     } catch (e) {
       _log.severe('Cannot show leaderboard: $e');
     }
@@ -104,14 +104,14 @@ class GamesServicesController {
     _log.info('Submitting $score to leaderboard.');
 
     try {
-      await gs.GamesServices.submitScore(
-        score: gs.Score(
-          // TODO: When ready, change these leaderboard IDs.
-          iOSLeaderboardID: 'some_id_from_app_store',
-          androidLeaderboardID: 'sOmE_iD_fRoM_gPlAy',
-          value: score.score,
-        ),
-      );
+      // await gs.GamesServices.submitScore(
+      //   score: gs.Score(
+      //     // TODO: When ready, change these leaderboard IDs.
+      //     iOSLeaderboardID: 'some_id_from_app_store',
+      //     androidLeaderboardID: 'sOmE_iD_fRoM_gPlAy',
+      //     value: score.score,
+      //   ),
+      // );
     } catch (e) {
       _log.severe('Cannot submit leaderboard score: $e');
     }

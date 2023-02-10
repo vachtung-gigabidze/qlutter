@@ -40,13 +40,13 @@ import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/game/core/level_manager.dart';
 
-import 'game/ads/ads_controller.dart';
+// import 'game/ads/ads_controller.dart';
 import 'game/app_lifecycle/app_lifecycle.dart';
 import 'game/audio/audio_controller.dart';
 // import 'game/crashlytics/crashlytics.dart';
 import 'game/games_services/games_services.dart';
 import 'game/games_services/score.dart';
-import 'game/in_app_purchase/in_app_purchase.dart';
+// import 'game/in_app_purchase/in_app_purchase.dart';
 import 'game/level_selection/level_selection_screen.dart';
 import 'game/main_menu/main_menu_screen.dart';
 import 'game/play_session/play_session_screen.dart';
@@ -108,7 +108,7 @@ void guardedMain() {
   // TODO: When ready, uncomment the following lines to enable integrations.
   //       Read the README for more info on each integration.
 
-  AdsController? adsController;
+  // AdsController? adsController;
   // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
   //   /// Prepare the google_mobile_ads plugin so that the first ad loads
   //   /// faster. This can be done later or with a delay if startup
@@ -124,7 +124,7 @@ void guardedMain() {
   //     ..initialize();
   // }
 
-  InAppPurchaseController? inAppPurchaseController;
+  // InAppPurchaseController? inAppPurchaseController;
   // if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
   //   inAppPurchaseController = InAppPurchaseController(InAppPurchase.instance)
   //     // Subscribing to [InAppPurchase.instance.purchaseStream] as soon
@@ -140,8 +140,8 @@ void guardedMain() {
     Qlutter(
       settingsPersistence: LocalStorageSettingsPersistence(),
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
-      inAppPurchaseController: inAppPurchaseController,
-      adsController: adsController,
+      // inAppPurchaseController: inAppPurchaseController,
+      // adsController: adsController,
       gamesServicesController: gamesServicesController,
       levelManager: levelManager,
     ),
@@ -211,17 +211,17 @@ class Qlutter extends StatelessWidget {
 
   final GamesServicesController? gamesServicesController;
 
-  final InAppPurchaseController? inAppPurchaseController;
+  // final InAppPurchaseController? inAppPurchaseController;
 
-  final AdsController? adsController;
+  // final AdsController? adsController;
 
   final LevelManager levelManager;
 
   const Qlutter({
     required this.playerProgressPersistence,
     required this.settingsPersistence,
-    required this.inAppPurchaseController,
-    required this.adsController,
+    // required this.inAppPurchaseController,
+    // required this.adsController,
     required this.gamesServicesController,
     required this.levelManager,
     super.key,
@@ -245,9 +245,9 @@ class Qlutter extends StatelessWidget {
           ),
           Provider<GamesServicesController?>.value(
               value: gamesServicesController),
-          Provider<AdsController?>.value(value: adsController),
-          ChangeNotifierProvider<InAppPurchaseController?>.value(
-              value: inAppPurchaseController),
+          // Provider<AdsController?>.value(value: adsController),
+          // ChangeNotifierProvider<InAppPurchaseController?>.value(
+          //     value: inAppPurchaseController),
           Provider<SettingsController>(
             lazy: false,
             create: (context) => SettingsController(

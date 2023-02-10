@@ -17,14 +17,14 @@ dependencies:
   url_launcher: ^6.1.8
   go_router: ^6.0.4
   audioplayers: ^3.0.1
-  games_services: ^3.0.0
+  # games_services: ^3.0.0
   cupertino_icons: ^1.0.2
 
   logging: ^1.1.0
   provider: ^6.0.2
 
-  google_mobile_ads: ^2.0.1  # Ads
-  in_app_purchase: ^3.0.1  # In-app purchases
+  # google_mobile_ads: ^2.0.1  # Ads
+  # in_app_purchase: ^3.0.1  # In-app purchases
 
 dev_dependencies:
   flutter_test:

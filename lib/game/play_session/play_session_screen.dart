@@ -13,13 +13,13 @@ import 'package:qlutter/game/field_view/field_view.dart';
 import 'package:qlutter/game/core/level_manager.dart';
 // import 'package:qlutter/game/core/core.dart';
 
-import '../ads/ads_controller.dart';
+// import '../ads/ads_controller.dart';
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
 import '../game_internals/level_state.dart';
 import '../games_services/games_services.dart';
 import '../games_services/score.dart';
-import '../in_app_purchase/in_app_purchase.dart';
+// import '../in_app_purchase/in_app_purchase.dart';
 // import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 import '../style/confetti.dart';
@@ -45,6 +45,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
   late DateTime _startOfPlay;
   late Level level;
+  late Field field;
+  late Field fieldCopy;
 
   @override
   Widget build(BuildContext context) {
@@ -71,20 +73,39 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkResponse(
-                        onTap: () => GoRouter.of(context).push('/settings'),
-                        child: Image.asset(
-                          'assets/images/settings.png',
-                          semanticLabel: 'Settings',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InkResponse(
+                            onTap: () => setState(() {
+                              field = Field.copyField(fieldCopy);
+                            }),
+                            child: Image.asset(
+                              'assets/images/restart.png',
+                              semanticLabel: 'Restart',
+                              height: 50,
+                            ),
+                          ),
                         ),
-                      ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkResponse(
+                            onTap: () => GoRouter.of(context).push('/settings'),
+                            child: Image.asset(
+                              'assets/images/settings.png',
+                              semanticLabel: 'Settings',
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const Spacer(),
                     Consumer<LevelState>(
                       builder: (context, levelState, child) => FieldView(
-                        level: level,
+                        key: ValueKey<List<List<Item?>>>(field.level.field),
+                        field: field,
                         onChanged: (value) => levelState.setProgress(value),
                         onWin: () => levelState.evaluate(),
                       ),
@@ -137,16 +158,18 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     super.initState();
 
     level = context.read<LevelManager>().levels![widget.levelNumber]!;
+    field = Field(level);
+    fieldCopy = Field.copyField(field);
 
     _startOfPlay = DateTime.now();
 
     // Preload ad for the win screen.
-    final adsRemoved =
-        context.read<InAppPurchaseController?>()?.adRemoval.active ?? false;
-    if (!adsRemoved) {
-      final adsController = context.read<AdsController?>();
-      adsController?.preloadAd();
-    }
+    // final adsRemoved =
+    //     context.read<InAppPurchaseController?>()?.adRemoval.active ?? false;
+    // if (!adsRemoved) {
+    //   final adsController = context.read<AdsController?>();
+    //   adsController?.preloadAd();
+    // }
   }
 
   Future<void> _playerWon() async {
