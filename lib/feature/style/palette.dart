@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 /// A palette of colors to be used in the game.
 ///
@@ -22,6 +23,8 @@ import 'package:flutter/material.dart';
 /// as `static const`. But this way the palette is more malleable:
 /// we could allow players to customize colors, for example,
 /// or even get the colors from the network.
+
+@Injectable()
 class Palette {
   Color get pen => const Color(0xff1d75fb);
   Color get darkPen => const Color(0xFF0050bc);

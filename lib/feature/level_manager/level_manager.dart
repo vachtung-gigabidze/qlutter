@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:injectable/injectable.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 
+@Singleton()
 class LevelManager {
   static const int emptyCell = 0;
   static const int blockCell = 1;
