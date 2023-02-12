@@ -1,10 +1,8 @@
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:qlutter/app/ui/app_loader.dart';
-// import 'package:qlutter/constants.dart';
-// import 'package:qlutter/feature/internet/domain/internet_state/internet_cubit.dart';
-// import 'package:qlutter/feature/recipe_list/ui/components/recipe_list_builder.dart';
-// import 'package:qlutter/feature/recipe_list/ui/recipe_list_screen.dart';
+// import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
+// // import 'package:qlutter/constants.dart';
 
 // class RootScreen extends StatelessWidget {
 //   const RootScreen({super.key});

@@ -163,12 +163,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(
                 height: 29,
               ),
-              const Text('Подключить холодильник'),
-              // ignore: prefer_const_constructors
-              SizedBox(
-                  height: 200,
-                  // ignore: prefer_const_constructors
-                  child: AndroidView(viewType: "bluetoothview")),
             ],
           ),
         ),

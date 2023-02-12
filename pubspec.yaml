@@ -32,6 +32,8 @@ dependencies:
   get_it: ^7.2.0
   pretty_dio_logger: ^1.1.1
 
+  connectivity_plus: ^3.0.3
+
   # google_mobile_ads: ^2.0.1  # Ads
   # in_app_purchase: ^3.0.1  # In-app purchases
 

@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:qlutter/feature/auth/data/dto/user_dto.dart';
 import 'package:qlutter/feature/auth/domain/auth_repository.dart';
 import 'package:qlutter/feature/auth/domain/entities/user_entity/user_entity.dart';
 import 'package:qlutter/app/domain/app_api.dart';
 // import 'package:http/http.dart';
 
+@Injectable(as: AuthRepository)
 // @prod
 class NetworkAuthRepository implements AuthRepository {
   final AppApi api;
