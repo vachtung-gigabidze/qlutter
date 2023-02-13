@@ -135,4 +135,10 @@ class DioAppApi implements AppApi {
       rethrow;
     }
   }
+
+  @override
+  Future getLevel() {
+    // TODO: implement getLevel
+    throw UnimplementedError();
+  }
 }
