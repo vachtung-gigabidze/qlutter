@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
+import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
+import 'package:qlutter/feature/style/palette.dart';
 
 @Singleton()
 class LevelManager {
@@ -62,6 +64,7 @@ class LevelManager {
   }
 
   Item? convertLegendToItem(int itemLegend, int id) {
+    final pallete = locator.get<Palette>();
     switch (itemLegend) {
       case emptyCell:
         return null;
@@ -70,40 +73,40 @@ class LevelManager {
         return Block();
 
       case ballCall1:
-        return Ball(Colors.green, id);
+        return Ball(pallete.cellColor1, id);
 
       case ballCell2:
-        return Ball(Colors.red, id);
+        return Ball(pallete.cellColor2, id);
 
       case ballCell3:
-        return Ball(Colors.blue, id);
+        return Ball(pallete.cellColor3, id);
 
       case ballCell4:
-        return Ball(Colors.yellow, id);
+        return Ball(pallete.cellColor4, id);
 
       case ballCell5:
-        return Ball(Colors.purple, id);
+        return Ball(pallete.cellColor5, id);
 
       case ballCell6:
-        return Ball(Colors.cyan, id);
+        return Ball(pallete.cellColor6, id);
 
       case holeCell1:
-        return Hole(Colors.green);
+        return Hole(pallete.cellColor1);
 
       case holeCell2:
-        return Hole(Colors.red);
+        return Hole(pallete.cellColor2);
 
       case holeCell3:
-        return Hole(Colors.blue);
+        return Hole(pallete.cellColor3);
 
       case holeCell4:
-        return Hole(Colors.yellow);
+        return Hole(pallete.cellColor4);
 
       case holeCell5:
-        return Hole(Colors.purple);
+        return Hole(pallete.cellColor5);
 
       case holeCell6:
-        return Hole(Colors.cyan);
+        return Hole(pallete.cellColor6);
     }
 
     return null;

@@ -28,5 +28,7 @@ abstract class AppApi {
 
   Future<dynamic> request(String path);
 
+  Future<dynamic> getLevel();
+
   Future<dynamic> fetch(RequestOptions requestOptions);
 }

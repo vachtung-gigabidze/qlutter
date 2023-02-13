@@ -24,7 +24,7 @@ import 'package:injectable/injectable.dart';
 /// we could allow players to customize colors, for example,
 /// or even get the colors from the network.
 
-@Injectable()
+@Singleton()
 class Palette {
   Color get pen => const Color(0xff1d75fb);
   Color get darkPen => const Color(0xFF0050bc);
@@ -38,4 +38,20 @@ class Palette {
   Color get background4 => const Color(0xffffd7ff);
   Color get backgroundSettings => const Color(0xffbfc8e3);
   Color get trueWhite => const Color(0xffffffff);
+
+  Color get blockColor => Colors.grey;
+  Color get cellColor1 => Colors.green;
+  Color get cellColor2 => Colors.red;
+  Color get cellColor3 => Colors.blue;
+  Color get cellColor4 => Colors.yellow;
+  Color get cellColor5 => Colors.purple;
+  Color get cellColor6 => Colors.cyan;
+  /*
+  Color get cellColor1 => const Color(0xfff5bfd2);
+  Color get cellColor2 => const Color(0xffa1cdce);
+  Color get cellColor3 => const Color(0xffe5db9c);
+  Color get cellColor4 => const Color(0xffbeb4c5);
+  Color get cellColor5 => const Color(0xffe6a57e);
+  Color get cellColor6 => const Color(0xff218b82);
+  */
 }

@@ -234,30 +234,32 @@ class _GlobalProviders extends StatelessWidget {
   }
 }
 
-Future<void> main() async {
-  guardedMain();
-}
+// Future<void> main() async {
+//   guardedMain();
+// }
 
-void guardedMain() {
-  if (kReleaseMode) {
-    Logger.root.level = Level.WARNING;
-  }
-  Logger.root.onRecord.listen((record) {
-    debugPrint('${record.level.name}: ${record.time}: '
-        '${record.loggerName}: '
-        '${record.message}');
-  });
+// void guardedMain() {
+//   if (kReleaseMode) {
+//     Logger.root.level = Level.WARNING;
+//   }
+//   Logger.root.onRecord.listen((record) {
+//     debugPrint('${record.level.name}: ${record.time}: '
+//         '${record.loggerName}: '
+//         '${record.message}');
+//   });
 
-  WidgetsFlutterBinding.ensureInitialized();
+//   WidgetsFlutterBinding.ensureInitialized();
 
-  _log.info('Going full screen');
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.edgeToEdge,
-  );
+//   Logger _log = Logger('main.dart');
 
-  GamesServicesController? gamesServicesController;
+//   _log.info('Going full screen');
+//   SystemChrome.setEnabledSystemUIMode(
+//     SystemUiMode.edgeToEdge,
+//   );
 
-  LevelManager? levelManager = LevelManager()..readLevels();
+  //GamesServicesController? gamesServicesController;
+
+  //LevelManager? levelManager = LevelManager()..readLevels();
 
   // runApp(
   //   Qlutter(
@@ -267,9 +269,8 @@ void guardedMain() {
   //     levelManager: levelManager,
   //   ),
   // );
-}
+// }
 
-Logger _log = Logger('main.dart');
 
 // class Qlutter extends StatelessWidget {
   

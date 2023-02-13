@@ -6,7 +6,6 @@ import 'package:injectable/injectable.dart';
 // import 'package:qlutter/game/core/domain/error_entity/error_entity.dart';
 import 'package:qlutter/feature/auth/domain/auth_repository.dart';
 import 'package:qlutter/feature/auth/domain/entities/user_entity/user_entity.dart';
-import 'package:qlutter/feature/auth/domain/auth_repository.dart';
 
 part 'auth_state.dart';
 part 'auth_cubit.freezed.dart';
