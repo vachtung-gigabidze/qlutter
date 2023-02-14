@@ -3,22 +3,23 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'level_dto.g.dart';
 
 @JsonSerializable()
-class Item {
-  Item({required this.code});
+class ItemDto {
+  ItemDto({required this.code});
   int? code;
 
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+  factory ItemDto.fromJson(Map<String, dynamic> json) =>
+      _$ItemDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
+  Map<String, dynamic> toJson() => _$ItemDtoToJson(this);
 }
 
 @JsonSerializable()
-class Size {
-  Size(this.h, this.w);
+class SizeDto {
+  SizeDto(this.h, this.w);
   final int h;
   final int w;
 
-  factory Size.fromJson(Map<String, dynamic> json) => _$SizeFromJson(json);
+  factory SizeDto.fromJson(Map<String, dynamic> json) => _$SizeFromJson(json);
 
   Map<String, dynamic> toJson() => _$SizeToJson(this);
 }
@@ -28,8 +29,8 @@ class LevelDto {
   LevelDto({required this.field, required this.levelId});
 
   int levelId;
-  late List<List<Item?>> field;
-  late Size size;
+  late List<List<ItemDto?>> field;
+  late SizeDto size;
 
   factory LevelDto.fromJson(Map<String, dynamic> json) =>
       _$LevelDtoFromJson(json);

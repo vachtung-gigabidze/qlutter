@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 
-abstract class Item {
+class Item {
   Color color;
-
   Item({required this.color});
 
   int get hashCode => Object.hash(runtimeType, color);
@@ -25,35 +25,35 @@ class Hole extends Item {
   Hole(Color color) : super(color: color);
 }
 
-class Level {
-  int levelId;
-  late List<List<Item?>> field;
-  late int ballsCount;
-  late Map<Color, int> colorsBall;
-  late Size size;
+// class Level {
+//   int levelId;
+//   late List<List<Item?>> field;
+//   late int ballsCount;
+//   late Map<Color, int> colorsBall;
+//   late Size size;
 
-  Level(this.field, this.levelId) {
-    ballsCount = _countBallOnLevel();
-  }
+//   Level(this.field, this.levelId) {
+//     ballsCount = _countBallOnLevel();
+//   }
 
-  int elements() => (size.width * size.height).round();
+//   int elements() => (size.width * size.height).round();
 
-  int _countBallOnLevel() {
-    colorsBall = <Color, int>{};
-    ballsCount = field.fold(
-        0,
-        (int sum, List<Item?> el) =>
-            sum +
-            el.fold(0, (int pre, Item? item) {
-              if (item != null && item is Ball) {
-                colorsBall[item.color] = (colorsBall[item.color] ?? 0) + 1;
-              }
-              return (item is Ball) ? pre + 1 : pre;
-            }));
+//   int _countBallOnLevel() {
+//     colorsBall = <Color, int>{};
+//     ballsCount = field.fold(
+//         0,
+//         (int sum, List<Item?> el) =>
+//             sum +
+//             el.fold(0, (int pre, Item? item) {
+//               if (item != null && item is Ball) {
+//                 colorsBall[item.color] = (colorsBall[item.color] ?? 0) + 1;
+//               }
+//               return (item is Ball) ? pre + 1 : pre;
+//             }));
 
-    return ballsCount;
-  }
-}
+//     return ballsCount;
+//   }
+// }
 
 enum Direction { left, right, up, down, nowhere }
 
@@ -68,7 +68,7 @@ class Field {
     start = null;
     end = null;
     moveCount = 0;
-    ballsCount = level._countBallOnLevel();
+    ballsCount = level.ballsCount;
   }
 
   static Field copyField(Field field) {
@@ -80,11 +80,7 @@ class Field {
 
   Coordinates moveRight(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord + 1] ==
-              null /*||
-          level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord][xCoord + 1]?.color*/
-          ) {
+      while (level.field[yCoord][xCoord + 1] == null) {
         level.field[yCoord][xCoord + 1] = level.field[yCoord][xCoord];
 
         level.field[yCoord][xCoord++] = null;
@@ -98,11 +94,7 @@ class Field {
 
   Coordinates moveLeft(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord][xCoord - 1] ==
-              null /*||
-          level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord][xCoord - 1]?.color*/
-          ) {
+      while (level.field[yCoord][xCoord - 1] == null) {
         level.field[yCoord][xCoord - 1] = level.field[yCoord][xCoord];
 
         level.field[yCoord][xCoord--] = null;
@@ -116,11 +108,7 @@ class Field {
 
   Coordinates moveUp(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord - 1][xCoord] ==
-              null /* ||
-          level.field[yCoord][xCoord]?.color ==
-              level.field[yCoord - 1][xCoord]?.color*/
-          ) {
+      while (level.field[yCoord - 1][xCoord] == null) {
         level.field[yCoord - 1][xCoord] = level.field[yCoord][xCoord];
 
         level.field[yCoord--][xCoord] = null;
@@ -134,11 +122,7 @@ class Field {
 
   Coordinates moveDown(int xCoord, int yCoord) {
     try {
-      while (level.field[yCoord + 1][xCoord] ==
-              null /*||
-          level.field[yCoord + 1][xCoord]?.color ==
-              level.field[yCoord][xCoord]?.color*/
-          ) {
+      while (level.field[yCoord + 1][xCoord] == null) {
         level.field[yCoord + 1][xCoord] = level.field[yCoord][xCoord];
 
         level.field[yCoord++][xCoord] = null;
@@ -235,14 +219,6 @@ class Field {
             Coordinates(coordinates.horizontal - 1, coordinates.vertical)));
 
     return isAccepted;
-
-    // if (!isAccepted) {
-    //   return false;
-    // }
-
-    // catchBall();
-
-    // return checkWin();
   }
 
   catchBall() {
@@ -267,15 +243,9 @@ class Field {
   }
 
   bool isLastColorBall(Color color) {
-    // assert(level.colorsBall[color] == 0, "Color Ball map error");
     level.colorsBall.update(color, (value) => value -= 1);
     return (level.colorsBall[color] == 0);
   }
-
-  // bool gameStep(Coordinates coordinates, Direction direction) {
-  //   Coordinates? newCoordinates = moveItem(coordinates, direction);
-  //   return newCoordinates != null && acceptHole(newCoordinates);
-  // }
 }
 
 class Coordinates {

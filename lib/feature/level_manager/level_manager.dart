@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
+import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/style/palette.dart';
 
 @Singleton()

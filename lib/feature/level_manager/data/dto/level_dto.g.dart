@@ -6,20 +6,20 @@ part of 'level_dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Item _$ItemFromJson(Map<String, dynamic> json) => Item(
+ItemDto _$ItemDtoFromJson(Map<String, dynamic> json) => ItemDto(
       code: json['code'] as int?,
     );
 
-Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+Map<String, dynamic> _$ItemDtoToJson(ItemDto instance) => <String, dynamic>{
       'code': instance.code,
     };
 
-Size _$SizeFromJson(Map<String, dynamic> json) => Size(
+SizeDto _$SizeFromJson(Map<String, dynamic> json) => SizeDto(
       json['h'] as int,
       json['w'] as int,
     );
 
-Map<String, dynamic> _$SizeToJson(Size instance) => <String, dynamic>{
+Map<String, dynamic> _$SizeToJson(SizeDto instance) => <String, dynamic>{
       'h': instance.h,
       'w': instance.w,
     };
@@ -27,12 +27,13 @@ Map<String, dynamic> _$SizeToJson(Size instance) => <String, dynamic>{
 LevelDto _$LevelDtoFromJson(Map<String, dynamic> json) => LevelDto(
       field: (json['field'] as List<dynamic>)
           .map((e) => (e as List<dynamic>)
-              .map((e) =>
-                  e == null ? null : Item.fromJson(e as Map<String, dynamic>))
+              .map((e) => e == null
+                  ? null
+                  : ItemDto.fromJson(e as Map<String, dynamic>))
               .toList())
           .toList(),
       levelId: json['levelId'] as int,
-    )..size = Size.fromJson(json['size'] as Map<String, dynamic>);
+    )..size = SizeDto.fromJson(json['size'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$LevelDtoToJson(LevelDto instance) => <String, dynamic>{
       'levelId': instance.levelId,

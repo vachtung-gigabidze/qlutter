@@ -1,7 +1,3 @@
-// Copyright 2022, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -10,6 +6,7 @@ import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
+import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 // import 'package:qlutter/game/core/core.dart';
 
