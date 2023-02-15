@@ -87,6 +87,16 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                           ),
                         ),
                         Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Level: ${level.levelId}',
+                              style: TextStyle(
+                                fontFamily: 'Permanent Marker',
+                                fontSize: 26,
+                                color: palette.ink,
+                              ),
+                            )),
+                        Align(
                           alignment: Alignment.centerRight,
                           child: InkResponse(
                             onTap: () => GoRouter.of(context).push('/settings'),

@@ -284,10 +284,10 @@ class FieldViewState extends State<FieldView> {
       height = widget.parentSize!.height;
     } else {
       width = MediaQuery.of(context).size.width;
-      height = MediaQuery.of(context).size.height;
+      height = MediaQuery.of(context).size.height - 100;
     }
     double m = min<double>(width, height);
-    m *= .9;
+    m *= .95;
     double i = max<double>(field.level.size.height, field.level.size.width);
 
     elementSize = m / i;
