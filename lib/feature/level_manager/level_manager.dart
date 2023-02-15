@@ -2,7 +2,9 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
+import 'package:qlutter/feature/level_manager/data/dto/level_dto.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/style/palette.dart';
 
 @Singleton()
@@ -35,7 +37,11 @@ class LevelManager {
   }
 
   readLevels() async {
-    levels = await openLevels();
+    LevelRepository repo = locator.get<LevelRepository>();
+    List<Level> levelList = await repo.getLevels();
+    levels = levelList.asMap();
+    print(levels![10]);
+    //levels = await openLevels();
   }
 
   Future<Field?> getFiledAsync(int levelIndex) async {
@@ -63,7 +69,7 @@ class LevelManager {
     return newField;
   }
 
-  Item? convertLegendToItem(int itemLegend, int id) {
+  static Item? convertLegendToItem(int itemLegend, int id) {
     final pallete = locator.get<Palette>();
     switch (itemLegend) {
       case emptyCell:

@@ -137,8 +137,11 @@ class DioAppApi implements AppApi {
   }
 
   @override
-  Future getLevel() {
-    // TODO: implement getLevel
-    throw UnimplementedError();
+  Future<Response> getLevel() {
+    try {
+      return dio.get("/levels");
+    } catch (_) {
+      rethrow;
+    }
   }
 }

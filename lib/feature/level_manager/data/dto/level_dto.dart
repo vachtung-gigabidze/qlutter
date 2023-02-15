@@ -1,4 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:qlutter/feature/game_core/game_core.dart';
+import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:flutter/services.dart';
 
 part 'level_dto.g.dart';
 
@@ -11,6 +15,10 @@ class ItemDto {
       _$ItemDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemDtoToJson(this);
+
+  Item? toItem(int id) {
+    return LevelManager.convertLegendToItem(code!, id);
+  }
 }
 
 @JsonSerializable()
@@ -36,4 +44,12 @@ class LevelDto {
       _$LevelDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$LevelDtoToJson(this);
+
+  Level toLevel() {
+    int i = 0;
+    return Level(
+        field.map((r) => r.map((e) => e!.toItem(i++)).toList()).toList(),
+        levelId)
+      ..size = Size(size.h + .0, size.w + .0);
+  }
 }

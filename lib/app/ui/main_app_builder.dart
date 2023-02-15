@@ -140,6 +140,7 @@ class MainAppBuilder implements AppBuilder {
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
       gamesServicesController: gamesServicesController,
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'Qlutter',
         theme: ThemeData.from(
           colorScheme: ColorScheme.fromSeed(
