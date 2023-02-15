@@ -5,6 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/feature/field_view/field_view.dart';
+import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 
 import '../audio/audio_controller.dart';
@@ -53,9 +55,21 @@ class LevelSelectionScreen extends StatelessWidget {
                             .go('/play/session/${level.levelId}');
                       },
                       leading: Text(level.levelId.toString()),
-                      title: Text(level.levelId == 0
-                          ? 'Tutorial'
-                          : 'Level #${level.levelId}'),
+                      title: SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: FieldView(
+                          backgroundColor: palette.backgroundLevelSelection,
+                          parentSize: const Size(50, 50),
+                          key: ValueKey<List<List<Item?>>>(level.field),
+                          field: Field(level),
+                          onChanged: (p0) {},
+                          onWin: () {},
+                        ),
+                      ),
+                      // title: Text(level.levelId == 0
+                      //     ? 'Tutorial'
+                      //     : 'Level #${level.levelId}'),
                     )
                 ],
               ),
@@ -66,7 +80,14 @@ class LevelSelectionScreen extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).go('/');
           },
-          child: const Text('Back'),
+          child: Text(
+            'Back',
+            style: TextStyle(
+              fontFamily: 'Permanent Marker',
+              fontSize: 20,
+              color: palette.ink,
+            ),
+          ),
         ),
       ),
     );

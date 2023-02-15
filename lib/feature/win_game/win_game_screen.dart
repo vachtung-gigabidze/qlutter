@@ -63,9 +63,17 @@ class WinGameScreen extends StatelessWidget {
         ),
         rectangularMenuArea: ElevatedButton(
           onPressed: () {
-            GoRouter.of(context).go('/play');
+            // GoRouter.of(context).go('/play');
+            GoRouter.of(context).go('/play/session/${score.level + 1}');
           },
-          child: const Text('Continue'),
+          child: Text(
+            'Continue',
+            style: TextStyle(
+              fontFamily: 'Permanent Marker',
+              fontSize: 20,
+              color: palette.ink,
+            ),
+          ),
         ),
       ),
     );

@@ -49,7 +49,14 @@ class MainMenuScreen extends StatelessWidget {
                 audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/play');
               },
-              child: const Text('Play'),
+              child: Text(
+                'Play',
+                style: TextStyle(
+                  fontFamily: 'Permanent Marker',
+                  fontSize: 26,
+                  color: palette.ink,
+                ),
+              ),
             ),
             _gap,
             if (gamesServicesController != null) ...[
@@ -72,7 +79,14 @@ class MainMenuScreen extends StatelessWidget {
             ],
             ElevatedButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
-              child: const Text('Settings'),
+              child: Text(
+                'Settings',
+                style: TextStyle(
+                  fontFamily: 'Permanent Marker',
+                  fontSize: 26,
+                  color: palette.ink,
+                ),
+              ),
             ),
             _gap,
             Padding(
@@ -88,8 +102,8 @@ class MainMenuScreen extends StatelessWidget {
               ),
             ),
             _gap,
-            const Text('Music by Mr Smith'),
-            _gap,
+            // const Text('Music by Mr Smith'),
+            // _gap,
           ],
         ),
       ),

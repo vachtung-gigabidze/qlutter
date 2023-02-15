@@ -149,6 +149,8 @@ class MainAppBuilder implements AppBuilder {
           ),
           textTheme: TextTheme(
             bodyMedium: TextStyle(
+              fontFamily: 'Permanent Marker',
+              fontSize: 26,
               color: palette.ink,
             ),
           ),

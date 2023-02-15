@@ -21,12 +21,16 @@ class FieldView extends StatefulWidget {
   final Field field;
   final Function(bool) onChanged;
   final VoidCallback onWin;
+  final Size? parentSize;
+  final Color backgroundColor;
 
   FieldView(
       {super.key,
       required this.field,
       required this.onChanged,
-      required this.onWin});
+      required this.onWin,
+      this.parentSize,
+      this.backgroundColor = Colors.white});
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -56,7 +60,9 @@ class FieldViewState extends State<FieldView> {
 
     refresh = false;
     elementSize = 45;
+
     maxViewSize = const Size(0, 0);
+
     fieldSize = Size(elementSize, elementSize);
   }
 
@@ -271,10 +277,17 @@ class FieldViewState extends State<FieldView> {
   }
 
   void setSize(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = 0;
+    double height = 0;
+    if (widget.parentSize != null) {
+      width = widget.parentSize!.width;
+      height = widget.parentSize!.height;
+    } else {
+      width = MediaQuery.of(context).size.width;
+      height = MediaQuery.of(context).size.height;
+    }
     double m = min<double>(width, height);
-    m *= .8;
+    m *= .9;
     double i = max<double>(field.level.size.height, field.level.size.width);
 
     elementSize = m / i;
@@ -288,7 +301,7 @@ class FieldViewState extends State<FieldView> {
     palette ??= context.watch<Palette>();
     setSize(context);
     return Container(
-      color: Colors.white,
+      color: widget.backgroundColor,
       height: maxViewSize.height,
       width: maxViewSize.width,
       child: Stack(
