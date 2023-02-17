@@ -54,7 +54,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => LevelState(
-            goal: false, //widget.level.difficulty,
+            //goal: 0, //widget.level.difficulty,
             onWin: _playerWon,
           ),
         ),
@@ -115,6 +115,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         field: field,
                         onChanged: (value) => levelState.setProgress(value),
                         onWin: () => levelState.evaluate(),
+                        onRefresh: () {
+                          field = Field.copyField(fieldCopy);
+                        },
                       ),
                     ),
                     // Text('Drag the slider to %'
@@ -191,7 +194,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
     final score = Score(
       widget.levelNumber,
-      1, //widget.level.difficulty,
+      0,
       DateTime.now().difference(_startOfPlay),
     );
 
@@ -209,19 +212,19 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     final audioController = context.read<AudioController>();
     audioController.playSfx(SfxType.congrats);
 
-    final gamesServicesController = context.read<GamesServicesController?>();
-    if (gamesServicesController != null) {
-      // Award achievement.
-      // if (widget.level.awardsAchievement) {
-      //   await gamesServicesController.awardAchievement(
-      //     android: widget.level.achievementIdAndroid!,
-      //     iOS: widget.level.achievementIdIOS!,
-      //   );
-      // }
+    // final gamesServicesController = context.read<GamesServicesController?>();
+    // if (gamesServicesController != null) {
+    //   // Award achievement.
+    //   // if (widget.level.awardsAchievement) {
+    //   //   await gamesServicesController.awardAchievement(
+    //   //     android: widget.level.achievementIdAndroid!,
+    //   //     iOS: widget.level.achievementIdIOS!,
+    //   //   );
+    //   // }
 
-      // Send score to leaderboard.
-      await gamesServicesController.submitLeaderboardScore(score);
-    }
+    //   // Send score to leaderboard.
+    //   await gamesServicesController.submitLeaderboardScore(score);
+    // }
 
     /// Give the player some time to see the celebration animation.
     await Future<void>.delayed(_celebrationDuration);

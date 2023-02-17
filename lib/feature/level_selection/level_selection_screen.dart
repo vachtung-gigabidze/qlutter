@@ -64,6 +64,7 @@ class LevelSelectionScreen extends StatelessWidget {
                           field: Field(level),
                           onChanged: (p0) {},
                           onWin: () {},
+                          onRefresh: () {},
                         ),
                       ),
                       // title: Text(level.levelId == 0

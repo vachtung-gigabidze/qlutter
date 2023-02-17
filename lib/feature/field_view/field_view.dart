@@ -19,7 +19,8 @@ import 'package:qlutter/feature/style/palette.dart';
 class FieldView extends StatefulWidget {
   //final Level level;
   final Field field;
-  final Function(bool) onChanged;
+  final VoidCallback onRefresh;
+  final Function(int) onChanged;
   final VoidCallback onWin;
   final Size? parentSize;
   final Color backgroundColor;
@@ -30,7 +31,8 @@ class FieldView extends StatefulWidget {
       required this.onChanged,
       required this.onWin,
       this.parentSize,
-      this.backgroundColor = Colors.white});
+      this.backgroundColor = Colors.white,
+      required this.onRefresh});
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -76,12 +78,12 @@ class FieldViewState extends State<FieldView> {
       onEnd: () {
         if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
           if (field.checkWin()) {
-            widget.onChanged(true);
+            widget.onChanged(field.ballsCount);
             widget.onWin();
-          } else {
-            widget.onChanged(false);
+            widget.onRefresh();
           }
         }
+        // widget.onChanged(steps);
       },
       child: GestureDetector(
         onPanUpdate: (details) {
@@ -98,16 +100,28 @@ class FieldViewState extends State<FieldView> {
           selected: false,
           onPanUpdate: (DragUpdateDetails details) {
             if (!kIsWeb) {
-              if (details.delta.dx > 0) {
+              if (details.delta.dx < 0) {
                 setState(() {
                   field.moveItem(
                       Coordinates(t.toInt(), r.toInt()), Direction.right);
                 });
               }
-              if (details.delta.dx < 0) {
+              if (details.delta.dx > 0) {
                 setState(() {
                   field.moveItem(
                       Coordinates(t.toInt(), r.toInt()), Direction.left);
+                });
+              }
+              if (details.delta.dy < 0) {
+                setState(() {
+                  field.moveItem(
+                      Coordinates(t.toInt(), r.toInt()), Direction.up);
+                });
+              }
+              if (details.delta.dy > 0) {
+                setState(() {
+                  field.moveItem(
+                      Coordinates(t.toInt(), r.toInt()), Direction.down);
                 });
               }
             }
@@ -165,6 +179,7 @@ class FieldViewState extends State<FieldView> {
                     onTap: () {
                       setState(() {
                         field.moveItem(c, Direction.right);
+                        widget.onChanged(field.ballsCount);
                         selectedItem = null;
                       });
                     },
@@ -182,6 +197,7 @@ class FieldViewState extends State<FieldView> {
                     onTap: () {
                       setState(() {
                         field.moveItem(c, Direction.left);
+                        widget.onChanged(field.ballsCount);
                         selectedItem = null;
                       });
                     },
@@ -199,6 +215,7 @@ class FieldViewState extends State<FieldView> {
                     onTap: () {
                       setState(() {
                         field.moveItem(c, Direction.down);
+                        widget.onChanged(field.ballsCount);
                         selectedItem = null;
                       });
                     },
@@ -216,6 +233,7 @@ class FieldViewState extends State<FieldView> {
                     onTap: () {
                       setState(() {
                         field.moveItem(c, Direction.up);
+                        widget.onChanged(field.ballsCount);
                         selectedItem = null;
                         // showHover = false;
                       });
