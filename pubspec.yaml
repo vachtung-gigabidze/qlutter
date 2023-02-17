@@ -51,9 +51,12 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: Permanent Marker
+    - family: DS Goose
       fonts:
-          - asset: assets/Permanent_Marker/PermanentMarker-Regular.ttf
+          - asset: fonts/DS Goose.ttf
+    # - family: Permanent Marker
+    #   fonts:
+    #       - asset: assets/Permanent_Marker/PermanentMarker-Regular.ttf
     # - family: Roboto
     #     fonts:
     #       - asset: fonts/Roboto-Regular.ttf
@@ -63,9 +66,8 @@ flutter:
     - assets/images/
     - assets/music/
     - assets/sfx/
-    - assets/icon/icon_foreground.png
-    # - assets/icon/icon_round.png
-    - assets/classic.txt
+    - assets/icon/icon_foreground.png    
+    
 flutter_icons:
   android: true
   ios: true

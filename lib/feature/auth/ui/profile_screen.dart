@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:qlutter/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qlutter/app/di/init_di.dart';
 
 import 'package:qlutter/app/ui/components/app_snackbar.dart';
 import 'package:qlutter/app/ui/components/app_text_button.dart';
@@ -8,6 +9,7 @@ import 'package:qlutter/app/ui/components/app_text_field.dart';
 import 'package:qlutter/app/domain/error_entity/error_entity.dart';
 import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:qlutter/feature/auth/domain/entities/user_entity/user_entity.dart';
+import 'package:qlutter/feature/style/palette.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Palette palette = locator.get<Palette>();
     final UserEntity? userEntity = context.read<AuthCubit>().state.maybeWhen(
           authorized: (userEntity) => userEntity,
           orElse: () => null,
@@ -54,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: const Icon(Icons.password)),
         ],
       ),
-      backgroundColor: const Color(0xFFC2C2C2),
+      backgroundColor: palette.background4,
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           state.whenOrNull(
@@ -108,24 +111,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         'Логин',
                         style: TextStyle(
-                          fontFamily: 'Roboto',
+                          fontFamily: palette.fontMain,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400,
                           fontSize: 16.0,
-                          color: Color(0xFF165932),
+                          color: const Color(0xFF165932),
                         ),
                       ),
                       Text(
                         userEntity?.login ?? "",
-                        style: const TextStyle(
-                          fontFamily: 'Roboto',
+                        style: TextStyle(
+                          fontFamily: palette.fontMain,
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w400,
                           fontSize: 16.0,
-                          color: Color(0xFF165932),
+                          color: const Color(0xFF165932),
                         ),
                       ),
                     ],

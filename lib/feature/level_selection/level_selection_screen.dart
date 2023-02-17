@@ -20,7 +20,7 @@ class LevelSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
+    Palette palette = context.watch<Palette>();
     final playerProgress = context.watch<PlayerProgress>();
     final levelManager = context.read<LevelManager>();
 
@@ -29,13 +29,12 @@ class LevelSelectionScreen extends StatelessWidget {
       body: ResponsiveScreen(
         squarishMainArea: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(16),
+            Padding(
+              padding: const EdgeInsets.all(16),
               child: Center(
                 child: Text(
-                  'Select level',
-                  style:
-                      TextStyle(fontFamily: 'Permanent Marker', fontSize: 30),
+                  'Выбор уровня',
+                  style: TextStyle(fontFamily: palette.fontMain, fontSize: 30),
                 ),
               ),
             ),
@@ -81,9 +80,9 @@ class LevelSelectionScreen extends StatelessWidget {
             GoRouter.of(context).go('/');
           },
           child: Text(
-            'Back',
+            'Назад',
             style: TextStyle(
-              fontFamily: 'Permanent Marker',
+              fontFamily: palette.fontMain,
               fontSize: 20,
               color: palette.ink,
             ),

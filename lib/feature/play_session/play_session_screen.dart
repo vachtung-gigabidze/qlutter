@@ -89,9 +89,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         Align(
                             alignment: Alignment.center,
                             child: Text(
-                              'Level: ${level.levelId}',
+                              'Уровень: ${level.levelId}',
                               style: TextStyle(
-                                fontFamily: 'Permanent Marker',
+                                fontFamily: palette.fontMain,
                                 fontSize: 26,
                                 color: palette.ink,
                               ),
@@ -137,9 +137,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         child: ElevatedButton(
                           onPressed: () => GoRouter.of(context).go('/play'),
                           child: Text(
-                            'Back',
+                            'Назад',
                             style: TextStyle(
-                              fontFamily: 'Permanent Marker',
+                              fontFamily: palette.fontMain,
                               fontSize: 26,
                               color: palette.ink,
                             ),

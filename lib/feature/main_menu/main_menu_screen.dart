@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
 
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
@@ -18,8 +19,9 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
-    final gamesServicesController = context.watch<GamesServicesController?>();
+    Palette palette = context.watch<Palette>();
+    // final gamesServicesController = context.watch<GamesServicesController?>();
+    // final auth = context.watch<AuthState>();
     final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
 
@@ -30,13 +32,13 @@ class MainMenuScreen extends StatelessWidget {
         squarishMainArea: Center(
           child: Transform.rotate(
             angle: -0.1,
-            child: const Text(
+            child: Text(
               'Qlutter',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Permanent Marker',
-                fontSize: 55,
-                height: 1,
+                fontFamily: palette.fontMain,
+                fontSize: 124,
+                //height: 1,
               ),
             ),
           ),
@@ -50,39 +52,55 @@ class MainMenuScreen extends StatelessWidget {
                 GoRouter.of(context).go('/play');
               },
               child: Text(
-                'Play',
+                'Игра',
                 style: TextStyle(
-                  fontFamily: 'Permanent Marker',
+                  fontFamily: palette.fontMain,
+                  fontSize: 32,
+                  color: palette.ink,
+                ),
+              ),
+            ),
+            _gap,
+            ElevatedButton(
+              onPressed: () {
+                audioController.playSfx(SfxType.buttonTap);
+                GoRouter.of(context).go('/auth');
+              },
+              child: Text(
+                'Рейтинг',
+                style: TextStyle(
+                  fontFamily: palette.fontMain,
                   fontSize: 26,
                   color: palette.ink,
                 ),
               ),
             ),
             _gap,
-            if (gamesServicesController != null) ...[
-              _hideUntilReady(
-                ready: gamesServicesController.signedIn,
-                child: ElevatedButton(
-                  onPressed: () => gamesServicesController.showAchievements(),
-                  child: const Text('Achievements'),
-                ),
-              ),
-              _gap,
-              _hideUntilReady(
-                ready: gamesServicesController.signedIn,
-                child: ElevatedButton(
-                  onPressed: () => gamesServicesController.showLeaderboard(),
-                  child: const Text('Leaderboard'),
-                ),
-              ),
-              _gap,
-            ],
+
+            // if (gamesServicesController != null) ...[
+            //   _hideUntilReady(
+            //     ready: gamesServicesController.signedIn,
+            //     child: ElevatedButton(
+            //       onPressed: () => gamesServicesController.showAchievements(),
+            //       child: const Text('Achievements'),
+            //     ),
+            //   ),
+            //   _gap,
+            //   _hideUntilReady(
+            //     ready: gamesServicesController.signedIn,
+            //     child: ElevatedButton(
+            //       onPressed: () => gamesServicesController.showLeaderboard(),
+            //       child: const Text('Leaderboard'),
+            //     ),
+            //   ),
+            //   _gap,
+            // ],
             ElevatedButton(
               onPressed: () => GoRouter.of(context).push('/settings'),
               child: Text(
-                'Settings',
+                'Настройки',
                 style: TextStyle(
-                  fontFamily: 'Permanent Marker',
+                  fontFamily: palette.fontMain,
                   fontSize: 26,
                   color: palette.ink,
                 ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qlutter/app/di/init_di.dart';
+import 'package:qlutter/feature/style/palette.dart';
 
 class AppTextButton extends StatelessWidget {
   const AppTextButton({
@@ -30,12 +32,10 @@ class AppTextButton extends StatelessWidget {
           onPressed: onPressed,
           child: Text(
             text,
-            style: const TextStyle(
-              fontFamily: 'Roboto',
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w500,
-              fontSize: 16.0,
-              color: Color(0xFFFFFFFF),
+            style: TextStyle(
+              fontFamily: locator.get<Palette>().fontMain,
+              fontSize: 16,
+              color: const Color(0xFFFFFFFF),
             ),
           ),
         ));

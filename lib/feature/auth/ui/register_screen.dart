@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/ui/components/app_text_button.dart';
 import 'package:qlutter/app/ui/components/app_text_field.dart';
 import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/feature/style/palette.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -21,10 +23,11 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Palette? palette = locator.get<Palette>();
     return Form(
       key: formKey,
       child: Scaffold(
-        backgroundColor: const Color(0xFF2ECC71),
+        backgroundColor: palette.backgroundAuth,
         body: Stack(
           children: [
             Center(
@@ -67,6 +70,7 @@ class RegisterScreen extends StatelessWidget {
                     height: 40,
                   ),
                   AppTextButton(
+                      backGroundColor: palette.ink,
                       onPressed: () {
                         if (formKey.currentState?.validate() == true) {
                           if (controllerPassword.text !=

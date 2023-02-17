@@ -19,10 +19,10 @@ import 'package:flutter/widgets.dart';
 /// https://codepen.io/iprodev/pen/azpWBr
 class Confetti extends StatefulWidget {
   static const _defaultColors = [
-    Color.fromARGB(255, 8, 209, 75),
+    Color.fromARGB(255, 255, 255, 255),
     Color(0xff1d75fb),
-    Color.fromARGB(255, 188, 106, 0),
-    Color(0xffa2dcc7),
+    Color.fromARGB(255, 226, 53, 10),
+    Color.fromARGB(255, 247, 243, 10),
   ];
 
   final bool isStopped;

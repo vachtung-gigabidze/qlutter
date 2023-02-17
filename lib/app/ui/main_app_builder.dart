@@ -4,7 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
+import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
+import 'package:qlutter/feature/auth/ui/auth_screen.dart';
+import 'package:qlutter/feature/auth/ui/components/auth_builder.dart';
+import 'package:qlutter/feature/auth/ui/profile_screen.dart';
 import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 
@@ -35,6 +39,14 @@ class MainAppBuilder implements AppBuilder {
           builder: (context, state) =>
               const MainMenuScreen(key: Key('main menu')),
           routes: [
+            GoRoute(
+                path: 'auth',
+                builder: (context, state) => AuthBuilder(
+                      isNotAuthorized: (context) => AuthScreen(),
+                      isWaiting: (context) => const AppLoader(),
+                      isAuthorized: (context, value, child) =>
+                          const ProfileScreen(),
+                    )),
             GoRoute(
                 path: 'play',
                 pageBuilder: (context, state) => buildMyTransition<void>(
@@ -101,7 +113,7 @@ class MainAppBuilder implements AppBuilder {
           ),
           textTheme: TextTheme(
             bodyMedium: TextStyle(
-              fontFamily: 'Permanent Marker',
+              fontFamily: palette.fontMain,
               fontSize: 26,
               color: palette.ink,
             ),

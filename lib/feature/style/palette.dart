@@ -33,6 +33,7 @@ class Palette {
   Color get ink => const Color(0xee352b42);
   Color get backgroundMain => const Color(0xffffffd1);
   Color get backgroundField => const Color(0xffffffff);
+  Color get backgroundAuth => const Color(0xffffffb1);
   Color get backgroundLevelSelection => const Color(0xffa2dcc7);
   Color get backgroundPlaySession => const Color(0xffffebb5);
   Color get background4 => const Color(0xffffd7ff);
@@ -46,6 +47,7 @@ class Palette {
   Color get cellColor4 => Colors.yellow;
   Color get cellColor5 => Colors.purple;
   Color get cellColor6 => Colors.cyan;
+  String get fontMain => 'DS Goose';
   /*
   Color get cellColor1 => const Color(0xfff5bfd2);
   Color get cellColor2 => const Color(0xffa1cdce);

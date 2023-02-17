@@ -26,7 +26,7 @@ class WinGameScreen extends StatelessWidget {
     // final adsControllerAvailable = context.watch<AdsController?>() != null;
     // final adsRemoved =
     //     context.watch<InAppPurchaseController?>()?.adRemoval.active ?? false;
-    final palette = context.watch<Palette>();
+    Palette palette = context.watch<Palette>();
 
     const gap = SizedBox(height: 10);
 
@@ -44,19 +44,18 @@ class WinGameScreen extends StatelessWidget {
             //   ),
             //],
             gap,
-            const Center(
+            Center(
               child: Text(
-                'You won!',
-                style: TextStyle(fontFamily: 'Permanent Marker', fontSize: 50),
+                'Победа!',
+                style: TextStyle(fontFamily: palette.fontMain, fontSize: 50),
               ),
             ),
             gap,
             Center(
               child: Text(
-                'Score: ${score.score}\n'
-                'Time: ${score.formattedTime}',
-                style: const TextStyle(
-                    fontFamily: 'Permanent Marker', fontSize: 20),
+                'Ход: ${score.score}\n'
+                'Время: ${score.formattedTime}',
+                style: TextStyle(fontFamily: palette.fontMain, fontSize: 20),
               ),
             ),
           ],
@@ -67,9 +66,9 @@ class WinGameScreen extends StatelessWidget {
             GoRouter.of(context).go('/play/session/${score.level + 1}');
           },
           child: Text(
-            'Continue',
+            'Вперед',
             style: TextStyle(
-              fontFamily: 'Permanent Marker',
+              fontFamily: palette.fontMain,
               fontSize: 20,
               color: palette.ink,
             ),
