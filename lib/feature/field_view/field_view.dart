@@ -302,8 +302,7 @@ class FieldViewState extends State<FieldView> {
   Widget build(BuildContext context) {
     palette ??= context.watch<Palette>();
     setSize(context);
-    return Container(
-      color: widget.backgroundColor,
+    return SizedBox(
       height: maxViewSize.height,
       width: maxViewSize.width,
       child: Stack(

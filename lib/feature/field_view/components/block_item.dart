@@ -44,7 +44,9 @@ class BlockItem extends StatelessWidget {
         : Container(
             height: elementSize,
             width: elementSize,
+            padding: EdgeInsets.all(elementSize / 20),
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(elementSize / 20)),
               shape: BoxShape.rectangle,
               color: item?.color,
             ));

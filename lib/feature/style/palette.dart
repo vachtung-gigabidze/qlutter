@@ -44,8 +44,9 @@ class Palette {
   Color get cellColor1 => Colors.green;
   Color get cellColor2 => Colors.red;
   Color get cellColor3 => Colors.blue;
-  Color get cellColor4 => Colors.yellow;
-  Color get cellColor5 => Colors.purple;
+  Color get cellColor4 => Colors.deepPurple;
+  // Color get cellColor4 => Colors.yellow;
+  Color get cellColor5 => Colors.deepOrangeAccent;
   Color get cellColor6 => Colors.cyan;
   String get fontMain => 'DS Goose';
   /*
