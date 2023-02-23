@@ -16,6 +16,10 @@ class DioAppApi implements AppApi {
     final options = BaseOptions(
       baseUrl: appConfig.baseUrl,
       connectTimeout: 15000,
+      // headers: {
+      //   "Accept": "application/json",
+      //   "Access-Control_Allow_Origin": "*"
+      // }
     );
 
     dio = Dio(options);

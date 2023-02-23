@@ -14,7 +14,7 @@ import 'package:qlutter/feature/level_manager/level_manager.dart';
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
 import '../game_internals/level_state.dart';
-import '../games_services/games_services.dart';
+// import '../games_services/games_services.dart';
 import '../games_services/score.dart';
 // import '../in_app_purchase/in_app_purchase.dart';
 // import '../level_selection/levels.dart';
@@ -77,7 +77,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                           alignment: Alignment.centerLeft,
                           child: InkResponse(
                             onTap: () => setState(() {
-                              field = Field.copyField(fieldCopy);
+                              fieldCopy = Field.copyField(field);
                             }),
                             child: Image.asset(
                               'assets/images/restart.png',
@@ -111,27 +111,18 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                     const Spacer(),
                     Consumer<LevelState>(
                       builder: (context, levelState, child) => FieldView(
-                        key: ValueKey<List<List<Item?>>>(field.level.field),
-                        field: field,
-                        onChanged: (value) => levelState.setProgress(value),
+                        key: ValueKey<List<List<Item?>>>(fieldCopy.level.field),
+                        field: fieldCopy,
+                        onChanged: (value, step) =>
+                            levelState.setProgress(value, step),
                         onWin: () => levelState.evaluate(),
                         onRefresh: () {
-                          field = Field.copyField(fieldCopy);
+                          setState(() {
+                            fieldCopy = Field.copyField(field);
+                          });
                         },
                       ),
                     ),
-                    // Text('Drag the slider to %'
-                    //     ' or above!'),
-                    // Consumer<LevelState>(
-                    //   builder: (context, levelState, child) => Slider(
-                    //     label: 'Level Progress',
-                    //     autofocus: true,
-                    //     value: levelState.progress / 100,
-                    //     onChanged: (value) =>
-                    //         levelState.setProgress((value * 100).round()),
-                    //     onChangeEnd: (value) => levelState.evaluate(),
-                    //   ),
-                    // ),
                     const Spacer(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -189,12 +180,12 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     // }
   }
 
-  Future<void> _playerWon() async {
+  Future<void> _playerWon(int steps) async {
     _log.info('Level ${widget.levelNumber} won');
 
     final score = Score(
       widget.levelNumber,
-      0,
+      steps,
       DateTime.now().difference(_startOfPlay),
     );
 

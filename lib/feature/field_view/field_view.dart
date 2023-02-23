@@ -20,7 +20,7 @@ class FieldView extends StatefulWidget {
   //final Level level;
   final Field field;
   final VoidCallback onRefresh;
-  final Function(int) onChanged;
+  final Function(int, int) onChanged;
   final VoidCallback onWin;
   final Size? parentSize;
   final Color backgroundColor;
@@ -53,13 +53,14 @@ class FieldViewState extends State<FieldView> {
   List<Widget> balls = [];
   late bool refresh;
   Palette? palette;
+  late int steps;
 
   @override
   void initState() {
     super.initState();
 
     field = widget.field;
-
+    steps = 0;
     refresh = false;
     elementSize = 45;
 
@@ -78,10 +79,11 @@ class FieldViewState extends State<FieldView> {
       onEnd: () {
         if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
           if (field.checkWin()) {
-            widget.onChanged(field.ballsCount);
+            widget.onChanged(field.ballsCount, steps);
             widget.onWin();
-            widget.onRefresh();
+            // widget.onRefresh();
           }
+          setState(() {});
         }
         // widget.onChanged(steps);
       },
@@ -154,6 +156,13 @@ class FieldViewState extends State<FieldView> {
     );
   }
 
+  void moveBall(Coordinates c, Direction d) {
+    field.moveItem(c, d);
+    widget.onChanged(field.ballsCount, steps++);
+    selectedItem = null;
+    setState(() {});
+  }
+
   Widget _buildHover(Coordinates c) {
     List<bool> directionMask =
         field.canMove(Coordinates(c.horizontal, c.vertical));
@@ -176,13 +185,7 @@ class FieldViewState extends State<FieldView> {
                 Positioned(
                   top: elementSize,
                   child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        field.moveItem(c, Direction.right);
-                        widget.onChanged(field.ballsCount);
-                        selectedItem = null;
-                      });
-                    },
+                    onTap: () => moveBall(c, Direction.right),
                     child: Icon(
                       Icons.arrow_back_outlined,
                       color: palette?.ink,
@@ -194,13 +197,7 @@ class FieldViewState extends State<FieldView> {
                   top: elementSize,
                   right: 0,
                   child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        field.moveItem(c, Direction.left);
-                        widget.onChanged(field.ballsCount);
-                        selectedItem = null;
-                      });
-                    },
+                    onTap: () => moveBall(c, Direction.left),
                     child: Icon(
                       Icons.arrow_forward_outlined,
                       color: palette?.ink,
@@ -212,13 +209,7 @@ class FieldViewState extends State<FieldView> {
                   top: elementSize * 2,
                   right: elementSize,
                   child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        field.moveItem(c, Direction.down);
-                        widget.onChanged(field.ballsCount);
-                        selectedItem = null;
-                      });
-                    },
+                    onTap: () => moveBall(c, Direction.down),
                     child: Icon(
                       Icons.arrow_downward,
                       color: palette?.ink,
@@ -230,14 +221,7 @@ class FieldViewState extends State<FieldView> {
                   top: 0,
                   right: elementSize,
                   child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        field.moveItem(c, Direction.up);
-                        widget.onChanged(field.ballsCount);
-                        selectedItem = null;
-                        // showHover = false;
-                      });
-                    },
+                    onTap: () => moveBall(c, Direction.up),
                     child: Icon(
                       Icons.arrow_upward,
                       color: palette?.ink,

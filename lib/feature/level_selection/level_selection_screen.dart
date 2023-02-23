@@ -62,7 +62,7 @@ class LevelSelectionScreen extends StatelessWidget {
                           parentSize: const Size(50, 50),
                           key: ValueKey<List<List<Item?>>>(level.field),
                           field: Field(level),
-                          onChanged: (p0) {},
+                          onChanged: (p0, s0) {},
                           onWin: () {},
                           onRefresh: () {},
                         ),

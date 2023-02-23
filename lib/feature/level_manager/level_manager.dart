@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
-import 'package:qlutter/feature/level_manager/data/dto/level_dto.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/style/palette.dart';
@@ -40,7 +39,6 @@ class LevelManager {
     LevelRepository repo = locator.get<LevelRepository>();
     List<Level> levelList = await repo.getLevels();
     levels = levelList.asMap();
-    print(levels![10]);
     //levels = await openLevels();
   }
 
@@ -119,39 +117,37 @@ class LevelManager {
   }
 
   Future<Map<int, Level>> openLevels() async {
-    try {
-      String levelsFile = await rootBundle.loadString('assets/classic.txt');
-      levels = <int, Level>{};
-      int rowNum = 0;
-      int elementId = 0;
+    String levelsFile = await rootBundle.loadString('assets/classic.txt');
+    levels = <int, Level>{};
+    int rowNum = 0;
+    int elementId = 0;
 
-      List<String> rows = levelsFile.split('\n');
+    List<String> rows = levelsFile.split('\n');
 
-      int level = 0;
-      while (level != 25) {
-        level = int.parse(rows[rowNum]);
-        rowNum++;
-        int h = int.parse(rows[rowNum].split(' ')[1]);
-        int w = int.parse(rows[rowNum].split(' ')[0]);
-        rowNum++;
+    int level = 0;
+    while (level != 25) {
+      level = int.parse(rows[rowNum]);
+      rowNum++;
+      int h = int.parse(rows[rowNum].split(' ')[1]);
+      int w = int.parse(rows[rowNum].split(' ')[0]);
+      rowNum++;
 
-        List<List<Item?>> l = [];
-        for (var i = 0; i < h; i++) {
-          List<Item?> fieldRow = [];
-          for (int element
-              in rows[rowNum].split(' ').map((e) => int.parse(e))) {
-            elementId++;
-            fieldRow.add(convertLegendToItem(element, elementId));
-          }
-          l.add(fieldRow);
-          rowNum++;
+      List<List<Item?>> l = [];
+      for (var i = 0; i < h; i++) {
+        List<Item?> fieldRow = [];
+        for (int element in rows[rowNum].split(' ').map((e) => int.parse(e))) {
+          elementId++;
+          fieldRow.add(convertLegendToItem(element, elementId));
         }
-        levels![level] = Level(
-          l,
-          level,
-        )..size = Size(h + .0, w + .0);
+        l.add(fieldRow);
+        rowNum++;
       }
-    } catch (e) {}
+      levels![level] = Level(
+        l,
+        level,
+      )..size = Size(h + .0, w + .0);
+    }
+
     return Future.value(levels);
   }
 }

@@ -5,26 +5,26 @@ import 'package:flutter/foundation.dart';
 /// Tracks only a single variable, [progress], and calls [onWin] when
 /// the value of [progress] reaches [goal].
 class LevelState extends ChangeNotifier {
-  final VoidCallback onWin;
+  final Function(int) onWin;
 
   final int goal;
 
   LevelState({required this.onWin, this.goal = 0});
 
   int _progress = 0;
-  int steps = 0;
+  int _steps = 0;
 
-  int get progress => progress;
+  int get progress => _progress;
 
-  void setProgress(int value) {
+  void setProgress(int value, int step) {
     _progress = value;
-    steps++;
+    _steps = step;
     notifyListeners();
   }
 
   void evaluate() {
     if (_progress == goal) {
-      onWin();
+      onWin(_steps);
     }
   }
 }

@@ -5,6 +5,7 @@ class Item {
   Color color;
   Item({required this.color});
 
+  @override
   int get hashCode => Object.hash(runtimeType, color);
 
   @override
