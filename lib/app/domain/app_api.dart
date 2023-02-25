@@ -30,5 +30,12 @@ abstract class AppApi {
 
   Future<dynamic> getLevel();
 
+  Future<dynamic> sendProcess({
+    int? levelId,
+    int? steps,
+    int? seconds,
+    DateTime? dateTime,
+  });
+
   Future<dynamic> fetch(RequestOptions requestOptions);
 }

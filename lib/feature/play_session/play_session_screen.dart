@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
+import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 // import 'package:qlutter/game/core/core.dart';
 
@@ -115,7 +117,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         field: fieldCopy,
                         onChanged: (value, step) =>
                             levelState.setProgress(value, step),
-                        onWin: () => levelState.evaluate(),
+                        onWin: () => levelState.evaluate(level.levelId),
                         onRefresh: () {
                           setState(() {
                             fieldCopy = Field.copyField(field);
@@ -220,6 +222,11 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     /// Give the player some time to see the celebration animation.
     await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
+    locator.get<LevelRepository>().sendProcess(
+        levelId: score.level,
+        steps: score.score,
+        seconds: score.duration.inSeconds,
+        dateTime: DateTime.now());
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }

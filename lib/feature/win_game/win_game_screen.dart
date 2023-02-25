@@ -5,6 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/app/di/init_di.dart';
+import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 
 // import '../ads/ads_controller.dart';
 // import '../ads/banner_ad_widget.dart';

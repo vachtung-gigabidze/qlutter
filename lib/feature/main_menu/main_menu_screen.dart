@@ -61,21 +61,21 @@ class MainMenuScreen extends StatelessWidget {
               ),
             ),
             _gap,
-            ElevatedButton(
-              onPressed: () {
-                audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/auth');
-              },
-              child: Text(
-                'Рейтинг',
-                style: TextStyle(
-                  fontFamily: palette.fontMain,
-                  fontSize: 26,
-                  color: palette.ink,
-                ),
-              ),
-            ),
-            _gap,
+            // ElevatedButton(
+            //   onPressed: () {
+            //     audioController.playSfx(SfxType.buttonTap);
+            //     GoRouter.of(context).go('/auth');
+            //   },
+            //   child: Text(
+            //     'Рейтинг',
+            //     style: TextStyle(
+            //       fontFamily: palette.fontMain,
+            //       fontSize: 26,
+            //       color: palette.ink,
+            //     ),
+            //   ),
+            // ),
+            // _gap,
 
             // if (gamesServicesController != null) ...[
             //   _hideUntilReady(

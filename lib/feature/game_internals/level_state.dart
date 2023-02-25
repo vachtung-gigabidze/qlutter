@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:qlutter/app/di/init_di.dart';
+import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 
 /// An extremely silly example of a game state.
 ///
@@ -22,7 +24,7 @@ class LevelState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void evaluate() {
+  void evaluate(int levelId) {
     if (_progress == goal) {
       onWin(_steps);
     }

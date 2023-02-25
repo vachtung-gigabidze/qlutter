@@ -148,4 +148,22 @@ class DioAppApi implements AppApi {
       rethrow;
     }
   }
+
+  @override
+  Future<Response> sendProcess(
+      {int? levelId, int? steps, int? seconds, DateTime? dateTime}) {
+    try {
+      return dio.post(
+        "/progress",
+        data: {
+          "levelId": levelId,
+          "steps": steps,
+          "seconds": seconds,
+          "datetime": dateTime.toString()
+        },
+      );
+    } catch (_) {
+      rethrow;
+    }
+  }
 }
