@@ -100,42 +100,42 @@ class FieldViewState extends State<FieldView> {
           item: item,
           elementSize: elementSize,
           selected: false,
-          onPanUpdate: (DragUpdateDetails details) {
-            if (!kIsWeb) {
-              if (details.delta.dx < 0) {
-                setState(() {
-                  field.moveItem(
-                      Coordinates(t.toInt(), r.toInt()), Direction.right);
-                });
-              }
-              if (details.delta.dx > 0) {
-                setState(() {
-                  field.moveItem(
-                      Coordinates(t.toInt(), r.toInt()), Direction.left);
-                });
-              }
-              if (details.delta.dy < 0) {
-                setState(() {
-                  field.moveItem(
-                      Coordinates(t.toInt(), r.toInt()), Direction.up);
-                });
-              }
-              if (details.delta.dy > 0) {
-                setState(() {
-                  field.moveItem(
-                      Coordinates(t.toInt(), r.toInt()), Direction.down);
-                });
-              }
-            }
-          },
+          // onPanUpdate: (DragUpdateDetails details) {
+          //   if (!kIsWeb) {
+          //     if (details.delta.dx < 0) {
+          //       setState(() {
+          //         field.moveItem(
+          //             Coordinates(t.toInt(), r.toInt()), Direction.right);
+          //       });
+          //     }
+          //     if (details.delta.dx > 0) {
+          //       setState(() {
+          //         field.moveItem(
+          //             Coordinates(t.toInt(), r.toInt()), Direction.left);
+          //       });
+          //     }
+          //     if (details.delta.dy < 0) {
+          //       setState(() {
+          //         field.moveItem(
+          //             Coordinates(t.toInt(), r.toInt()), Direction.up);
+          //       });
+          //     }
+          //     if (details.delta.dy > 0) {
+          //       setState(() {
+          //         field.moveItem(
+          //             Coordinates(t.toInt(), r.toInt()), Direction.down);
+          //       });
+          //     }
+          //   }
+          // },
           onTap: () {
-            if (kIsWeb) {
-              if (item is Ball) {
-                setState(() {
-                  selectedItem = item;
-                });
-              }
+            // if (kIsWeb) {
+            if (item is Ball) {
+              setState(() {
+                selectedItem = item;
+              });
             }
+            // }
           },
         ),
       ),
