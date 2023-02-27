@@ -148,12 +148,12 @@ class _GlobalProviders extends StatelessWidget {
     return AppLifecycleObserver(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => locator.get<AuthCubit>(),
-          ),
-          BlocProvider(
-            create: (context) => InternetConnectionCubit(),
-          ),
+          // BlocProvider(
+          //   create: (context) => locator.get<AuthCubit>(),
+          // ),
+          // BlocProvider(
+          //   create: (context) => InternetConnectionCubit(),
+          // ),
 
           Provider<LevelManager>.value(
               value: locator.get<LevelManager>()..readLevels()),
