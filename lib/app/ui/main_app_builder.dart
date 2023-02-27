@@ -13,7 +13,7 @@ import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 
 import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
-import 'package:qlutter/feature/audio/audio_controller.dart';
+// import 'package:qlutter/feature/audio/audio_controller.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
@@ -176,18 +176,18 @@ class _GlobalProviders extends StatelessWidget {
               persistence: settingsPersistence,
             )..loadStateFromPersistence(),
           ),
-          ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
-              AudioController>(
-            lazy: false,
-            create: (context) => AudioController()..initialize(),
-            update: (context, settings, lifecycleNotifier, audio) {
-              if (audio == null) throw ArgumentError.notNull();
-              audio.attachSettings(settings);
-              audio.attachLifecycleNotifier(lifecycleNotifier);
-              return audio;
-            },
-            dispose: (context, audio) => audio.dispose(),
-          ),
+          // ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
+          //     AudioController>(
+          //   lazy: false,
+          //   create: (context) => AudioController()..initialize(),
+          //   update: (context, settings, lifecycleNotifier, audio) {
+          //     if (audio == null) throw ArgumentError.notNull();
+          //     audio.attachSettings(settings);
+          //     audio.attachLifecycleNotifier(lifecycleNotifier);
+          //     return audio;
+          //   },
+          //   dispose: (context, audio) => audio.dispose(),
+          // ),
           Provider(
             create: (context) => Palette(),
           ),

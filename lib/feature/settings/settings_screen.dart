@@ -30,32 +30,32 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _gap,
             const Text(
-              'Settings',
+              'Настройки',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Permanent Marker',
+                // fontFamily: font,
                 fontSize: 55,
                 height: 1,
               ),
             ),
             _gap,
             const _NameChangeLine(
-              'Name',
+              'Тема',
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.soundsOn,
+            ValueListenableBuilder<String>(
+              valueListenable: settings.theme,
               builder: (context, soundsOn, child) => _SettingsLine(
-                'Sound FX',
-                Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
-                onSelected: () => settings.toggleSoundsOn(),
+                'Тема',
+                const Icon(Icons.theater_comedy),
+                onSelected: () => settings.setLanguage('light'),
               ),
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.musicOn,
+            ValueListenableBuilder<String>(
+              valueListenable: settings.language,
               builder: (context, musicOn, child) => _SettingsLine(
-                'Music',
-                Icon(musicOn ? Icons.music_note : Icons.music_off),
-                onSelected: () => settings.toggleMusicOn(),
+                'Язык',
+                const Icon(Icons.language),
+                onSelected: () => settings.setLanguage('russian'),
               ),
             ),
             // Consumer<InAppPurchaseController?>(
@@ -86,15 +86,14 @@ class SettingsScreen extends StatelessWidget {
             //   );
             // }),
             _SettingsLine(
-              'Reset progress',
+              'Сброс прогресса',
               const Icon(Icons.delete),
               onSelected: () {
                 context.read<PlayerProgress>().reset();
 
                 final messenger = ScaffoldMessenger.of(context);
                 messenger.showSnackBar(
-                  const SnackBar(
-                      content: Text('Player progress has been reset.')),
+                  const SnackBar(content: Text('Прогресс сброшен')),
                 );
               },
             ),
@@ -105,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: const Text('Back'),
+          child: const Text('Меню'),
         ),
       ),
     );
@@ -136,7 +135,7 @@ class _NameChangeLine extends StatelessWidget {
                 )),
             const Spacer(),
             ValueListenableBuilder(
-              valueListenable: settings.playerName,
+              valueListenable: settings.theme,
               builder: (context, name, child) => Text(
                 '‘$name’',
                 style: const TextStyle(

@@ -202,8 +202,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       _duringCelebration = true;
     });
 
-    final audioController = context.read<AudioController>();
-    audioController.playSfx(SfxType.congrats);
+    //final audioController = context.read<AudioController>();
+    //audioController.playSfx(SfxType.congrats);
 
     // final gamesServicesController = context.read<GamesServicesController?>();
     // if (gamesServicesController != null) {

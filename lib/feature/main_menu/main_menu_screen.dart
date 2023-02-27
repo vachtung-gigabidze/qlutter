@@ -23,7 +23,7 @@ class MainMenuScreen extends StatelessWidget {
     // final gamesServicesController = context.watch<GamesServicesController?>();
     // final auth = context.watch<AuthState>();
     final settingsController = context.watch<SettingsController>();
-    final audioController = context.watch<AudioController>();
+    //final audioController = context.watch<AudioController>();
 
     return Scaffold(
       backgroundColor: palette.backgroundMain,
@@ -48,7 +48,7 @@ class MainMenuScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                audioController.playSfx(SfxType.buttonTap);
+                //audioController.playSfx(SfxType.buttonTap);
                 GoRouter.of(context).go('/play');
               },
               child: Text(
@@ -107,17 +107,9 @@ class MainMenuScreen extends StatelessWidget {
               ),
             ),
             _gap,
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: settingsController.muted,
-                builder: (context, muted, child) {
-                  return IconButton(
-                    onPressed: () => settingsController.toggleMuted(),
-                    icon: Icon(muted ? Icons.volume_off : Icons.volume_up),
-                  );
-                },
-              ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.info_outline, size: 34),
             ),
             _gap,
             // const Text('Music by Mr Smith'),
@@ -128,12 +120,6 @@ class MainMenuScreen extends StatelessWidget {
     );
   }
 
-  /// Prevents the game from showing game-services-related menu items
-  /// until we're sure the player is signed in.
-  ///
-  /// This normally happens immediately after game start, so players will not
-  /// see any flash. The exception is folks who decline to use Game Center
-  /// or Google Play Game Services, or who haven't yet set it up.
   Widget _hideUntilReady({required Widget child, required Future<bool> ready}) {
     return FutureBuilder<bool>(
       future: ready,

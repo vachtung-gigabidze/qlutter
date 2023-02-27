@@ -2,10 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 
-/// An extremely silly example of a game state.
-///
-/// Tracks only a single variable, [progress], and calls [onWin] when
-/// the value of [progress] reaches [goal].
 class LevelState extends ChangeNotifier {
   final Function(int) onWin;
 
