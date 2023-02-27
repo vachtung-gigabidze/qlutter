@@ -39,9 +39,9 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             _gap,
-            const _NameChangeLine(
-              'Тема',
-            ),
+            // const _NameChangeLine(
+            //   'Тема',
+            // ),
             ValueListenableBuilder<String>(
               valueListenable: settings.theme,
               builder: (context, soundsOn, child) => _SettingsLine(
@@ -104,7 +104,12 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: const Text('Меню'),
+          child: Text('Назад',
+              style: TextStyle(
+                fontFamily: palette.fontMain,
+                fontSize: 26,
+                color: palette.ink,
+              )),
         ),
       ),
     );

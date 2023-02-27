@@ -9,7 +9,7 @@ import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
 import 'package:qlutter/feature/auth/ui/auth_screen.dart';
 import 'package:qlutter/feature/auth/ui/components/auth_builder.dart';
 import 'package:qlutter/feature/auth/ui/profile_screen.dart';
-import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
+// import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 
 import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
@@ -150,9 +150,6 @@ class _GlobalProviders extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) => locator.get<AuthCubit>(),
-          ),
-          BlocProvider(
-            create: (context) => InternetConnectionCubit(),
           ),
 
           Provider<LevelManager>.value(
