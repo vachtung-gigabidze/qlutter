@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -11,16 +10,8 @@ import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
-// import 'package:qlutter/game/core/core.dart';
-
-// import '../ads/ads_controller.dart';
-import '../audio/audio_controller.dart';
-import '../audio/sounds.dart';
 import '../game_internals/level_state.dart';
-// import '../games_services/games_services.dart';
 import '../games_services/score.dart';
-// import '../in_app_purchase/in_app_purchase.dart';
-// import '../level_selection/levels.dart';
 import '../player_progress/player_progress.dart';
 import '../style/confetti.dart';
 import '../style/palette.dart';
@@ -51,13 +42,11 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-    //level = context.read<LevelManager>().levels![widget.levelNumber]!;
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
           create: (context) => LevelState(
-            //goal: 0, //widget.level.difficulty,
             onWin: _playerWon,
           ),
         ),
@@ -69,7 +58,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
           body: Stack(
             children: [
               Center(
-                // This is the entirety of the "game".
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -169,14 +157,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     fieldCopy = Field.copyField(field);
 
     _startOfPlay = DateTime.now();
-
-    // Preload ad for the win screen.
-    // final adsRemoved =
-    //     context.read<InAppPurchaseController?>()?.adRemoval.active ?? false;
-    // if (!adsRemoved) {
-    //   final adsController = context.read<AdsController?>();
-    //   adsController?.preloadAd();
-    // }
   }
 
   Future<void> _playerWon(int steps) async {
@@ -191,7 +171,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     final playerProgress = context.read<PlayerProgress>();
     playerProgress.setLevelReached(widget.levelNumber + 1);
 
-    // Let the player see the game just after winning for a bit.
     await Future<void>.delayed(_preCelebrationDuration);
     if (!mounted) return;
 
@@ -199,24 +178,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       _duringCelebration = true;
     });
 
-    //final audioController = context.read<AudioController>();
-    //audioController.playSfx(SfxType.congrats);
-
-    // final gamesServicesController = context.read<GamesServicesController?>();
-    // if (gamesServicesController != null) {
-    //   // Award achievement.
-    //   // if (widget.level.awardsAchievement) {
-    //   //   await gamesServicesController.awardAchievement(
-    //   //     android: widget.level.achievementIdAndroid!,
-    //   //     iOS: widget.level.achievementIdIOS!,
-    //   //   );
-    //   // }
-
-    //   // Send score to leaderboard.
-    //   await gamesServicesController.submitLeaderboardScore(score);
-    // }
-
-    /// Give the player some time to see the celebration animation.
     await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
     locator.get<LevelRepository>().sendProcess(

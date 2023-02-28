@@ -4,16 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
-import 'package:qlutter/app/ui/app_loader.dart';
-import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
-import 'package:qlutter/feature/auth/ui/auth_screen.dart';
-import 'package:qlutter/feature/auth/ui/components/auth_builder.dart';
-import 'package:qlutter/feature/auth/ui/profile_screen.dart';
-// import 'package:qlutter/feature/internet_activity/internet_cubit.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
-
 import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
-// import 'package:qlutter/feature/audio/audio_controller.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
@@ -39,14 +31,6 @@ class MainAppBuilder implements AppBuilder {
           builder: (context, state) =>
               const MainMenuScreen(key: Key('main menu')),
           routes: [
-            GoRoute(
-                path: 'auth',
-                builder: (context, state) => AuthBuilder(
-                      isNotAuthorized: (context) => AuthScreen(),
-                      isWaiting: (context) => const AppLoader(),
-                      isAuthorized: (context, value, child) =>
-                          const ProfileScreen(),
-                    )),
             GoRoute(
                 path: 'play',
                 pageBuilder: (context, state) => buildMyTransition<void>(
@@ -148,13 +132,8 @@ class _GlobalProviders extends StatelessWidget {
     return AppLifecycleObserver(
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => locator.get<AuthCubit>(),
-          ),
-
           Provider<LevelManager>.value(
               value: locator.get<LevelManager>()..readLevels()),
-
           ChangeNotifierProvider(
             create: (context) {
               var progress = PlayerProgress(playerProgressPersistence);
@@ -164,27 +143,12 @@ class _GlobalProviders extends StatelessWidget {
           ),
           Provider<GamesServicesController?>.value(
               value: gamesServicesController),
-          // Provider<AdsController?>.value(value: adsController),
-          // ChangeNotifierProvider<InAppPurchaseController?>.value(
-          //     value: inAppPurchaseController),
           Provider<SettingsController>(
             lazy: false,
             create: (context) => SettingsController(
               persistence: settingsPersistence,
             )..loadStateFromPersistence(),
           ),
-          // ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
-          //     AudioController>(
-          //   lazy: false,
-          //   create: (context) => AudioController()..initialize(),
-          //   update: (context, settings, lifecycleNotifier, audio) {
-          //     if (audio == null) throw ArgumentError.notNull();
-          //     audio.attachSettings(settings);
-          //     audio.attachLifecycleNotifier(lifecycleNotifier);
-          //     return audio;
-          //   },
-          //   dispose: (context, audio) => audio.dispose(),
-          // ),
           Provider(
             create: (context) => Palette(),
           ),
