@@ -24,14 +24,16 @@ class LevelManager {
   static const int holeCell5 = 66;
   static const int holeCell6 = 77;
 
-  late LevelManager? instance;
+  LevelManager? instance;
   late Map<int, Level>? levels;
   late Field? field;
 
-  LevelManager();
+  LevelManager() {
+    //build();
+  }
 
   LevelManager build() {
-    instance ??= LevelManager();
+    instance ??= LevelManager().readLevels();
     return instance!;
   }
 

@@ -132,8 +132,9 @@ class _GlobalProviders extends StatelessWidget {
     return AppLifecycleObserver(
       child: MultiBlocProvider(
         providers: [
-          Provider<LevelManager>.value(
-              value: locator.get<LevelManager>()..readLevels()),
+          Provider(
+            create: (context) => locator.get<LevelManager>(),
+          ),
           ChangeNotifierProvider(
             create: (context) {
               var progress = PlayerProgress(playerProgressPersistence);

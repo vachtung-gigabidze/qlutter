@@ -18,7 +18,7 @@ class LevelSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
     final playerProgress = context.watch<PlayerProgress>();
-    final levelManager = context.read<LevelManager>();
+    final levelManager = context.watch<LevelManager>();
 
     return Scaffold(
       backgroundColor: palette.backgroundLevelSelection,
