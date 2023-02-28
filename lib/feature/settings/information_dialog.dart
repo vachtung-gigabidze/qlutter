@@ -26,11 +26,11 @@ class InformationDialog extends StatelessWidget {
         backgroundColor: palette.backgroundSettings,
         title: null,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(18.0),
+          Padding(
+            padding: const EdgeInsets.all(18.0),
             child: Text(
               'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой и только до первого препятствия.',
-              style: TextStyle(fontFamily: 'Roboto'),
+              style: TextStyle(fontFamily: 'Roboto', color: palette.ink),
               textAlign: TextAlign.left,
             ),
           ),

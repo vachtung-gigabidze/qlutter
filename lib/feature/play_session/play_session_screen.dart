@@ -10,6 +10,7 @@ import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/settings/information_dialog.dart';
 // import 'package:qlutter/game/core/core.dart';
 
 // import '../ads/ads_controller.dart';
@@ -81,11 +82,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                             onTap: () => setState(() {
                               fieldCopy = Field.copyField(field);
                             }),
-                            child: Image.asset(
-                              'assets/images/restart.png',
-                              semanticLabel: 'Restart',
-                              height: 50,
-                            ),
+                            child: const Icon(Icons.refresh, size: 50),
                           ),
                         ),
                         Align(
@@ -101,10 +98,10 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: InkResponse(
-                            onTap: () => GoRouter.of(context).push('/settings'),
-                            child: Image.asset(
-                              'assets/images/settings.png',
-                              semanticLabel: 'Settings',
+                            onTap: () => showInformationDialog(context),
+                            child: const Icon(
+                              Icons.info_outline,
+                              size: 50,
                             ),
                           ),
                         ),
