@@ -5,6 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/feature/settings/information_dialog.dart';
+import 'package:qlutter/feature/settings/language_dialog.dart';
 // import 'package:qlutter/feature/auth/domain/auth_state/auth_cubit.dart';
 
 import '../audio/audio_controller.dart';
@@ -52,7 +54,7 @@ class MainMenuScreen extends StatelessWidget {
                 GoRouter.of(context).go('/play');
               },
               child: Text(
-                'Игра',
+                'Уровни',
                 style: TextStyle(
                   fontFamily: palette.fontMain,
                   fontSize: 32,
@@ -95,20 +97,22 @@ class MainMenuScreen extends StatelessWidget {
             //   ),
             //   _gap,
             // ],
-            ElevatedButton(
-              onPressed: () => GoRouter.of(context).push('/settings'),
-              child: Text(
-                'Настройки',
-                style: TextStyle(
-                  fontFamily: palette.fontMain,
-                  fontSize: 26,
-                  color: palette.ink,
-                ),
-              ),
-            ),
-            _gap,
+            // ElevatedButton(
+            //   onPressed: () => GoRouter.of(context).push('/settings'),
+            //   child: Text(
+            //     'Настройки',
+            //     style: TextStyle(
+            //       fontFamily: palette.fontMain,
+            //       fontSize: 26,
+            //       color: palette.ink,
+            //     ),
+            //   ),
+            // ),
+            // _gap,
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showInformationDialog(context);
+              },
               icon: const Icon(Icons.info_outline, size: 34),
             ),
             _gap,

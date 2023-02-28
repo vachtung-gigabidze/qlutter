@@ -7,7 +7,7 @@ class SettingsController {
 
   ValueNotifier<String> theme = ValueNotifier('light');
 
-  ValueNotifier<String> language = ValueNotifier('russian');
+  ValueNotifier<String> language = ValueNotifier('Русский');
 
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;
@@ -18,7 +18,7 @@ class SettingsController {
           .getTheme(defaultValue: 'light')
           .then((value) => theme.value = value),
       _persistence
-          .getLanguage(defaultValue: 'russian')
+          .getLanguage(defaultValue: 'Русский')
           .then((value) => language.value = value),
       // _persistence.getMusicOn().then((value) => musicOn.value = value),
       // _persistence.getPlayerName().then((value) => playerName.value = value),

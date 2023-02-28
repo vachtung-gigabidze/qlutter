@@ -1,7 +1,3 @@
-// Copyright 2022, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
-import 'custom_name_dialog.dart';
+import 'language_dialog.dart';
 import 'settings.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -46,16 +42,16 @@ class SettingsScreen extends StatelessWidget {
               valueListenable: settings.theme,
               builder: (context, soundsOn, child) => _SettingsLine(
                 'Тема',
-                const Icon(Icons.theater_comedy),
+                const Icon(Icons.lightbulb_outline_rounded),
                 onSelected: () => settings.setLanguage('light'),
               ),
             ),
             ValueListenableBuilder<String>(
               valueListenable: settings.language,
-              builder: (context, musicOn, child) => _SettingsLine(
+              builder: (context, musicOn, child) => _LanguageChangeLine(
                 'Язык',
-                const Icon(Icons.language),
-                onSelected: () => settings.setLanguage('russian'),
+                //const Icon(Icons.language),
+                //onSelected: () => settings.setLanguage('russian'),
               ),
             ),
             // Consumer<InAppPurchaseController?>(
@@ -85,19 +81,19 @@ class SettingsScreen extends StatelessWidget {
             //     onSelected: callback,
             //   );
             // }),
-            _SettingsLine(
-              'Сброс прогресса',
-              const Icon(Icons.delete),
-              onSelected: () {
-                context.read<PlayerProgress>().reset();
+            // _SettingsLine(
+            //   'Сброс прогресса',
+            //   const Icon(Icons.delete),
+            //   onSelected: () {
+            //     context.read<PlayerProgress>().reset();
 
-                final messenger = ScaffoldMessenger.of(context);
-                messenger.showSnackBar(
-                  const SnackBar(content: Text('Прогресс сброшен')),
-                );
-              },
-            ),
-            _gap,
+            //     final messenger = ScaffoldMessenger.of(context);
+            //     messenger.showSnackBar(
+            //       const SnackBar(content: Text('Прогресс сброшен')),
+            //     );
+            //   },
+            // ),
+            // _gap,
           ],
         ),
         rectangularMenuArea: ElevatedButton(
@@ -116,10 +112,10 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class _NameChangeLine extends StatelessWidget {
+class _LanguageChangeLine extends StatelessWidget {
   final String title;
 
-  const _NameChangeLine(this.title);
+  const _LanguageChangeLine(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +123,7 @@ class _NameChangeLine extends StatelessWidget {
 
     return InkResponse(
       highlightShape: BoxShape.rectangle,
-      onTap: () => showCustomNameDialog(context),
+      onTap: () => showLanguageDialog(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
@@ -135,16 +131,14 @@ class _NameChangeLine extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 )),
             const Spacer(),
             ValueListenableBuilder(
-              valueListenable: settings.theme,
+              valueListenable: settings.language,
               builder: (context, name, child) => Text(
                 '‘$name’',
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 ),
               ),
@@ -177,7 +171,6 @@ class _SettingsLine extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 )),
             const Spacer(),

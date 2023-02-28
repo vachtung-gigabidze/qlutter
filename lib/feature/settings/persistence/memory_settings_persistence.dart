@@ -9,7 +9,7 @@ import 'settings_persistence.dart';
 class MemoryOnlySettingsPersistence implements SettingsPersistence {
   String theme = 'light';
 
-  String language = 'russian';
+  String language = 'Русский';
 
   @override
   Future<String> getTheme({required String defaultValue}) async => theme;
