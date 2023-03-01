@@ -13,6 +13,7 @@ class FieldView extends StatefulWidget {
   final VoidCallback onWin;
   final Size? parentSize;
   final Color backgroundColor;
+  final bool isView;
 
   const FieldView(
       {super.key,
@@ -21,7 +22,8 @@ class FieldView extends StatefulWidget {
       required this.onWin,
       this.parentSize,
       this.backgroundColor = Colors.white,
-      required this.onRefresh});
+      required this.onRefresh,
+      this.isView = false});
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -71,21 +73,21 @@ class FieldViewState extends State<FieldView> {
           setState(() {});
         }
       },
-      child: GestureDetector(
-        onPanUpdate: (details) {
-          if (details.delta.dx > 0) {
-            field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
-          }
-          if (details.delta.dx < 0) {
-            field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
-          }
-        },
+      child: InkWell(
+        // onPanUpdate: (details) {
+        //   if (details.delta.dx > 0) {
+        //     field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
+        //   }
+        //   if (details.delta.dx < 0) {
+        //     field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
+        //   }
+        // },
         child: BlockItem(
           item: item,
           elementSize: elementSize,
           selected: false,
           onTap: () {
-            if (item is Ball) {
+            if (item is Ball && !widget.isView) {
               setState(() {
                 selectedItem = item;
               });

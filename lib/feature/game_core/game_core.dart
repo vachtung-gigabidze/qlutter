@@ -137,7 +137,6 @@ class Field {
   }
 
   bool isEdge(Coordinates coordItemNearly) {
-    //TODO: need check null cell until not edge field
     return true;
     // (coordItemNearly.horizontal == 0 ||
     //     coordItemNearly.vertical == 0 ||
