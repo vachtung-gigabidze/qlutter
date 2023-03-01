@@ -33,39 +33,65 @@ class LevelSelectionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 50),
             Expanded(
-              child: ListView(
+              child: GridView.count(
+                crossAxisCount: 7,
                 children: [
                   for (final level in levelManager.levels!.values)
-                    ListTile(
-                      enabled:
-                          playerProgress.highestLevelReached >= level.levelId,
-                      onTap: () {
-                        // final audioController = context.read<AudioController>();
-                        // audioController.playSfx(SfxType.buttonTap);
-
-                        GoRouter.of(context)
-                            .go('/play/session/${level.levelId}');
-                      },
-                      leading: Text(level.levelId.toString()),
-                      title: SizedBox(
-                        height: 50,
-                        width: 50,
-                        child: FieldView(
-                          backgroundColor: palette.backgroundLevelSelection,
-                          parentSize: const Size(50, 50),
-                          key: ValueKey<List<List<Item?>>>(level.field),
-                          field: Field(level),
-                          onChanged: (p0, s0) {},
-                          onWin: () {},
-                          onRefresh: () {},
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            GoRouter.of(context)
+                                .go('/play/session/${level.levelId}');
+                          },
+                          child: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: FieldView(
+                              backgroundColor: palette.backgroundLevelSelection,
+                              parentSize: const Size(50, 50),
+                              key: ValueKey<List<List<Item?>>>(level.field),
+                              field: Field(level),
+                              onChanged: (p0, s0) {},
+                              onWin: () {},
+                              onRefresh: () {},
+                              isView: true,
+                            ),
+                          ),
                         ),
-                      ),
-                      // title: Text(level.levelId == 0
-                      //     ? 'Tutorial'
-                      //     : 'Level #${level.levelId}'),
+                        // const SizedBox(height: 10),
+                        // Text(level.levelId.toString()),
+                      ],
                     )
                 ],
               ),
+              // child: ListView(
+              //   children: [
+              //     for (final level in levelManager.levels!.values)
+              //       ListTile(
+              //         enabled:
+              //             playerProgress.highestLevelReached >= level.levelId,
+              //         onTap: () {
+              //           GoRouter.of(context)
+              //               .go('/play/session/${level.levelId}');
+              //         },
+              //         leading: Text(level.levelId.toString()),
+              //         title: SizedBox(
+              //           height: 50,
+              //           width: 50,
+              //           child: FieldView(
+              //             backgroundColor: palette.backgroundLevelSelection,
+              //             parentSize: const Size(50, 50),
+              //             key: ValueKey<List<List<Item?>>>(level.field),
+              //             field: Field(level),
+              //             onChanged: (p0, s0) {},
+              //             onWin: () {},
+              //             onRefresh: () {},
+              //           ),
+              //         ),
+              //       )
+              //   ],
+              // ),
             ),
           ],
         ),

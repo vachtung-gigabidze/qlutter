@@ -1,7 +1,3 @@
-// Copyright 2022, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:collection';
 import 'dart:math';
 
@@ -126,8 +122,6 @@ class _ConfettiState extends State<Confetti>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      // We don't really care about the duration, since we're going to
-      // use the controller on loop anyway.
       duration: const Duration(seconds: 1),
       vsync: this,
     );
