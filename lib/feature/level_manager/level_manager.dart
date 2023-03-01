@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
@@ -24,42 +23,17 @@ class LevelManager {
   static const int holeCell5 = 66;
   static const int holeCell6 = 77;
 
-  LevelManager? instance;
-  late Map<int, Level>? levels;
-  late Field? field;
+  Map<int, Level>? levels;
+  Field? field;
 
-  LevelManager() {
-    //build();
-  }
+  LevelManager();
 
-  LevelManager build() {
-    instance ??= LevelManager().readLevels();
-    return instance!;
-  }
-
-  readLevels() async {
+  Future readLevels() async {
     LevelRepository repo = locator.get<LevelRepository>();
-    List<Level> levelList = await repo.getLevels();
-    levels = levelList.asMap();
-    //levels = await openLevels();
-  }
-
-  Future<Field?> getFiledAsync(int levelIndex) async {
     if (levels == null) {
-      levels = await openLevels();
-
-      field = Field(levels![levelIndex]!);
-    } else if (field?.level.levelId != levelIndex) {
-      field = Field(levels![levelIndex]!);
+      List<Level> levelList = await repo.getLevels();
+      levels = levelList.asMap();
     }
-    return Future.value(field);
-  }
-
-  Field? getFiled(int levelIndex) {
-    if (levels != null && field?.level.levelId != levelIndex) {
-      field = Field(levels![levelIndex]!);
-    }
-    return field;
   }
 
   Field copyField(Field field) {
@@ -116,40 +90,5 @@ class LevelManager {
     }
 
     return null;
-  }
-
-  Future<Map<int, Level>> openLevels() async {
-    String levelsFile = await rootBundle.loadString('assets/classic.txt');
-    levels = <int, Level>{};
-    int rowNum = 0;
-    int elementId = 0;
-
-    List<String> rows = levelsFile.split('\n');
-
-    int level = 0;
-    while (level != 25) {
-      level = int.parse(rows[rowNum]);
-      rowNum++;
-      int h = int.parse(rows[rowNum].split(' ')[1]);
-      int w = int.parse(rows[rowNum].split(' ')[0]);
-      rowNum++;
-
-      List<List<Item?>> l = [];
-      for (var i = 0; i < h; i++) {
-        List<Item?> fieldRow = [];
-        for (int element in rows[rowNum].split(' ').map((e) => int.parse(e))) {
-          elementId++;
-          fieldRow.add(convertLegendToItem(element, elementId));
-        }
-        l.add(fieldRow);
-        rowNum++;
-      }
-      levels![level] = Level(
-        l,
-        level,
-      )..size = Size(h + .0, w + .0);
-    }
-
-    return Future.value(levels);
   }
 }

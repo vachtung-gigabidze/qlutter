@@ -4,9 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
-
-// import '../audio/audio_controller.dart';
-// import '../audio/sounds.dart';
 import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -18,7 +15,7 @@ class LevelSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
     final playerProgress = context.watch<PlayerProgress>();
-    final levelManager = context.watch<LevelManager>();
+    final levelManager = context.read<LevelManager>();
 
     return Scaffold(
       backgroundColor: palette.backgroundLevelSelection,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
@@ -130,10 +129,10 @@ class _GlobalProviders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppLifecycleObserver(
-      child: MultiBlocProvider(
+      child: MultiProvider(
         providers: [
-          Provider(
-            create: (context) => locator.get<LevelManager>(),
+          Provider<LevelManager>.value(
+            value: locator.get<LevelManager>()..readLevels(),
           ),
           ChangeNotifierProvider(
             create: (context) {

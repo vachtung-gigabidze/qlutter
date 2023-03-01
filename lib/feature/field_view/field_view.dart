@@ -1,20 +1,9 @@
-// import 'dart:async';
 import 'dart:math';
-
-// import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-// import 'package:provider/provider.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
-// import 'package:qlutter/game/core/level_manager.dart';
-// import 'package:qlutter/game/core/styles.dart';
-// import 'package:qlutter/game/core/ui/alerts/alerts.dart';
 import 'package:qlutter/feature/field_view/components/block_item.dart';
 import 'package:qlutter/feature/style/palette.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// import 'dart:html';
 
 class FieldView extends StatefulWidget {
   //final Level level;
@@ -25,7 +14,7 @@ class FieldView extends StatefulWidget {
   final Size? parentSize;
   final Color backgroundColor;
 
-  FieldView(
+  const FieldView(
       {super.key,
       required this.field,
       required this.onChanged,
@@ -39,14 +28,11 @@ class FieldView extends StatefulWidget {
 }
 
 class FieldViewState extends State<FieldView> {
-  // int paddingSize = 0;
   late double elementSize;
   late Field field;
-  // late Field fieldCopy;
   late Size fieldSize;
   late Size maxViewSize;
   Ball? selectedItem;
-  // int? selectedLevel;
   bool showHover = false;
   List<Widget> walls = [];
   List<Widget> holes = [];
@@ -81,11 +67,9 @@ class FieldViewState extends State<FieldView> {
           if (field.checkWin()) {
             widget.onChanged(field.ballsCount, steps);
             widget.onWin();
-            // widget.onRefresh();
           }
           setState(() {});
         }
-        // widget.onChanged(steps);
       },
       child: GestureDetector(
         onPanUpdate: (details) {
@@ -100,42 +84,12 @@ class FieldViewState extends State<FieldView> {
           item: item,
           elementSize: elementSize,
           selected: false,
-          // onPanUpdate: (DragUpdateDetails details) {
-          //   if (!kIsWeb) {
-          //     if (details.delta.dx < 0) {
-          //       setState(() {
-          //         field.moveItem(
-          //             Coordinates(t.toInt(), r.toInt()), Direction.right);
-          //       });
-          //     }
-          //     if (details.delta.dx > 0) {
-          //       setState(() {
-          //         field.moveItem(
-          //             Coordinates(t.toInt(), r.toInt()), Direction.left);
-          //       });
-          //     }
-          //     if (details.delta.dy < 0) {
-          //       setState(() {
-          //         field.moveItem(
-          //             Coordinates(t.toInt(), r.toInt()), Direction.up);
-          //       });
-          //     }
-          //     if (details.delta.dy > 0) {
-          //       setState(() {
-          //         field.moveItem(
-          //             Coordinates(t.toInt(), r.toInt()), Direction.down);
-          //       });
-          //     }
-          //   }
-          // },
           onTap: () {
-            // if (kIsWeb) {
             if (item is Ball) {
               setState(() {
                 selectedItem = item;
               });
             }
-            // }
           },
         ),
       ),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-// import '../in_app_purchase/in_app_purchase.dart';
-import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 import 'language_dialog.dart';
@@ -48,7 +45,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             ValueListenableBuilder<String>(
               valueListenable: settings.language,
-              builder: (context, musicOn, child) => _LanguageChangeLine(
+              builder: (context, musicOn, child) => const _LanguageChangeLine(
                 'Язык',
                 //const Icon(Icons.language),
                 //onSelected: () => settings.setLanguage('russian'),
