@@ -1,16 +1,9 @@
-// Copyright 2022, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-// import '../in_app_purchase/in_app_purchase.dart';
-import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
-import 'custom_name_dialog.dart';
+import 'language_dialog.dart';
 import 'settings.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -30,32 +23,32 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _gap,
             const Text(
-              'Settings',
+              'Настройки',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontFamily: 'Permanent Marker',
+                // fontFamily: font,
                 fontSize: 55,
                 height: 1,
               ),
             ),
             _gap,
-            const _NameChangeLine(
-              'Name',
-            ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.soundsOn,
+            // const _NameChangeLine(
+            //   'Тема',
+            // ),
+            ValueListenableBuilder<String>(
+              valueListenable: settings.theme,
               builder: (context, soundsOn, child) => _SettingsLine(
-                'Sound FX',
-                Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off),
-                onSelected: () => settings.toggleSoundsOn(),
+                'Тема',
+                const Icon(Icons.lightbulb_outline_rounded),
+                onSelected: () => settings.setLanguage('light'),
               ),
             ),
-            ValueListenableBuilder<bool>(
-              valueListenable: settings.musicOn,
-              builder: (context, musicOn, child) => _SettingsLine(
-                'Music',
-                Icon(musicOn ? Icons.music_note : Icons.music_off),
-                onSelected: () => settings.toggleMusicOn(),
+            ValueListenableBuilder<String>(
+              valueListenable: settings.language,
+              builder: (context, musicOn, child) => const _LanguageChangeLine(
+                'Язык',
+                //const Icon(Icons.language),
+                //onSelected: () => settings.setLanguage('russian'),
               ),
             ),
             // Consumer<InAppPurchaseController?>(
@@ -85,37 +78,41 @@ class SettingsScreen extends StatelessWidget {
             //     onSelected: callback,
             //   );
             // }),
-            _SettingsLine(
-              'Reset progress',
-              const Icon(Icons.delete),
-              onSelected: () {
-                context.read<PlayerProgress>().reset();
+            // _SettingsLine(
+            //   'Сброс прогресса',
+            //   const Icon(Icons.delete),
+            //   onSelected: () {
+            //     context.read<PlayerProgress>().reset();
 
-                final messenger = ScaffoldMessenger.of(context);
-                messenger.showSnackBar(
-                  const SnackBar(
-                      content: Text('Player progress has been reset.')),
-                );
-              },
-            ),
-            _gap,
+            //     final messenger = ScaffoldMessenger.of(context);
+            //     messenger.showSnackBar(
+            //       const SnackBar(content: Text('Прогресс сброшен')),
+            //     );
+            //   },
+            // ),
+            // _gap,
           ],
         ),
         rectangularMenuArea: ElevatedButton(
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: const Text('Back'),
+          child: Text('Назад',
+              style: TextStyle(
+                fontFamily: palette.fontMain,
+                fontSize: 26,
+                color: palette.ink,
+              )),
         ),
       ),
     );
   }
 }
 
-class _NameChangeLine extends StatelessWidget {
+class _LanguageChangeLine extends StatelessWidget {
   final String title;
 
-  const _NameChangeLine(this.title);
+  const _LanguageChangeLine(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +120,7 @@ class _NameChangeLine extends StatelessWidget {
 
     return InkResponse(
       highlightShape: BoxShape.rectangle,
-      onTap: () => showCustomNameDialog(context),
+      onTap: () => showLanguageDialog(context),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Row(
@@ -131,16 +128,14 @@ class _NameChangeLine extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 )),
             const Spacer(),
             ValueListenableBuilder(
-              valueListenable: settings.playerName,
+              valueListenable: settings.language,
               builder: (context, name, child) => Text(
                 '‘$name’',
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 ),
               ),
@@ -173,7 +168,6 @@ class _SettingsLine extends StatelessWidget {
           children: [
             Text(title,
                 style: const TextStyle(
-                  fontFamily: 'Permanent Marker',
                   fontSize: 30,
                 )),
             const Spacer(),

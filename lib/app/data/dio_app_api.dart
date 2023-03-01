@@ -3,8 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/domain/app_api.dart';
 import 'package:qlutter/app/domain/app_config.dart';
-import 'package:qlutter/feature/auth/data/auth_interceptor.dart';
-// import 'package:otus_food_app/feature/favorite/data/dto/favorite_dto.dart';
 
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -24,8 +22,6 @@ class DioAppApi implements AppApi {
 
     dio = Dio(options);
     if (kDebugMode) addInterceptor(PrettyDioLogger());
-
-    addInterceptor(AuthInterceptor());
   }
 
   void addInterceptor(Interceptor interceptor) {
@@ -40,86 +36,6 @@ class DioAppApi implements AppApi {
 
   void deleteInterceptor(Type type) {
     dio.interceptors.removeWhere((element) => element.runtimeType == type);
-  }
-
-  @override
-  Future<Response> getProfile() {
-    try {
-      return dio.get("/user");
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response> passwordUpdate(
-      {required String? oldPassword, required String? newPassword}) {
-    try {
-      return dio.put(
-        "/user",
-        queryParameters: {
-          "oldPassword": oldPassword,
-          "newPassword": newPassword
-        },
-      );
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response> refreshToken({String? refreshToken}) {
-    try {
-      return dio.post(
-        "/token/$refreshToken",
-      );
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response> singIn({required String password, required String login}) {
-    try {
-      return dio
-          .post("/token", data: {"username": login, "password": password});
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response> singUp(
-      {required String password,
-      required String login,
-      required String email}) {
-    try {
-      return dio.put(
-        "/token",
-        data: {
-          "username": login,
-          "password": password,
-          "email": email,
-        },
-      );
-    } catch (_) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response> userUpdate({String? login, String? email}) {
-    try {
-      return dio.post(
-        "/user",
-        data: {
-          "username": login,
-          "email": email,
-        },
-      );
-    } catch (_) {
-      rethrow;
-    }
   }
 
   @override

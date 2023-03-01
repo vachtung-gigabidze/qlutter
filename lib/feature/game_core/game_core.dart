@@ -26,36 +26,6 @@ class Hole extends Item {
   Hole(Color color) : super(color: color);
 }
 
-// class Level {
-//   int levelId;
-//   late List<List<Item?>> field;
-//   late int ballsCount;
-//   late Map<Color, int> colorsBall;
-//   late Size size;
-
-//   Level(this.field, this.levelId) {
-//     ballsCount = _countBallOnLevel();
-//   }
-
-//   int elements() => (size.width * size.height).round();
-
-//   int _countBallOnLevel() {
-//     colorsBall = <Color, int>{};
-//     ballsCount = field.fold(
-//         0,
-//         (int sum, List<Item?> el) =>
-//             sum +
-//             el.fold(0, (int pre, Item? item) {
-//               if (item != null && item is Ball) {
-//                 colorsBall[item.color] = (colorsBall[item.color] ?? 0) + 1;
-//               }
-//               return (item is Ball) ? pre + 1 : pre;
-//             }));
-
-//     return ballsCount;
-//   }
-// }
-
 enum Direction { left, right, up, down, nowhere }
 
 class Field {
@@ -168,12 +138,13 @@ class Field {
 
   bool isEdge(Coordinates coordItemNearly) {
     //TODO: need check null cell until not edge field
-    return (coordItemNearly.horizontal == 0 ||
-        coordItemNearly.vertical == 0 ||
-        coordItemNearly.horizontal == level.size.height - 1 ||
-        coordItemNearly.vertical == level.size.height - 1 ||
-        coordItemNearly.horizontal == level.size.width - 1 ||
-        coordItemNearly.vertical == level.size.width - 1);
+    return true;
+    // (coordItemNearly.horizontal == 0 ||
+    //     coordItemNearly.vertical == 0 ||
+    //     coordItemNearly.horizontal == level.size.height - 1 ||
+    //     coordItemNearly.vertical == level.size.height - 1 ||
+    //     coordItemNearly.horizontal == level.size.width - 1 ||
+    //     coordItemNearly.vertical == level.size.width - 1);
   }
 
   bool acceptBall(Coordinates coordItem, Coordinates coordItemNearly) {

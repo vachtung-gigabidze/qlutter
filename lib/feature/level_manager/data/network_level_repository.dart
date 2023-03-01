@@ -28,7 +28,7 @@ class NetworkLevelRepository implements LevelRepository {
   @override
   Future sendProcess(
       {int? levelId, int? steps, int? seconds, DateTime? dateTime}) async {
-    final response = await api.sendProcess(
+    await api.sendProcess(
         levelId: levelId, steps: steps, seconds: seconds, dateTime: dateTime);
   }
 }

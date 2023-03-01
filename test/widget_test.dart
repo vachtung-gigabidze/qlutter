@@ -11,11 +11,11 @@ import 'package:flutter_test/flutter_test.dart';
 
 // import 'package:qlutter/main.dart';
 
-Widget _wrap(Widget widget) {
-  return MaterialApp(
-    home: Scaffold(body: widget),
-  );
-}
+// Widget _wrap(Widget widget) {
+//   return MaterialApp(
+//     home: Scaffold(body: widget),
+//   );
+// }
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

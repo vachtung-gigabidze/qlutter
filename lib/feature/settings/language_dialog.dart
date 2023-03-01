@@ -1,29 +1,25 @@
-// Copyright 2022, the Flutter project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'settings.dart';
 
-void showCustomNameDialog(BuildContext context) {
+void showLanguageDialog(BuildContext context) {
   showGeneralDialog(
       context: context,
       pageBuilder: (context, animation, secondaryAnimation) =>
-          CustomNameDialog(animation: animation));
+          LanguageDialog(animation: animation));
 }
 
-class CustomNameDialog extends StatefulWidget {
+class LanguageDialog extends StatefulWidget {
   final Animation<double> animation;
 
-  const CustomNameDialog({required this.animation, super.key});
+  const LanguageDialog({required this.animation, super.key});
 
   @override
-  State<CustomNameDialog> createState() => _CustomNameDialogState();
+  State<LanguageDialog> createState() => _LanguageDialogState();
 }
 
-class _CustomNameDialogState extends State<CustomNameDialog> {
+class _LanguageDialogState extends State<LanguageDialog> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -34,18 +30,18 @@ class _CustomNameDialogState extends State<CustomNameDialog> {
         curve: Curves.easeOutCubic,
       ),
       child: SimpleDialog(
-        title: const Text('Change name'),
+        title: const Text('Язык'),
         children: [
           TextField(
             controller: _controller,
-            autofocus: true,
+            // autofocus: true,
             maxLength: 12,
             maxLengthEnforcement: MaxLengthEnforcement.enforced,
             textAlign: TextAlign.center,
             textCapitalization: TextCapitalization.words,
             textInputAction: TextInputAction.done,
             onChanged: (value) {
-              context.read<SettingsController>().setPlayerName(value);
+              context.read<SettingsController>().setLanguage(value);
             },
             onSubmitted: (value) {
               // Player tapped 'Submit'/'Done' on their keyboard.
@@ -63,7 +59,7 @@ class _CustomNameDialogState extends State<CustomNameDialog> {
 
   @override
   void didChangeDependencies() {
-    _controller.text = context.read<SettingsController>().playerName.value;
+    _controller.text = context.read<SettingsController>().language.value;
     super.didChangeDependencies();
   }
 

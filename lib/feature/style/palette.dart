@@ -37,7 +37,7 @@ class Palette {
   Color get backgroundLevelSelection => const Color(0xffa2dcc7);
   Color get backgroundPlaySession => const Color(0xffffebb5);
   Color get background4 => const Color(0xffffd7ff);
-  Color get backgroundSettings => const Color(0xffbfc8e3);
+  Color get backgroundSettings => const Color(0xffbbc8e3);
   Color get trueWhite => const Color(0xffffffff);
 
   Color get blockColor => Colors.grey;
