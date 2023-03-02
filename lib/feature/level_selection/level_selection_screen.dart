@@ -38,69 +38,45 @@ class LevelSelectionScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Expanded(
                       child: GridView.count(
-                        crossAxisCount: 7,
+                        crossAxisCount: 6,
                         children: [
                           for (final level in snapshot.data!.values)
                             Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    GoRouter.of(context)
-                                        .go('/play/session/${level.levelId}');
-                                  },
-                                  child: SizedBox(
-                                    height: 50,
-                                    width: 50,
-                                    child: FieldView(
-                                      backgroundColor:
-                                          palette.backgroundLevelSelection,
-                                      parentSize: const Size(50, 50),
-                                      key: ValueKey<List<List<Item?>>>(
-                                          level.field),
-                                      field: Field(level),
-                                      onChanged: (p0, s0) {},
-                                      onWin: () {},
-                                      onRefresh: () {},
-                                      isView: true,
+                                Expanded(
+                                  child: FittedBox(
+                                    child: InkWell(
+                                      onTap: () {
+                                        GoRouter.of(context).go(
+                                            '/play/session/${level.levelId}');
+                                      },
+                                      child: FieldView(
+                                        backgroundColor:
+                                            palette.backgroundLevelSelection,
+                                        parentSize: const Size(150, 150),
+                                        key: ValueKey<List<List<Item?>>>(
+                                            level.field),
+                                        field: Field(level),
+                                        onChanged: (p0, s0) {},
+                                        onWin: () {},
+                                        onRefresh: () {},
+                                        isView: true,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                // const SizedBox(height: 10),
-                                // Text(level.levelId.toString()),
+                                Text(
+                                  level.levelId.toString(),
+                                  style: const TextStyle(fontSize: 16),
+                                ),
                               ],
                             )
                         ],
                       ),
-                      // child: ListView(
-                      //   children: [
-                      //     for (final level in levelManager.levels!.values)
-                      //       ListTile(
-                      //         enabled:
-                      //             playerProgress.highestLevelReached >= level.levelId,
-                      //         onTap: () {
-                      //           GoRouter.of(context)
-                      //               .go('/play/session/${level.levelId}');
-                      //         },
-                      //         leading: Text(level.levelId.toString()),
-                      //         title: SizedBox(
-                      //           height: 50,
-                      //           width: 50,
-                      //           child: FieldView(
-                      //             backgroundColor: palette.backgroundLevelSelection,
-                      //             parentSize: const Size(50, 50),
-                      //             key: ValueKey<List<List<Item?>>>(level.field),
-                      //             field: Field(level),
-                      //             onChanged: (p0, s0) {},
-                      //             onWin: () {},
-                      //             onRefresh: () {},
-                      //           ),
-                      //         ),
-                      //       )
-                      //   ],
-                      // ),
                     ),
                   ],
                 ),
