@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
-import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
+// import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
@@ -128,33 +128,31 @@ class _GlobalProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppLifecycleObserver(
-      child: MultiProvider(
-        providers: [
-          Provider<LevelManager>.value(
-            value: locator.get<LevelManager>()..readLevels(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) {
-              var progress = PlayerProgress(playerProgressPersistence);
-              progress.getLatestFromStore();
-              return progress;
-            },
-          ),
-          Provider<GamesServicesController?>.value(
-              value: gamesServicesController),
-          Provider<SettingsController>(
-            lazy: false,
-            create: (context) => SettingsController(
-              persistence: settingsPersistence,
-            )..loadStateFromPersistence(),
-          ),
-          Provider(
-            create: (context) => Palette(),
-          ),
-        ],
-        child: child,
-      ),
+    return MultiProvider(
+      providers: [
+        Provider<LevelManager>.value(
+          value: locator.get<LevelManager>()..readLevels(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            var progress = PlayerProgress(playerProgressPersistence);
+            progress.getLatestFromStore();
+            return progress;
+          },
+        ),
+        Provider<GamesServicesController?>.value(
+            value: gamesServicesController),
+        Provider<SettingsController>(
+          lazy: false,
+          create: (context) => SettingsController(
+            persistence: settingsPersistence,
+          )..loadStateFromPersistence(),
+        ),
+        Provider(
+          create: (context) => Palette(),
+        ),
+      ],
+      child: child,
     );
   }
 }
