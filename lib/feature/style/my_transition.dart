@@ -47,7 +47,7 @@ class _MyReveal extends StatefulWidget {
 class _MyRevealState extends State<_MyReveal> {
   static final _log = Logger('_InkRevealState');
 
-  bool _finished = false;
+  bool _finished = true;
 
   final _tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
 

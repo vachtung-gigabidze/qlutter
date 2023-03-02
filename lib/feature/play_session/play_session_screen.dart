@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
+import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
@@ -36,8 +37,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
   late DateTime _startOfPlay;
   late Level level;
-  late Field field;
-  late Field fieldCopy;
+  Field? field;
+  Field? fieldCopy;
 
   @override
   Widget build(BuildContext context) {
@@ -55,108 +56,129 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
         ignoring: _duringCelebration,
         child: Scaffold(
           backgroundColor: palette.backgroundPlaySession,
-          body: Stack(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkResponse(
-                            onTap: () => setState(() {
-                              fieldCopy = Field.copyField(field);
-                            }),
-                            child: const Icon(Icons.refresh, size: 50),
-                          ),
-                        ),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Уровень: ${level.levelId}',
-                              style: TextStyle(
-                                fontFamily: palette.fontMain,
-                                fontSize: 26,
-                                color: palette.ink,
+          body: FutureBuilder(
+              future: _loadLevel(),
+              builder: (context, AsyncSnapshot<bool> snapshot) {
+                if (snapshot.hasData) {
+                  return Stack(
+                    children: [
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: InkResponse(
+                                    onTap: () => setState(() {
+                                      if (field != null) {
+                                        fieldCopy = Field.copyField(field!);
+                                      }
+                                    }),
+                                    child: const Icon(Icons.refresh, size: 50),
+                                  ),
+                                ),
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Уровень: ${level.levelId}',
+                                      style: TextStyle(
+                                        fontFamily: palette.fontMain,
+                                        fontSize: 26,
+                                        color: palette.ink,
+                                      ),
+                                    )),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: InkResponse(
+                                    onTap: () => showInformationDialog(context),
+                                    child: const Icon(
+                                      Icons.info_outline,
+                                      size: 50,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Spacer(),
+                            Consumer<LevelState>(
+                              builder: (context, levelState, child) =>
+                                  FieldView(
+                                key: ValueKey<List<List<Item?>>>(
+                                    fieldCopy!.level.field),
+                                field: fieldCopy!,
+                                onChanged: (value, step) =>
+                                    levelState.setProgress(value, step),
+                                onWin: () => levelState.evaluate(level.levelId),
+                                onRefresh: () {
+                                  setState(() {
+                                    fieldCopy = Field.copyField(field!);
+                                  });
+                                },
                               ),
-                            )),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: InkResponse(
-                            onTap: () => showInformationDialog(context),
-                            child: const Icon(
-                              Icons.info_outline,
-                              size: 50,
                             ),
-                          ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: () =>
+                                      GoRouter.of(context).go('/play'),
+                                  child: Text(
+                                    'Назад',
+                                    style: TextStyle(
+                                      fontFamily: palette.fontMain,
+                                      fontSize: 26,
+                                      color: palette.ink,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Consumer<LevelState>(
-                      builder: (context, levelState, child) => FieldView(
-                        key: ValueKey<List<List<Item?>>>(fieldCopy.level.field),
-                        field: fieldCopy,
-                        onChanged: (value, step) =>
-                            levelState.setProgress(value, step),
-                        onWin: () => levelState.evaluate(level.levelId),
-                        onRefresh: () {
-                          setState(() {
-                            fieldCopy = Field.copyField(field);
-                          });
-                        },
                       ),
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => GoRouter.of(context).go('/play'),
-                          child: Text(
-                            'Назад',
-                            style: TextStyle(
-                              fontFamily: palette.fontMain,
-                              fontSize: 26,
-                              color: palette.ink,
+                      SizedBox.expand(
+                        child: Visibility(
+                          visible: _duringCelebration,
+                          child: IgnorePointer(
+                            child: Confetti(
+                              isStopped: !_duringCelebration,
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox.expand(
-                child: Visibility(
-                  visible: _duringCelebration,
-                  child: IgnorePointer(
-                    child: Confetti(
-                      isStopped: !_duringCelebration,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+                    ],
+                  );
+                } else {
+                  return const AppLoader();
+                }
+              }),
         ),
       ),
     );
+  }
+
+  Future<bool> _loadLevel() async {
+    final levels = await context.read<LevelManager>().readLevels();
+
+    level = levels[widget.levelNumber]!;
+
+    field = Field(level);
+    fieldCopy = Field.copyField(field!);
+
+    _startOfPlay = DateTime.now();
+    return Future.value(true);
   }
 
   @override
   void initState() {
     super.initState();
 
-    level = context.read<LevelManager>().levels![widget.levelNumber]!;
-    field = Field(level);
-    fieldCopy = Field.copyField(field);
-
-    _startOfPlay = DateTime.now();
+    // level = context.read<LevelManager>().levels![widget.levelNumber]!;
   }
 
   Future<void> _playerWon(int steps) async {

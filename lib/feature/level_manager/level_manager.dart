@@ -28,12 +28,14 @@ class LevelManager {
 
   LevelManager();
 
-  Future readLevels() async {
+  Future<Map<int, Level>> readLevels() async {
     LevelRepository repo = locator.get<LevelRepository>();
     if (levels == null) {
       List<Level> levelList = await repo.getLevels();
       levels = levelList.asMap();
     }
+    // await Future.delayed(const Duration(seconds: 5));
+    return Future.value(levels);
   }
 
   Field copyField(Field field) {
