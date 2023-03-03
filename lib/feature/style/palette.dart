@@ -43,7 +43,7 @@ class Palette {
   Color get cellColor4 => Colors.deepPurple;
   // Color get cellColor4 => Colors.yellow;
   Color get cellColor5 => Colors.deepOrangeAccent;
-  Color get cellColor6 => Colors.cyan;
+  Color get cellColor6 => Colors.indigo;
   String get fontMain => 'DS Goose';
   /*
   Color get cellColor1 => const Color(0xfff5bfd2);
