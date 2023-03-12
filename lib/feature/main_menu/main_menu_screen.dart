@@ -20,14 +20,11 @@ class MainMenuScreen extends StatelessWidget {
       body: ResponsiveScreen(
         mainAreaProminence: 0.45,
         squarishMainArea: Stack(children: [
-          RiveAnimation.asset("assets/rive/balls.riv"),
+          const RiveAnimation.asset("assets/rive/balls.riv"),
           Positioned.fill(
               child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 5,
-              sigmaY: 5,
-            ),
-            child: SizedBox(),
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            child: const SizedBox(),
           )),
           Center(
             child: Transform.rotate(
@@ -37,7 +34,7 @@ class MainMenuScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: palette.fontMain,
-                  fontSize: 100,
+                  fontSize: 120,
                 ),
               ),
             ),
