@@ -4,13 +4,13 @@ import 'package:qlutter/feature/game_core/game_core.dart';
 
 @freezed
 class Level {
-  int levelId;
+  late int levelId;
   late List<List<Item?>> field;
   late int ballsCount;
   late Map<Color, int> colorsBall;
   late Size size;
 
-  Level(this.field, this.levelId) {
+  Level(field, levelId) {
     ballsCount = _countBallOnLevel();
   }
 
