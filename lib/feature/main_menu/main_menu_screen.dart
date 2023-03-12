@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
+import 'package:rive/rive.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 
@@ -16,19 +19,30 @@ class MainMenuScreen extends StatelessWidget {
       backgroundColor: palette.backgroundMain,
       body: ResponsiveScreen(
         mainAreaProminence: 0.45,
-        squarishMainArea: Center(
-          child: Transform.rotate(
-            angle: -0.1,
-            child: Text(
-              'Qlutter',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: palette.fontMain,
-                fontSize: 100,
+        squarishMainArea: Stack(children: [
+          RiveAnimation.asset("assets/rive/balls.riv"),
+          Positioned.fill(
+              child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 5,
+              sigmaY: 5,
+            ),
+            child: SizedBox(),
+          )),
+          Center(
+            child: Transform.rotate(
+              angle: -0.1,
+              child: Text(
+                'Qlutter',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: palette.fontMain,
+                  fontSize: 100,
+                ),
               ),
             ),
           ),
-        ),
+        ]),
         rectangularMenuArea: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

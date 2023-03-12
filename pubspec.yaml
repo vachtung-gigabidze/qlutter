@@ -37,6 +37,8 @@ dependencies:
 
   # google_mobile_ads: ^2.0.1  # Ads
   # in_app_purchase: ^3.0.1  # In-app purchases
+  rive: ^0.10.2
+  flutter_svg: ^2.0.3
 
 
 dev_dependencies:
@@ -54,7 +56,7 @@ flutter:
   fonts:
     - family: DS Goose
       fonts:
-          - asset: fonts/DS Goose.ttf
+          - asset: assets/fonts/DS Goose.ttf
     # - family: Permanent Marker
     #   fonts:
     #       - asset: assets/Permanent_Marker/PermanentMarker-Regular.ttf
@@ -67,6 +69,7 @@ flutter:
     - assets/images/
     # - assets/music/
     - assets/icon/icon_foreground.png
+    - assets/rive/
     
 flutter_icons:
   android: true
