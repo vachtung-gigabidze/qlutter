@@ -10,7 +10,6 @@ part 'level_progress_cubit.freezed.dart';
 part 'level_progress_cubit.g.dart';
 
 @Singleton()
-@JsonSerializable()
 class LevelProgressCubit extends Cubit<LevelProgressState> {
   LevelProgressCubit(this.levelRecordRepository)
       : super(LevelProgressState.empty());

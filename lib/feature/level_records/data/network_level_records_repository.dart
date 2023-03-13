@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/domain/app_api.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/feature/level_records/domain/level_record_repository.dart';
 
+@Injectable(as: LevelRecordRepository)
 class NetworkLevelRecordsRepository implements LevelRecordRepository {
   final AppApi api;
 

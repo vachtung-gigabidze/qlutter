@@ -14,12 +14,12 @@ Map<String, dynamic> _$ItemDtoToJson(ItemDto instance) => <String, dynamic>{
       'code': instance.code,
     };
 
-SizeDto _$SizeFromJson(Map<String, dynamic> json) => SizeDto(
+SizeDto _$SizeDtoFromJson(Map<String, dynamic> json) => SizeDto(
       json['h'] as int,
       json['w'] as int,
     );
 
-Map<String, dynamic> _$SizeToJson(SizeDto instance) => <String, dynamic>{
+Map<String, dynamic> _$SizeDtoToJson(SizeDto instance) => <String, dynamic>{
       'h': instance.h,
       'w': instance.w,
     };
