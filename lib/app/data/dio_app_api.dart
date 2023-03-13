@@ -66,6 +66,15 @@ class DioAppApi implements AppApi {
   }
 
   @override
+  Future<Response> getProgress() {
+    try {
+      return dio.get("/progress");
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<Response> sendProcess(
       {int? levelId, int? steps, int? seconds, DateTime? dateTime}) {
     try {

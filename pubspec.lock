@@ -273,7 +273,7 @@ packages:
     source: sdk
     version: "0.0.0"
   freezed:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: freezed
       sha256: e819441678f1679b719008ff2ff0ef045d66eed9f9ec81166ca0d9b02a187454
@@ -385,7 +385,7 @@ packages:
     source: hosted
     version: "0.6.5"
   json_annotation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: json_annotation
       sha256: c33da08e136c3df0190bd5bbe51ae1df4a7d96e7954d1d7249fea2968a72d317
@@ -894,5 +894,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.7.0-0"

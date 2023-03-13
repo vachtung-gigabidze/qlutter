@@ -1,20 +1,36 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+class LevelRecord {
+  int? id;
+  int? levelId;
+  int? steps;
+  String? datetime;
+  int? seconds;
+  int? user;
 
-part 'level_record.freezed.dart';
-part 'level_record.g.dart';
+  LevelRecord(
+      {this.id,
+      this.levelId,
+      this.steps,
+      this.datetime,
+      this.seconds,
+      this.user});
 
-@freezed
-class LevelRecord with _$LevelRecord {
-  const factory LevelRecord({
-    required int? id,
-    required int? levelId,
-    required int? steps,
-    required String? datetime,
-    required int? seconds,
-    int? user,
-  }) = _LevelRecord;
+  LevelRecord.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    levelId = json['levelId'];
+    steps = json['steps'];
+    datetime = json['datetime'];
+    seconds = json['seconds'];
+    user = json['user'];
+  }
 
-  factory LevelRecord.fromJson(Map<String, dynamic> json) =>
-      _$LevelRecordFromJson(json);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['levelId'] = levelId;
+    data['steps'] = steps;
+    data['datetime'] = datetime;
+    data['seconds'] = seconds;
+    data['user'] = user;
+    return data;
+  }
 }

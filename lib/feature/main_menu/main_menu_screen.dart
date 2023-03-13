@@ -57,6 +57,20 @@ class MainMenuScreen extends StatelessWidget {
               ),
             ),
             _gap,
+            ElevatedButton(
+              onPressed: () {
+                GoRouter.of(context).go('/progress');
+              },
+              child: Text(
+                'Рекорды',
+                style: TextStyle(
+                  fontFamily: palette.fontMain,
+                  fontSize: 32,
+                  color: palette.ink,
+                ),
+              ),
+            ),
+            _gap,
             IconButton(
               onPressed: () {
                 showInformationDialog(context);

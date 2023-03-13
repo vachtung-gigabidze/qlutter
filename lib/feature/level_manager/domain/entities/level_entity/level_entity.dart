@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 
-@freezed
+// @freezed
 class Level {
-  late int levelId;
+  int levelId;
   late List<List<Item?>> field;
   late int ballsCount;
   late Map<Color, int> colorsBall;
   late Size size;
 
-  Level(field, levelId) {
+  Level(this.field, this.levelId) {
     ballsCount = _countBallOnLevel();
   }
 
