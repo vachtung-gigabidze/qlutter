@@ -22,7 +22,10 @@ class LevelRecordsScreen extends StatelessWidget {
                   builder:
                       (context, AsyncSnapshot<List<LevelRecord>> snapshot) {
                     if (snapshot.hasData) {
-                      return Text('${snapshot.data}');
+                      return ListView.builder(
+                          itemCount: snapshot.data?.length,
+                          itemBuilder: (context, index) =>
+                              Text('Уровень ${snapshot.data![index].levelId}'));
                     } else {
                       return const AppLoader();
                     }
