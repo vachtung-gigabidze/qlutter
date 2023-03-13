@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
@@ -7,6 +8,8 @@ import 'package:qlutter/feature/level_manager/level_manager.dart';
 // import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
+import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
+import 'package:qlutter/feature/level_records/ui/level_records_screen.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
 import 'package:qlutter/feature/main_menu/main_menu_screen.dart';
 import 'package:qlutter/feature/play_session/play_session_screen.dart';
@@ -73,6 +76,11 @@ class MainAppBuilder implements AppBuilder {
               builder: (context, state) =>
                   const SettingsScreen(key: Key('settings')),
             ),
+            GoRoute(
+              path: 'progress',
+              builder: (context, state) =>
+                  const LevelRecordsScreen(key: Key('progress')),
+            ),
           ]),
     ],
   );
@@ -128,8 +136,11 @@ class _GlobalProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
+        BlocProvider<LevelProgressCubit>.value(
+          value: locator.get<LevelProgressCubit>()..getRecords(),
+        ),
         Provider<LevelManager>.value(
           value: locator.get<LevelManager>()..readLevels(),
         ),

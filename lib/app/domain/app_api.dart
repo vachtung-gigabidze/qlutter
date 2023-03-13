@@ -5,6 +5,8 @@ abstract class AppApi {
 
   Future<dynamic> getLevel();
 
+  Future<dynamic> getProgress();
+
   Future<dynamic> sendProcess({
     int? levelId,
     int? steps,

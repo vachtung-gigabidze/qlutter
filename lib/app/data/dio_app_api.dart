@@ -13,7 +13,7 @@ class DioAppApi implements AppApi {
   DioAppApi(AppConfig appConfig) {
     final options = BaseOptions(
       baseUrl: appConfig.baseUrl,
-      connectTimeout: 15000,
+      connectTimeout: const Duration(milliseconds: 15000),
       // headers: {
       //   "Accept": "application/json",
       //   "Access-Control_Allow_Origin": "*"
@@ -60,6 +60,15 @@ class DioAppApi implements AppApi {
   Future<Response> getLevel() {
     try {
       return dio.get("/levels");
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response> getProgress() {
+    try {
+      return dio.get("/progress");
     } catch (_) {
       rethrow;
     }

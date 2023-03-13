@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 
-@freezed
+// @freezed
 class Level {
   int levelId;
   late List<List<Item?>> field;

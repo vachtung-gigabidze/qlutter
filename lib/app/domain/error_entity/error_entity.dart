@@ -22,7 +22,7 @@ class ErrorEntity {
           stackTrace: error.stackTrace,
           error: error,
           // message: error.response?.data["message"] ?? "Неизвестная ошибка",
-          message: error.message,
+          message: error.message ?? "",
           errorMessage: error.error.toString(),
         );
       } catch (_) {

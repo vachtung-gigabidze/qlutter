@@ -27,9 +27,10 @@ class SizeDto {
   final int h;
   final int w;
 
-  factory SizeDto.fromJson(Map<String, dynamic> json) => _$SizeFromJson(json);
+  factory SizeDto.fromJson(Map<String, dynamic> json) =>
+      _$SizeDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SizeToJson(this);
+  Map<String, dynamic> toJson() => _$SizeDtoToJson(this);
 }
 
 @JsonSerializable()
