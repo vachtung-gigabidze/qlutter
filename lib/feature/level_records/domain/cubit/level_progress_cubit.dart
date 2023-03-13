@@ -20,6 +20,21 @@ class LevelProgressCubit extends Cubit<LevelProgressState> {
     try {
       final List<LevelRecord> recordsEntity =
           await levelRecordRepository.getRecords();
+
+      Map<int, LevelRecord> m = <int, LevelRecord>{};
+
+      for (LevelRecord e in recordsEntity) {
+        if (e.levelId != null && e.seconds != null) {
+          if (m[e.levelId!] == null) {
+            m[e.levelId!] = e;
+          } else {
+            if (m[e.levelId]!.seconds >= e.seconds) {}
+          }
+        }
+      }
+
+      //  (value, element) => null) sort((a, b) => a.levelId!.compareTo(b.levelId!));
+
       emit(LevelProgressState.loaded(recordsEntity));
     } catch (error, st) {
       addError(error, st);

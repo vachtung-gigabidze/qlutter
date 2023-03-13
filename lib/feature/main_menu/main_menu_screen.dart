@@ -34,7 +34,7 @@ class MainMenuScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: palette.fontMain,
-                  fontSize: 120,
+                  fontSize: 110,
                 ),
               ),
             ),
