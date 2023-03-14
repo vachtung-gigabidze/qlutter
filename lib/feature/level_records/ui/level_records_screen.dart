@@ -24,8 +24,26 @@ class LevelRecordsScreen extends StatelessWidget {
                     if (snapshot.hasData) {
                       return ListView.builder(
                           itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) =>
-                              Text('Уровень ${snapshot.data![index].levelId}'));
+                          itemBuilder: (context, index) => Row(
+                                children: [
+                                  Text(
+                                    'Уровень ${snapshot.data![index].levelId}',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Шагов ${snapshot.data![index].steps}',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  Text(
+                                    'Время ${snapshot.data![index].seconds}',
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                  // Text(
+                                  //   'Дата ${snapshot.data![index].datetime}',
+                                  //   style: TextStyle(fontSize: 12),
+                                  // ),
+                                ],
+                              ));
                     } else {
                       return const AppLoader();
                     }
