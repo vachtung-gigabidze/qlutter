@@ -23,7 +23,7 @@ class MainMenuScreen extends StatelessWidget {
           const RiveAnimation.asset("assets/rive/balls.riv"),
           Positioned.fill(
               child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
             child: const SizedBox(),
           )),
           Center(
