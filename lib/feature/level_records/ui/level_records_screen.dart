@@ -4,6 +4,10 @@ import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 
+Widget _gap = const SizedBox(
+  width: 10,
+);
+
 class LevelRecordsScreen extends StatelessWidget {
   const LevelRecordsScreen({super.key});
 
@@ -25,18 +29,21 @@ class LevelRecordsScreen extends StatelessWidget {
                       return ListView.builder(
                           itemCount: snapshot.data?.length,
                           itemBuilder: (context, index) => Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     'Уровень ${snapshot.data![index].levelId}',
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
+                                  _gap,
                                   Text(
                                     'Шагов ${snapshot.data![index].steps}',
-                                    style: TextStyle(fontSize: 12),
+                                    style: const TextStyle(fontSize: 12),
                                   ),
+                                  _gap,
                                   Text(
-                                    'Время ${snapshot.data![index].seconds}',
-                                    style: TextStyle(fontSize: 12),
+                                    'Время ${snapshot.data![index].formattedTime}',
+                                    style: const TextStyle(fontSize: 12),
                                   ),
                                   // Text(
                                   //   'Дата ${snapshot.data![index].datetime}',

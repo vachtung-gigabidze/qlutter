@@ -1,18 +1,39 @@
 class LevelRecord {
-  int? id;
-  int? levelId;
-  int? steps;
-  String? datetime;
-  int? seconds;
+  late int id;
+  late int levelId;
+  late int steps;
+  late String datetime;
+  late int seconds;
   int? user;
 
   LevelRecord(
-      {this.id,
-      this.levelId,
-      this.steps,
-      this.datetime,
-      this.seconds,
+      {required id,
+      required levelId,
+      required steps,
+      required datetime,
+      required seconds,
       this.user});
+
+  String get formattedTime {
+    final buf = StringBuffer();
+    Duration duration = Duration(seconds: seconds);
+    if (duration.inHours > 0) {
+      buf.write('${duration.inHours}');
+      buf.write(':');
+    }
+    final minutes = duration.inMinutes % Duration.minutesPerHour;
+    if (minutes > 9) {
+      buf.write('$minutes');
+    } else {
+      buf.write('0');
+      buf.write('$minutes');
+    }
+    buf.write(':');
+    buf.write((duration.inSeconds % Duration.secondsPerMinute)
+        .toString()
+        .padLeft(2, '0'));
+    return buf.toString();
+  }
 
   LevelRecord.fromJson(Map<String, dynamic> json) {
     id = json['id'];
