@@ -26,31 +26,33 @@ class LevelRecordsScreen extends StatelessWidget {
                   builder:
                       (context, AsyncSnapshot<List<LevelRecord>> snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                          itemCount: snapshot.data?.length,
-                          itemBuilder: (context, index) => Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Уровень ${snapshot.data![index].levelId}',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  _gap,
-                                  Text(
-                                    'Шагов ${snapshot.data![index].steps}',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  _gap,
-                                  Text(
-                                    'Время ${snapshot.data![index].formattedTime}',
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-                                  // Text(
-                                  //   'Дата ${snapshot.data![index].datetime}',
-                                  //   style: TextStyle(fontSize: 12),
-                                  // ),
-                                ],
-                              ));
+                      return Center(
+                        child: ListView.builder(
+                            itemCount: snapshot.data?.length,
+                            itemBuilder: (context, index) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Уровень ${snapshot.data![index].levelId}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                    _gap,
+                                    Text(
+                                      'Шагов ${snapshot.data![index].steps}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                    _gap,
+                                    Text(
+                                      'Время ${snapshot.data![index].formattedTime}',
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                    // Text(
+                                    //   'Дата ${snapshot.data![index].datetime}',
+                                    //   style: TextStyle(fontSize: 12),
+                                    // ),
+                                  ],
+                                )),
+                      );
                     } else {
                       return const AppLoader();
                     }
