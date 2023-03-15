@@ -58,6 +58,10 @@ class LevelRecordsScreen extends StatelessWidget {
                                     'Время',
                                     style: headFontSize,
                                   ),
+                                  Text(
+                                    'Дата',
+                                    style: headFontSize,
+                                  ),
                                 ],
                               ),
                               Flexible(
@@ -66,7 +70,7 @@ class LevelRecordsScreen extends StatelessWidget {
                                     itemCount: snapshot.data?.length,
                                     itemBuilder: (context, index) => Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               '${snapshot.data![index].levelId}',
@@ -83,10 +87,12 @@ class LevelRecordsScreen extends StatelessWidget {
                                                   .data![index].formattedTime,
                                               style: rowFontSize,
                                             ),
-                                            // Text(
-                                            //   'Дата ${snapshot.data![index].datetime}',
-                                            //   style: TextStyle(fontSize: 12),
-                                            // ),
+                                            _gap,
+                                            Text(
+                                              snapshot.data![index].datetime
+                                                  .substring(0, 10),
+                                              style: rowFontSize,
+                                            ),
                                           ],
                                         )),
                               ),
