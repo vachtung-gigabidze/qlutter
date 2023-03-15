@@ -1,10 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/feature/level_records/domain/level_record_repository.dart';
-import 'package:json_annotation/json_annotation.dart';
+// import 'package:json_annotation/json_annotation.dart';
 
 part 'level_progress_state.dart';
 part 'level_progress_cubit.freezed.dart';
@@ -47,6 +47,18 @@ class LevelProgressCubit extends HydratedCubit<LevelProgressState> {
     }
   }
 
+  Future<void> getBestRecords() async {
+    try {
+      final List<LevelRecord> recordsEntity =
+          await levelRecordRepository.getBestRecords();
+
+      emit(LevelProgressState.loaded(recordsEntity));
+    } catch (error, st) {
+      addError(error, st);
+    }
+  }
+
+  @override
   LevelProgressState? fromJson(Map<String, dynamic> json) {
     final state = LevelProgressState.fromJson(json);
     return state.whenOrNull(
@@ -54,6 +66,7 @@ class LevelProgressCubit extends HydratedCubit<LevelProgressState> {
     );
   }
 
+  @override
   Map<String, dynamic>? toJson(LevelProgressState state) {
     return state
             .whenOrNull(

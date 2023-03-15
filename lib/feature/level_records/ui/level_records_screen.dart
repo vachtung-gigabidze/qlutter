@@ -19,6 +19,9 @@ class LevelRecordsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
 
+    const headFontSize = TextStyle(fontSize: 16);
+    const rowFontSize = TextStyle(fontSize: 12);
+
     return Scaffold(
       body: ResponsiveScreen(
         mainAreaProminence: 0.45,
@@ -35,31 +38,60 @@ class LevelRecordsScreen extends StatelessWidget {
                         (context, AsyncSnapshot<List<LevelRecord>> snapshot) {
                       if (snapshot.hasData) {
                         return Center(
-                          child: ListView.builder(
-                              itemCount: snapshot.data?.length,
-                              itemBuilder: (context, index) => Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Уровень ${snapshot.data![index].levelId}',
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                      _gap,
-                                      Text(
-                                        'Шагов ${snapshot.data![index].steps}',
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                      _gap,
-                                      Text(
-                                        'Время ${snapshot.data![index].formattedTime}',
-                                        style: const TextStyle(fontSize: 12),
-                                      ),
-                                      // Text(
-                                      //   'Дата ${snapshot.data![index].datetime}',
-                                      //   style: TextStyle(fontSize: 12),
-                                      // ),
-                                    ],
-                                  )),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                  height: 50, child: Text('Лучшие результаты')),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: const [
+                                  Text(
+                                    'Уровень',
+                                    style: headFontSize,
+                                  ),
+                                  Text(
+                                    'Шаги',
+                                    style: headFontSize,
+                                  ),
+                                  Text(
+                                    'Время',
+                                    style: headFontSize,
+                                  ),
+                                ],
+                              ),
+                              Flexible(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data?.length,
+                                    itemBuilder: (context, index) => Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            Text(
+                                              '${snapshot.data![index].levelId}',
+                                              style: rowFontSize,
+                                            ),
+                                            _gap,
+                                            Text(
+                                              '${snapshot.data![index].steps}',
+                                              style: rowFontSize,
+                                            ),
+                                            _gap,
+                                            Text(
+                                              snapshot
+                                                  .data![index].formattedTime,
+                                              style: rowFontSize,
+                                            ),
+                                            // Text(
+                                            //   'Дата ${snapshot.data![index].datetime}',
+                                            //   style: TextStyle(fontSize: 12),
+                                            // ),
+                                          ],
+                                        )),
+                              ),
+                            ],
+                          ),
                         );
                       } else {
                         return const AppLoader();
