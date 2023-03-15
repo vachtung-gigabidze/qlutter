@@ -6,7 +6,7 @@ import 'package:qlutter/app/domain/app_config.dart';
 class ProdAppConfig implements AppConfig {
   @override
   String get baseUrl =>
-      "http://172.20.20.4:8888"; //"https://dart.nvavia.ru"; //
+      "https://dart.nvavia.ru"; //"http://172.20.20.4:8888"; //
 
   @override
   String get host => Environment.prod;
