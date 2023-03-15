@@ -21,4 +21,17 @@ class NetworkLevelRecordsRepository implements LevelRecordRepository {
       rethrow;
     }
   }
+
+  @override
+  Future getBestRecords() async {
+    try {
+      final response = await api.getBestRecords();
+      List responseJson = response.data;
+      List<LevelRecord> levelRecords =
+          responseJson.map((v) => LevelRecord.fromJson(v)).toList();
+      return levelRecords;
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

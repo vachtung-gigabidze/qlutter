@@ -75,6 +75,15 @@ class DioAppApi implements AppApi {
   }
 
   @override
+  Future<Response> getBestRecords() {
+    try {
+      return dio.get("/best");
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<Response> sendProcess(
       {int? levelId, int? steps, int? seconds, DateTime? dateTime}) {
     try {

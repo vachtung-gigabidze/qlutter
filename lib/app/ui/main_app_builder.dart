@@ -139,7 +139,7 @@ class _GlobalProviders extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LevelProgressCubit>.value(
-          value: locator.get<LevelProgressCubit>()..getRecords(),
+          value: locator.get<LevelProgressCubit>()..getBestRecords(),
         ),
         Provider<LevelManager>.value(
           value: locator.get<LevelManager>()..readLevels(),
