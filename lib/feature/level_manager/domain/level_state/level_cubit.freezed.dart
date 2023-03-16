@@ -14,6 +14,19 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+LevelState _$LevelStateFromJson(Map<String, dynamic> json) {
+  switch (json['runtimeType']) {
+    case 'empty':
+      return _LevelStateEmpty.fromJson(json);
+    case 'loaded':
+      return _LevelStateLoaded.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(json, 'runtimeType', 'LevelState',
+          'Invalid union type "${json['runtimeType']}"!');
+  }
+}
+
 /// @nodoc
 mixin _$LevelState {
   @optionalTypeArgs
@@ -54,6 +67,7 @@ mixin _$LevelState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -91,9 +105,15 @@ class __$$_LevelStateEmptyCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_LevelStateEmpty implements _LevelStateEmpty {
-  _$_LevelStateEmpty();
+  _$_LevelStateEmpty({final String? $type}) : $type = $type ?? 'empty';
+
+  factory _$_LevelStateEmpty.fromJson(Map<String, dynamic> json) =>
+      _$$_LevelStateEmptyFromJson(json);
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -106,6 +126,7 @@ class _$_LevelStateEmpty implements _LevelStateEmpty {
         (other.runtimeType == runtimeType && other is _$_LevelStateEmpty);
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -170,10 +191,20 @@ class _$_LevelStateEmpty implements _LevelStateEmpty {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_LevelStateEmptyToJson(
+      this,
+    );
+  }
 }
 
 abstract class _LevelStateEmpty implements LevelState {
   factory _LevelStateEmpty() = _$_LevelStateEmpty;
+
+  factory _LevelStateEmpty.fromJson(Map<String, dynamic> json) =
+      _$_LevelStateEmpty.fromJson;
 }
 
 /// @nodoc
@@ -208,9 +239,14 @@ class __$$_LevelStateLoadedCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_LevelStateLoaded implements _LevelStateLoaded {
-  _$_LevelStateLoaded(final List<LevelDto> levels) : _levels = levels;
+  _$_LevelStateLoaded(final List<LevelDto> levels, {final String? $type})
+      : _levels = levels,
+        $type = $type ?? 'loaded';
+
+  factory _$_LevelStateLoaded.fromJson(Map<String, dynamic> json) =>
+      _$$_LevelStateLoadedFromJson(json);
 
   final List<LevelDto> _levels;
   @override
@@ -219,6 +255,9 @@ class _$_LevelStateLoaded implements _LevelStateLoaded {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_levels);
   }
+
+  @JsonKey(name: 'runtimeType')
+  final String $type;
 
   @override
   String toString() {
@@ -233,6 +272,7 @@ class _$_LevelStateLoaded implements _LevelStateLoaded {
             const DeepCollectionEquality().equals(other._levels, _levels));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_levels));
@@ -304,10 +344,20 @@ class _$_LevelStateLoaded implements _LevelStateLoaded {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_LevelStateLoadedToJson(
+      this,
+    );
+  }
 }
 
 abstract class _LevelStateLoaded implements LevelState {
   factory _LevelStateLoaded(final List<LevelDto> levels) = _$_LevelStateLoaded;
+
+  factory _LevelStateLoaded.fromJson(Map<String, dynamic> json) =
+      _$_LevelStateLoaded.fromJson;
 
   List<LevelDto> get levels;
   @JsonKey(ignore: true)

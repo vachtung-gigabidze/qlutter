@@ -6,6 +6,7 @@ import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/player_progress/player_progress.dart';
 // import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -16,7 +17,7 @@ class LevelSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-    //final playerProgress = context.watch<PlayerProgress>();
+    final playerProgress = context.watch<PlayerProgress>();
     // final levelManager = context.read<LevelManager>();
 
     return Scaffold(
@@ -70,7 +71,9 @@ class LevelSelectionScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  level.levelId.toString(),
+                                  level.levelId == 0
+                                      ? 'Обучение'
+                                      : level.levelId.toString(),
                                   style: const TextStyle(fontSize: 16),
                                 ),
                               ],

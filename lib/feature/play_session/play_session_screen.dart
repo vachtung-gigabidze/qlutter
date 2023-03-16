@@ -40,6 +40,17 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   Field? field;
   Field? fieldCopy;
 
+  Widget tutorial() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: const [
+        Text('Шаг 1: Нажмите на шар.'),
+        Text('Шаг 2: Нажмите на стрелочку.'),
+        Text('Шаг 3: Повторить шаги 1 и 2.'),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
@@ -83,7 +94,9 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                                 Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      'Уровень: ${level.levelId}',
+                                      level.levelId == 0
+                                          ? 'Обучение'
+                                          : 'Уровень: ${level.levelId}',
                                       style: TextStyle(
                                         fontFamily: palette.fontMain,
                                         fontSize: 26,
@@ -102,7 +115,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                                 ),
                               ],
                             ),
-                            const Spacer(),
+                            (level.levelId == 0) ? tutorial() : const Spacer(),
                             Consumer<LevelState>(
                               builder: (context, levelState, child) =>
                                   FieldView(
