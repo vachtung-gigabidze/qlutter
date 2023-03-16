@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
@@ -40,13 +41,29 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   Field? field;
   Field? fieldCopy;
 
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 1}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 400) * maxTextScaleFactor;
+    return min(val, maxTextScaleFactor);
+  }
+
   Widget tutorial() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        Text('Шаг 1: Нажмите на шар.'),
-        Text('Шаг 2: Нажмите на стрелочку.'),
-        Text('Шаг 3: Повторить шаги 1 и 2.'),
+      children: [
+        Text(
+          'Шаг 1: Нажмите на шар.',
+          textScaleFactor: textScaleFactor(context),
+        ),
+        Text(
+          'Шаг 2: Нажмите на стрелочку.',
+          textScaleFactor: textScaleFactor(context),
+        ),
+        Text(
+          'Шаг 3: Повторить шаги 1 и 2.',
+          textScaleFactor: textScaleFactor(context),
+        ),
       ],
     );
   }

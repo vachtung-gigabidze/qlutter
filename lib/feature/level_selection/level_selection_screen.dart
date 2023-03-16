@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,13 @@ import '../style/responsive_screen.dart';
 
 class LevelSelectionScreen extends StatelessWidget {
   const LevelSelectionScreen({super.key});
+
+  static double textScaleFactor(BuildContext context,
+      {double maxTextScaleFactor = 1}) {
+    final width = MediaQuery.of(context).size.width;
+    double val = (width / 500) * maxTextScaleFactor;
+    return min(val, maxTextScaleFactor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +84,9 @@ class LevelSelectionScreen extends StatelessWidget {
                                       ? 'Обучение'
                                       : level.levelId.toString(),
                                   style: const TextStyle(fontSize: 16),
+                                  textScaleFactor: level.levelId == 0
+                                      ? textScaleFactor(context)
+                                      : 1,
                                 ),
                               ],
                             )
