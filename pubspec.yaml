@@ -68,8 +68,6 @@ flutter:
     #       - asset: fonts/Roboto-Bold.ttf
     #         weight: 700
   assets:
-    - assets/images/
-    # - assets/music/
     - assets/icon/icon_foreground.png
     - assets/rive/
     
