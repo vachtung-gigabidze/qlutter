@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/feature/style/palette.dart';
 import 'package:qlutter/feature/style/responsive_screen.dart';
 
-Widget _gap = const SizedBox(
-  width: 10,
-);
+// Widget _gap = const SizedBox(
+//   width: 10,
+// );
 
 class LevelRecordsScreen extends StatelessWidget {
   const LevelRecordsScreen({super.key});
@@ -37,67 +36,62 @@ class LevelRecordsScreen extends StatelessWidget {
                     builder:
                         (context, AsyncSnapshot<List<LevelRecord>> snapshot) {
                       if (snapshot.hasData) {
-                        return Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                  height: 50, child: Text('Лучшие результаты')),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text(
-                                    'Уровень',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Шаги',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Время',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Дата',
-                                    style: headFontSize,
-                                  ),
+                        return Column(
+                          children: [
+                            const Text('Лучшие результаты'),
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  DataTable(
+                                    columns: const [
+                                      DataColumn(
+                                          label: Text('Уровень',
+                                              style: headFontSize)),
+                                      DataColumn(
+                                          label: Text('Шаги',
+                                              style: headFontSize)),
+                                      DataColumn(
+                                          label: Text('Время',
+                                              style: headFontSize)),
+                                      DataColumn(
+                                          label: Text('Дата',
+                                              style: headFontSize)),
+                                    ],
+                                    rows: records
+                                        .map((r) => DataRow(
+                                              cells: <DataCell>[
+                                                DataCell(
+                                                  Text(
+                                                    '${r.levelId}',
+                                                    style: rowFontSize,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    '${r.steps}',
+                                                    style: rowFontSize,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    r.formattedTime,
+                                                    style: rowFontSize,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    r.datetime.substring(0, 10),
+                                                    style: rowFontSize,
+                                                  ),
+                                                ),
+                                              ],
+                                            ))
+                                        .toList(),
+                                  )
                                 ],
                               ),
-                              Flexible(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data?.length,
-                                    itemBuilder: (context, index) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '${snapshot.data![index].levelId}',
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              '${snapshot.data![index].steps}',
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              snapshot
-                                                  .data![index].formattedTime,
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              snapshot.data![index].datetime
-                                                  .substring(0, 10),
-                                              style: rowFontSize,
-                                            ),
-                                          ],
-                                        )),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         );
                       } else {
                         return const AppLoader();
