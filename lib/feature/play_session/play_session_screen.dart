@@ -83,7 +83,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       child: IgnorePointer(
         ignoring: _duringCelebration,
         child: Scaffold(
-          backgroundColor: palette.backgroundPlaySession,
+          //backgroundColor: palette.backgroundPlaySession,
           body: FutureBuilder(
               future: _loadLevel(),
               builder: (context, AsyncSnapshot<bool> snapshot) {
@@ -117,7 +117,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                                       style: TextStyle(
                                         fontFamily: palette.fontMain,
                                         fontSize: 26,
-                                        color: palette.ink,
+                                        // color: palette.ink,
                                       ),
                                     )),
                                 Align(
@@ -162,7 +162,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                                     style: TextStyle(
                                       fontFamily: palette.fontMain,
                                       fontSize: 26,
-                                      color: palette.ink,
+                                      //color: palette.ink,
                                     ),
                                   ),
                                 ),

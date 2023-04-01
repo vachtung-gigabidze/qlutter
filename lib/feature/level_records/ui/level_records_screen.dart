@@ -18,9 +18,6 @@ class LevelRecordsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
 
-    const headFontSize = TextStyle(fontSize: 16);
-    const rowFontSize = TextStyle(fontSize: 12);
-
     return Scaffold(
       body: ResponsiveScreen(
         mainAreaProminence: 0.45,
@@ -43,19 +40,19 @@ class LevelRecordsScreen extends StatelessWidget {
                               child: ListView(
                                 children: [
                                   DataTable(
-                                    columns: const [
+                                    columns: [
                                       DataColumn(
                                           label: Text('Уровень',
-                                              style: headFontSize)),
+                                              style: palette.headTableStyle)),
                                       DataColumn(
                                           label: Text('Шаги',
-                                              style: headFontSize)),
+                                              style: palette.headTableStyle)),
                                       DataColumn(
                                           label: Text('Время',
-                                              style: headFontSize)),
+                                              style: palette.headTableStyle)),
                                       DataColumn(
                                           label: Text('Дата',
-                                              style: headFontSize)),
+                                              style: palette.headTableStyle)),
                                     ],
                                     rows: records
                                         .map((r) => DataRow(
@@ -63,25 +60,29 @@ class LevelRecordsScreen extends StatelessWidget {
                                                 DataCell(
                                                   Text(
                                                     '${r.levelId}',
-                                                    style: rowFontSize,
+                                                    style:
+                                                        palette.rowTableStyle,
                                                   ),
                                                 ),
                                                 DataCell(
                                                   Text(
                                                     '${r.steps}',
-                                                    style: rowFontSize,
+                                                    style:
+                                                        palette.rowTableStyle,
                                                   ),
                                                 ),
                                                 DataCell(
                                                   Text(
                                                     r.formattedTime,
-                                                    style: rowFontSize,
+                                                    style:
+                                                        palette.rowTableStyle,
                                                   ),
                                                 ),
                                                 DataCell(
                                                   Text(
                                                     r.datetime.substring(0, 10),
-                                                    style: rowFontSize,
+                                                    style:
+                                                        palette.rowTableStyle,
                                                   ),
                                                 ),
                                               ],
@@ -108,7 +109,7 @@ class LevelRecordsScreen extends StatelessWidget {
             style: TextStyle(
               fontFamily: palette.fontMain,
               fontSize: 20,
-              color: palette.ink,
+              // color: palette.ink,
             ),
           ),
         ),

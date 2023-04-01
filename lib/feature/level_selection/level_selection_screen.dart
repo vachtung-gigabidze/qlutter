@@ -30,7 +30,7 @@ class LevelSelectionScreen extends StatelessWidget {
     // final levelManager = context.read<LevelManager>();
 
     return Scaffold(
-      backgroundColor: palette.backgroundLevelSelection,
+      //backgroundColor: palette.backgroundLevelSelection,
       body: FutureBuilder(
           future: context.read<LevelManager>().readLevels(),
           builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
@@ -65,8 +65,8 @@ class LevelSelectionScreen extends StatelessWidget {
                                             '/play/session/${level.levelId}');
                                       },
                                       child: FieldView(
-                                        backgroundColor:
-                                            palette.backgroundLevelSelection,
+                                        //backgroundColor:
+                                        //  palette.backgroundLevelSelection,
                                         parentSize: const Size(150, 150),
                                         key: ValueKey<List<List<Item?>>>(
                                             level.field),
@@ -104,7 +104,7 @@ class LevelSelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: palette.fontMain,
                       fontSize: 20,
-                      color: palette.ink,
+                      //color: palette.ink,
                     ),
                   ),
                 ),

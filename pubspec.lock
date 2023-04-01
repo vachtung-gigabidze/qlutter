@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.4.0"
+  animated_theme_switcher:
+    dependency: "direct main"
+    description:
+      name: animated_theme_switcher
+      sha256: a131266f7021a8a663da4c4848c53c62178949a7517c2af00b22e4c614352302
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.8"
   args:
     dependency: transitive
     description:
@@ -958,5 +966,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0 <3.0.0"
+  dart: ">=2.19.0 <4.0.0"
   flutter: ">=3.7.0-0"

@@ -43,6 +43,7 @@ dependencies:
   flutter_svg: ^2.0.3 
   json_annotation: ^4.8.0
   json_serializable: ^6.6.1
+  animated_theme_switcher: ^2.0.8
 
 
 dev_dependencies:

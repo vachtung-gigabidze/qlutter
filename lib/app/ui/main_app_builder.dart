@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,8 @@ class MainAppBuilder implements AppBuilder {
                 pageBuilder: (context, state) => buildMyTransition<void>(
                       child: const LevelSelectionScreen(
                           key: Key('level selection')),
-                      color: context.watch<Palette>().backgroundLevelSelection,
+                      color: Theme.of(context)
+                          .backgroundColor, //context.watch<Palette>().backgroundLevelSelection,
                     ),
                 routes: [
                   GoRoute(
@@ -51,7 +53,8 @@ class MainAppBuilder implements AppBuilder {
                           levelNumber,
                           key: const Key('play session'),
                         ),
-                        color: context.watch<Palette>().backgroundPlaySession,
+                        color: Theme.of(context)
+                            .backgroundColor, // context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
@@ -66,7 +69,8 @@ class MainAppBuilder implements AppBuilder {
                           score: score,
                           key: const Key('win game'),
                         ),
-                        color: context.watch<Palette>().backgroundPlaySession,
+                        color: Theme.of(context)
+                            .backgroundColor, //context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   )
@@ -94,28 +98,19 @@ class MainAppBuilder implements AppBuilder {
       settingsPersistence: LocalStorageSettingsPersistence(),
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
       gamesServicesController: gamesServicesController,
-      child: MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Qlutter',
-        theme: ThemeData.from(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: palette.darkPen,
-            background: palette.backgroundMain,
-          ),
-          textTheme: TextTheme(
-            bodyMedium: TextStyle(
-              fontFamily: palette.fontMain,
-              fontSize: 26,
-              color: palette.ink,
-            ),
-          ),
-          useMaterial3: true,
-        ),
-        routeInformationProvider: _router.routeInformationProvider,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        scaffoldMessengerKey: scaffoldMessengerKey,
-      ),
+      child: ThemeProvider(
+          initTheme: palette.light,
+          builder: (p0, theme) {
+            return MaterialApp.router(
+              debugShowCheckedModeBanner: false,
+              title: 'Qlutter',
+              theme: theme,
+              routeInformationProvider: _router.routeInformationProvider,
+              routeInformationParser: _router.routeInformationParser,
+              routerDelegate: _router.routerDelegate,
+              scaffoldMessengerKey: scaffoldMessengerKey,
+            );
+          }),
     );
   }
 }

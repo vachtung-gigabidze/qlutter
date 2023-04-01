@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-/// A palette of colors to be used in the game.
-///
-/// The reason we're not going with something like Material Design's
-/// `Theme` is simply that this is simpler to work with and yet gives
-/// us everything we need for a game.
-///
-/// Games generally have more radical color palettes than apps. For example,
-/// every level of a game can have radically different colors.
-/// At the same time, games rarely support dark mode.
-///
-/// Colors taken from this fun palette:
-/// https://lospec.com/palette-list/crayola84
-///
-/// Colors here are implemented as getters so that hot reloading works.
-/// In practice, we could just as easily implement the colors
-/// as `static const`. But this way the palette is more malleable:
-/// we could allow players to customize colors, for example,
-/// or even get the colors from the network.
-
 @Singleton()
 class Palette {
   Color get pen => const Color(0xff1d75fb);
@@ -45,6 +26,39 @@ class Palette {
   Color get cellColor5 => Colors.deepOrangeAccent;
   Color get cellColor6 => Colors.indigo;
   String get fontMain => 'DS Goose';
+  TextStyle get headTableStyle => TextStyle(fontSize: 16, fontFamily: fontMain);
+  TextStyle get rowTableStyle => const TextStyle(fontSize: 12);
+
+  ThemeData get light => ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.light,
+          seedColor: darkPen,
+          background: backgroundMain,
+        ),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+            fontFamily: fontMain,
+            fontSize: 26,
+            color: ink,
+          ),
+        ),
+        useMaterial3: true,
+      );
+  ThemeData get dark => ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.dark,
+          seedColor: Colors.white54,
+          background: Colors.grey[700],
+        ),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(
+            fontFamily: fontMain,
+            fontSize: 26,
+            color: Colors.white,
+          ),
+        ),
+        useMaterial3: true,
+      );
   /*
   Color get cellColor1 => const Color(0xfff5bfd2);
   Color get cellColor2 => const Color(0xffa1cdce);
