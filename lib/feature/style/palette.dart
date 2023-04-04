@@ -29,12 +29,28 @@ class Palette {
   TextStyle get headTableStyle => TextStyle(fontSize: 16, fontFamily: fontMain);
   TextStyle get rowTableStyle => const TextStyle(fontSize: 12);
 
-  ThemeData get light => ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: darkPen,
-          background: backgroundMain,
-        ),
+  // ThemeData get light => ThemeData.from(
+  //       colorScheme: ColorScheme.fromSeed(
+  //         brightness: Brightness.light,
+  //         seedColor: darkPen,
+  //         background: backgroundMain,
+  //       ),
+  //       textTheme: TextTheme(
+  //         bodyMedium: TextStyle(
+  //           fontFamily: fontMain,
+  //           fontSize: 26,
+  //           color: ink,
+  //         ),
+  //       ),
+  //       useMaterial3: true,
+  //     );
+  ThemeData get light => ThemeData.light().copyWith(
+        useMaterial3: true,
+        colorScheme: ThemeData.light().colorScheme.copyWith(
+              primary: ink,
+              background: backgroundMain,
+            ),
+        scaffoldBackgroundColor: backgroundMain,
         textTheme: TextTheme(
           bodyMedium: TextStyle(
             fontFamily: fontMain,
@@ -42,14 +58,18 @@ class Palette {
             color: ink,
           ),
         ),
-        useMaterial3: true,
       );
-  ThemeData get dark => ThemeData.from(
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.dark,
-          seedColor: Colors.white54,
-          background: Colors.grey[700],
-        ),
+
+  ThemeData get dark => ThemeData.dark().copyWith(
+        useMaterial3: true,
+        colorScheme: ThemeData.dark().colorScheme.copyWith(
+              shadow: Colors.white,
+              secondary: Colors.white70,
+              primary: Colors.white70,
+              background: Colors.grey[900],
+            ),
+        elevatedButtonTheme: ThemeData.dark().elevatedButtonTheme,
+        scaffoldBackgroundColor: Colors.grey[900],
         textTheme: TextTheme(
           bodyMedium: TextStyle(
             fontFamily: fontMain,
@@ -57,8 +77,32 @@ class Palette {
             color: Colors.white,
           ),
         ),
-        useMaterial3: true,
       );
+  // ThemeData get dark => ThemeData.from(
+  //       colorScheme: ColorScheme.fromSeed(
+  //         brightness: Brightness.dark,
+  //         seedColor: Colors.white54,
+  //         background: Colors.grey[900],
+  //       ),
+  //       textTheme: TextTheme(
+  //         bodyLarge: TextStyle(
+  //           fontFamily: fontMain,
+  //           fontSize: 26,
+  //           color: Color.fromARGB(255, 219, 41, 41),
+  //         ),
+  //         labelMedium: TextStyle(
+  //           fontFamily: fontMain,
+  //           fontSize: 26,
+  //           color: Colors.white,
+  //         ),
+  //         bodyMedium: TextStyle(
+  //           fontFamily: fontMain,
+  //           fontSize: 26,
+  //           color: Colors.white,
+  //         ),
+  //       ),
+  //       useMaterial3: true,
+  //     );
   /*
   Color get cellColor1 => const Color(0xfff5bfd2);
   Color get cellColor2 => const Color(0xffa1cdce);
