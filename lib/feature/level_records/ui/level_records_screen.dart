@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/feature/style/palette.dart';
 import 'package:qlutter/feature/style/responsive_screen.dart';
 
-Widget _gap = const SizedBox(
-  width: 10,
-);
+// Widget _gap = const SizedBox(
+//   width: 10,
+// );
 
 class LevelRecordsScreen extends StatelessWidget {
   const LevelRecordsScreen({super.key});
@@ -18,9 +17,6 @@ class LevelRecordsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-
-    const headFontSize = TextStyle(fontSize: 16);
-    const rowFontSize = TextStyle(fontSize: 12);
 
     return Scaffold(
       body: ResponsiveScreen(
@@ -37,67 +33,66 @@ class LevelRecordsScreen extends StatelessWidget {
                     builder:
                         (context, AsyncSnapshot<List<LevelRecord>> snapshot) {
                       if (snapshot.hasData) {
-                        return Center(
-                          child: Column(
-                            children: [
-                              const SizedBox(
-                                  height: 50, child: Text('Лучшие результаты')),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: const [
-                                  Text(
-                                    'Уровень',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Шаги',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Время',
-                                    style: headFontSize,
-                                  ),
-                                  Text(
-                                    'Дата',
-                                    style: headFontSize,
-                                  ),
+                        return Column(
+                          children: [
+                            const Text('Лучшие результаты'),
+                            Expanded(
+                              child: ListView(
+                                children: [
+                                  DataTable(
+                                    columns: [
+                                      DataColumn(
+                                          label: Text('Уровень',
+                                              style: palette.headTableStyle)),
+                                      DataColumn(
+                                          label: Text('Шаги',
+                                              style: palette.headTableStyle)),
+                                      DataColumn(
+                                          label: Text('Время',
+                                              style: palette.headTableStyle)),
+                                      DataColumn(
+                                          label: Text('Дата',
+                                              style: palette.headTableStyle)),
+                                    ],
+                                    rows: records
+                                        .map((r) => DataRow(
+                                              cells: <DataCell>[
+                                                DataCell(
+                                                  Text(
+                                                    '${r.levelId}',
+                                                    style:
+                                                        palette.rowTableStyle,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    '${r.steps}',
+                                                    style:
+                                                        palette.rowTableStyle,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    r.formattedTime,
+                                                    style:
+                                                        palette.rowTableStyle,
+                                                  ),
+                                                ),
+                                                DataCell(
+                                                  Text(
+                                                    r.datetime.substring(0, 10),
+                                                    style:
+                                                        palette.rowTableStyle,
+                                                  ),
+                                                ),
+                                              ],
+                                            ))
+                                        .toList(),
+                                  )
                                 ],
                               ),
-                              Flexible(
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: snapshot.data?.length,
-                                    itemBuilder: (context, index) => Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '${snapshot.data![index].levelId}',
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              '${snapshot.data![index].steps}',
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              snapshot
-                                                  .data![index].formattedTime,
-                                              style: rowFontSize,
-                                            ),
-                                            _gap,
-                                            Text(
-                                              snapshot.data![index].datetime
-                                                  .substring(0, 10),
-                                              style: rowFontSize,
-                                            ),
-                                          ],
-                                        )),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         );
                       } else {
                         return const AppLoader();
@@ -114,7 +109,7 @@ class LevelRecordsScreen extends StatelessWidget {
             style: TextStyle(
               fontFamily: palette.fontMain,
               fontSize: 20,
-              color: palette.ink,
+              // color: palette.ink,
             ),
           ),
         ),

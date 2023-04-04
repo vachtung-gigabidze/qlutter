@@ -8,7 +8,7 @@ import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
-import 'package:qlutter/feature/player_progress/player_progress.dart';
+// import 'package:qlutter/feature/player_progress/player_progress.dart';
 // import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -26,11 +26,11 @@ class LevelSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-    final playerProgress = context.watch<PlayerProgress>();
+    // final playerProgress = context.watch<PlayerProgress>();
     // final levelManager = context.read<LevelManager>();
 
     return Scaffold(
-      backgroundColor: palette.backgroundLevelSelection,
+      //backgroundColor: palette.backgroundLevelSelection,
       body: FutureBuilder(
           future: context.read<LevelManager>().readLevels(),
           builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
@@ -65,8 +65,8 @@ class LevelSelectionScreen extends StatelessWidget {
                                             '/play/session/${level.levelId}');
                                       },
                                       child: FieldView(
-                                        backgroundColor:
-                                            palette.backgroundLevelSelection,
+                                        //backgroundColor:
+                                        //  palette.backgroundLevelSelection,
                                         parentSize: const Size(150, 150),
                                         key: ValueKey<List<List<Item?>>>(
                                             level.field),
@@ -104,7 +104,7 @@ class LevelSelectionScreen extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: palette.fontMain,
                       fontSize: 20,
-                      color: palette.ink,
+                      //color: palette.ink,
                     ),
                   ),
                 ),

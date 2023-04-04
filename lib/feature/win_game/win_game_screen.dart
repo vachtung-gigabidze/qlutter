@@ -23,7 +23,7 @@ class WinGameScreen extends StatelessWidget {
     final maxLevel = lm.levels?.length ?? 0;
 
     return Scaffold(
-      backgroundColor: palette.backgroundPlaySession,
+      //backgroundColor: palette.backgroundPlaySession,
       body: ResponsiveScreen(
         squarishMainArea: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +55,7 @@ class WinGameScreen extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 20,
-                    color: palette.ink,
+                    // color: palette.ink,
                   ),
                 ),
               )
@@ -68,7 +68,7 @@ class WinGameScreen extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 20,
-                    color: palette.ink,
+                    //color: palette.ink,
                   ),
                 ),
               ),
