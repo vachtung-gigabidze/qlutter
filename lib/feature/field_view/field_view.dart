@@ -61,7 +61,7 @@ class FieldViewState extends State<FieldView> {
     return AnimatedPositioned(
       key: key,
       top: (t * fieldSize.height),
-      right: (r * fieldSize.height),
+      left: (r * fieldSize.height),
       duration: const Duration(seconds: 1),
       curve: Curves.bounceOut,
       onEnd: () {
@@ -74,14 +74,6 @@ class FieldViewState extends State<FieldView> {
         }
       },
       child: InkWell(
-        // onPanUpdate: (details) {
-        //   if (details.delta.dx > 0) {
-        //     field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.right);
-        //   }
-        //   if (details.delta.dx < 0) {
-        //     field.moveItem(Coordinates(t.toInt(), r.toInt()), Direction.left);
-        //   }
-        // },
         child: BlockItem(
           item: item,
           elementSize: elementSize,
@@ -101,7 +93,7 @@ class FieldViewState extends State<FieldView> {
   Widget _buildItem(Item item, double t, double r) {
     return Positioned(
       top: (t * fieldSize.height),
-      right: (r * fieldSize.height),
+      left: (r * fieldSize.height),
       child: BlockItem(
         item: item,
         elementSize: elementSize,
@@ -124,7 +116,7 @@ class FieldViewState extends State<FieldView> {
         field.canMove(Coordinates(c.horizontal, c.vertical));
     return Positioned(
       top: (c.horizontal - 1) * fieldSize.height,
-      right: (c.vertical - 1) * fieldSize.height,
+      left: (c.vertical - 1) * fieldSize.height,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -140,35 +132,40 @@ class FieldViewState extends State<FieldView> {
                   children: [
                 Positioned(
                   top: elementSize,
+                  right: 0,
                   child: InkWell(
                     onTap: () => moveBall(c, Direction.right),
                     child: Icon(
-                      Icons.arrow_back_outlined,
-                      color: palette?.ink,
+                      Icons.arrow_forward_outlined,
+                      color:
+                          Theme.of(context).colorScheme.primary, //palette?.ink,
                       size: elementSize,
                     ),
                   ),
                 ),
                 Positioned(
                   top: elementSize,
-                  right: 0,
+                  left: 0,
                   child: InkWell(
                     onTap: () => moveBall(c, Direction.left),
                     child: Icon(
-                      Icons.arrow_forward_outlined,
-                      color: palette?.ink,
+                      Icons.arrow_back_outlined,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary, // palette?.ink,
                       size: elementSize,
                     ),
                   ),
                 ),
                 Positioned(
                   top: elementSize * 2,
-                  right: elementSize,
+                  left: elementSize,
                   child: InkWell(
                     onTap: () => moveBall(c, Direction.down),
                     child: Icon(
                       Icons.arrow_downward,
-                      color: palette?.ink,
+                      color:
+                          Theme.of(context).colorScheme.primary, //palette?.ink,
                       size: elementSize,
                     ),
                   ),
@@ -180,7 +177,8 @@ class FieldViewState extends State<FieldView> {
                     onTap: () => moveBall(c, Direction.up),
                     child: Icon(
                       Icons.arrow_upward,
-                      color: palette?.ink,
+                      color:
+                          Theme.of(context).colorScheme.primary, //palette?.ink,
                       size: elementSize,
                     ),
                   ),

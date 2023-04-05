@@ -158,15 +158,15 @@ class Field {
         return false;
       }
 
-      if (isLastColorBall(item!.color)) {
-        if (isEdge(coordItemNearly)) {
-          level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
-              Block();
-        } else {
-          level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
-              null;
-        }
-      }
+      // if (isLastColorBall(item!.color)) {
+      //   if (isEdge(coordItemNearly)) {
+      //     level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+      //         Block();
+      //   } else {
+      //     level.field[coordItemNearly.horizontal][coordItemNearly.vertical] =
+      //         null;
+      //   }
+      // }
 
       level.field[coordItem.horizontal][coordItem.vertical] = null;
       catchBall();
