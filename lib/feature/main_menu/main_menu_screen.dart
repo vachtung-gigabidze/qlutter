@@ -77,15 +77,16 @@ class MainMenuScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ThemeSwitcher.withTheme(
-                    builder: (_, switcher, theme) => InkWell(
-                      onTap: () => switcher.changeTheme(
+                    builder: (_, switcher, theme) => IconButton(
+                      onPressed: () => switcher.changeTheme(
                           theme: theme.brightness == Brightness.light
                               ? palette.dark
                               : palette.light),
-                      child: Icon(
+                      icon: Icon(
                         theme.brightness == Brightness.light
                             ? Icons.nightlight
                             : Icons.wb_sunny,
+                        size: 34,
                       ),
                     ),
                   ),
@@ -94,6 +95,12 @@ class MainMenuScreen extends StatelessWidget {
                       showInformationDialog(context);
                     },
                     icon: const Icon(Icons.info_outline, size: 34),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      GoRouter.of(context).go('/settings');
+                    },
+                    icon: const Icon(Icons.settings, size: 34),
                   ),
                 ],
               ),
