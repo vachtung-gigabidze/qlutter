@@ -1,4 +1,4 @@
-package com.example.qlutter
+package ru.ziidik.qlutter
 
 import io.flutter.embedding.android.FlutterActivity
 

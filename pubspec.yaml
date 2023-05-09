@@ -70,6 +70,7 @@ flutter:
   assets:
     - assets/icon/icon_foreground.png
     - assets/rive/
+    - assets/data/
     
 flutter_icons:
   android: true
