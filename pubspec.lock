@@ -289,7 +289,7 @@ packages:
     source: hosted
     version: "2.3.2"
   freezed_annotation:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: freezed_annotation
       sha256: aeac15850ef1b38ee368d4c53ba9a847e900bb2c53a4db3f6881cbb3cb684338
@@ -385,7 +385,7 @@ packages:
     source: hosted
     version: "2.1.0"
   injectable_generator:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: injectable_generator
       sha256: "9a3bbd2c3ba821e31ef6cea3fc535c17e3a25c74e173b6cefa05f466c8338bc8"
