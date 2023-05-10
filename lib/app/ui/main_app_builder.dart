@@ -25,6 +25,7 @@ import 'package:qlutter/feature/style/my_transition.dart';
 import 'package:qlutter/feature/style/palette.dart';
 import 'package:qlutter/feature/style/snack_bar.dart';
 import 'package:qlutter/feature/win_game/win_game_screen.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 
 class MainAppBuilder implements AppBuilder {
   static final _router = GoRouter(
@@ -102,6 +103,7 @@ class MainAppBuilder implements AppBuilder {
           initTheme: palette.light,
           builder: (p0, theme) {
             return MaterialApp.router(
+              // locale: TranslationProvider.of(context).flutterLocale,
               debugShowCheckedModeBanner: false,
               title: 'Qlutter',
               theme: theme,

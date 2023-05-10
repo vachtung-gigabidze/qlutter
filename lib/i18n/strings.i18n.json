@@ -1,0 +1,28 @@
+{
+  "main":{
+"play":"Play",
+"setting":"Setting"
+  } ,
+  "levels":{
+    "title":"Levels",
+    "tutorial":"Tutorial",
+    "back":"Back"
+  },
+  "session": {
+    "title": "Level",
+    "back":"Back",
+    "tutorial": {
+      "title":"Tutorial",
+      "step1":"Step 1: Press on the ball.",
+      "step2":"Step 2: Press on the arrow.",
+      "step3":"Step 3: Repeat steps 1 and 2."
+    }
+  },
+  "win":{
+    "title":"Win!",
+    "time":"Time",
+    "step":"Step",
+    "next":"Next",
+    "back":"Levels"
+  }
+}
