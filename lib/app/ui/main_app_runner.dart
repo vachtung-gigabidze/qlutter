@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
 import 'package:qlutter/app/domain/app_runner.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 
 class MainAppRunner implements AppRunner {
   final String env;
@@ -30,7 +31,10 @@ class MainAppRunner implements AppRunner {
     // () async {
     await preloaderData();
     //WidgetsFlutterBinding.ensureInitialized();
-    runApp(appBuilder.buildApp());
+    LocaleSettings.useDeviceLocale();
+    // LocaleSettings.setLocale(AppLocale.values.last);
+
+    runApp(TranslationProvider(child: appBuilder.buildApp()));
     // },
     //   storage: storage,
     // );

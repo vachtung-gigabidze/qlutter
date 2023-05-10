@@ -8,6 +8,7 @@ import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 // import 'package:qlutter/feature/player_progress/player_progress.dart';
 // import '../player_progress/player_progress.dart';
 import '../style/palette.dart';
@@ -36,7 +37,7 @@ class LevelSelectionScreen extends StatelessWidget {
     Palette palette = context.watch<Palette>();
     // final playerProgress = context.watch<PlayerProgress>();
     // final levelManager = context.read<LevelManager>();
-
+    final t = Translations.of(context);
     return Scaffold(
       //backgroundColor: palette.backgroundLevelSelection,
       appBar: AppBar(
@@ -45,7 +46,7 @@ class LevelSelectionScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Center(
             child: Text(
-              'Выбор уровня',
+              t.levels.title,
               style: TextStyle(fontFamily: palette.fontMain, fontSize: 30),
             ),
           ),
@@ -91,7 +92,7 @@ class LevelSelectionScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   level.levelId == 0
-                                      ? 'Обучение'
+                                      ? t.levels.tutorial
                                       : level.levelId.toString(),
                                   style: const TextStyle(fontSize: 16),
                                   textScaleFactor: level.levelId == 0
@@ -110,7 +111,7 @@ class LevelSelectionScreen extends StatelessWidget {
                     GoRouter.of(context).go('/');
                   },
                   child: Text(
-                    'Назад',
+                    t.levels.back,
                     style: TextStyle(
                       fontFamily: palette.fontMain,
                       fontSize: 20,

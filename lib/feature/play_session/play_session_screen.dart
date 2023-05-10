@@ -12,6 +12,8 @@ import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
+import 'package:qlutter/feature/style/responsive_screen.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 import '../game_internals/level_state.dart';
 import '../games_services/score.dart';
 import '../player_progress/player_progress.dart';
@@ -48,20 +50,20 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
     return min(val, maxTextScaleFactor);
   }
 
-  Widget tutorial() {
+  Widget tutorial(List<String> t) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Шаг 1: Нажмите на шар.',
+          t[0],
           textScaleFactor: textScaleFactor(context),
         ),
         Text(
-          'Шаг 2: Нажмите на стрелочку.',
+          t[1],
           textScaleFactor: textScaleFactor(context),
         ),
         Text(
-          'Шаг 3: Повторить шаги 1 и 2.',
+          t[2],
           textScaleFactor: textScaleFactor(context),
         ),
       ],
@@ -71,7 +73,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   @override
   Widget build(BuildContext context) {
     final palette = context.watch<Palette>();
-
+    final t = Translations.of(context);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -108,8 +110,8 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                             alignment: Alignment.center,
                             child: Text(
                               level.levelId == 0
-                                  ? 'Обучение'
-                                  : 'Уровень: ${level.levelId}',
+                                  ? t.session.tutorial.title
+                                  : '${t.session.title} ${level.levelId}',
                               style: TextStyle(
                                 fontFamily: palette.fontMain,
                                 fontSize: 26,
@@ -130,57 +132,67 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                     ),
                   ),
                   //backgroundColor: palette.backgroundPlaySession,
-                  body: Stack(
-                    children: [
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            (level.levelId == 0) ? tutorial() : const Spacer(),
-                            Consumer<LevelState>(
-                              builder: (context, levelState, child) =>
-                                  FieldView(
-                                key: ValueKey<List<List<Item?>>>(
-                                    fieldCopy!.level.field),
-                                field: fieldCopy!,
-                                onChanged: (value, step) =>
-                                    levelState.setProgress(value, step),
-                                onWin: () => levelState.evaluate(level.levelId),
-                                onRefresh: () {
-                                  setState(() {
-                                    fieldCopy = Field.copyField(field!);
-                                  });
-                                },
+                  body: ResponsiveScreen(
+                    squarishMainArea: Stack(
+                      children: [
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Spacer(),
+                              Consumer<LevelState>(
+                                builder: (context, levelState, child) =>
+                                    FieldView(
+                                  key: ValueKey<List<List<Item?>>>(
+                                      fieldCopy!.level.field),
+                                  field: fieldCopy!,
+                                  onChanged: (value, step) =>
+                                      levelState.setProgress(value, step),
+                                  onWin: () =>
+                                      levelState.evaluate(level.levelId),
+                                  onRefresh: () {
+                                    setState(() {
+                                      fieldCopy = Field.copyField(field!);
+                                    });
+                                  },
+                                ),
                               ),
-                            ),
-                            const Spacer(),
-                          ],
+                              const Spacer(),
+                              (level.levelId == 0)
+                                  ? tutorial([
+                                      t.session.tutorial.step1,
+                                      t.session.tutorial.step2,
+                                      t.session.tutorial.step3
+                                    ])
+                                  : const Spacer(),
+                              const Spacer(),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox.expand(
-                        child: Visibility(
-                          visible: _duringCelebration,
-                          child: IgnorePointer(
-                            child: Confetti(
-                              isStopped: !_duringCelebration,
+                        SizedBox.expand(
+                          child: Visibility(
+                            visible: _duringCelebration,
+                            child: IgnorePointer(
+                              child: Confetti(
+                                isStopped: !_duringCelebration,
+                              ),
                             ),
                           ),
                         ),
+                      ],
+                    ),
+                    rectangularMenuArea: ElevatedButton(
+                      onPressed: () => GoRouter.of(context).go('/play'),
+                      child: Text(
+                        t.session.back,
+                        style: TextStyle(
+                          fontFamily: palette.fontMain,
+                          fontSize: 26,
+                          //color: palette.ink,
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-
-                  //   ElevatedButton(
-                  //   onPressed: () => GoRouter.of(context).go('/play'),
-                  //   child: Text(
-                  //     'Назад',
-                  //     style: TextStyle(
-                  //       fontFamily: palette.fontMain,
-                  //       fontSize: 26,
-                  //       //color: palette.ink,
-                  //     ),
-                  //   ),
-                  // ),
                 );
               } else {
                 return const AppLoader();

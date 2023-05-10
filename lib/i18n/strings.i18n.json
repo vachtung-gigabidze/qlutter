@@ -24,5 +24,9 @@
     "step":"Step",
     "next":"Next",
     "back":"Levels"
+  },
+  "info":{
+    "back":"Close",
+    "text":"The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle."
   }
 }

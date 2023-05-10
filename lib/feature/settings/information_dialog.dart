@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 
 void showInformationDialog(BuildContext context) {
   showGeneralDialog(
@@ -17,6 +18,7 @@ class InformationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
+    final t = Translations.of(context);
     return ScaleTransition(
       scale: CurvedAnimation(
         parent: animation,
@@ -29,7 +31,7 @@ class InformationDialog extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(18.0),
             child: Text(
-              'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой до первого препятствия.',
+              t.info.text,
               style: TextStyle(fontFamily: 'Roboto', color: palette.ink),
               textAlign: TextAlign.left,
             ),
@@ -37,7 +39,7 @@ class InformationDialog extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'Закрыть',
+              t.info.back,
               style: TextStyle(
                 fontFamily: palette.fontMain,
                 fontSize: 32,

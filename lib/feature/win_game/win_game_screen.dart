@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 import '../games_services/score.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -18,7 +19,7 @@ class WinGameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
     LevelManager lm = context.read<LevelManager>();
-
+    final t = Translations.of(context);
     const gap = SizedBox(height: 10);
     final maxLevel = lm.levels?.length ?? 0;
 
@@ -31,15 +32,15 @@ class WinGameScreen extends StatelessWidget {
             gap,
             Center(
               child: Text(
-                'Победа!',
+                t.win.title,
                 style: TextStyle(fontFamily: palette.fontMain, fontSize: 50),
               ),
             ),
             gap,
             Center(
               child: Text(
-                'Ход: ${score.score}\n'
-                'Время: ${score.formattedTime}',
+                '${t.win.step}: ${score.score}\n'
+                '${t.win.time}: ${score.formattedTime}',
                 style: TextStyle(fontFamily: palette.fontMain, fontSize: 20),
               ),
             ),
@@ -51,7 +52,7 @@ class WinGameScreen extends StatelessWidget {
                   GoRouter.of(context).go('/play/session/${score.level + 1}');
                 },
                 child: Text(
-                  'Вперед',
+                  t.win.next,
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 20,
@@ -64,7 +65,7 @@ class WinGameScreen extends StatelessWidget {
                   GoRouter.of(context).go('/play/');
                 },
                 child: Text(
-                  'Список',
+                  t.win.back,
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 20,

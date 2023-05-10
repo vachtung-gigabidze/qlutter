@@ -1,6 +1,7 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
@@ -103,7 +104,9 @@ class MainAppBuilder implements AppBuilder {
           initTheme: palette.light,
           builder: (p0, theme) {
             return MaterialApp.router(
-              // locale: TranslationProvider.of(context).flutterLocale,
+              locale: TranslationProvider.of(p0).flutterLocale,
+              supportedLocales: AppLocaleUtils.supportedLocales,
+              localizationsDelegates: GlobalMaterialLocalizations.delegates,
               debugShowCheckedModeBanner: false,
               title: 'Qlutter',
               theme: theme,

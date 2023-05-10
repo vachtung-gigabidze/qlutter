@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 import 'package:rive/rive.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -15,6 +16,7 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
+    final t = Translations.of(context);
 
     return ThemeSwitchingArea(
       child: Scaffold(
@@ -50,7 +52,8 @@ class MainMenuScreen extends StatelessWidget {
                   GoRouter.of(context).go('/play');
                 },
                 child: Text(
-                  'Уровни',
+                  t.main.play,
+                  // 'Уровни',
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 32,
@@ -78,7 +81,8 @@ class MainMenuScreen extends StatelessWidget {
                   GoRouter.of(context).go('/settings');
                 },
                 child: Text(
-                  'Настройки',
+                  t.main.setting,
+                  // 'Настройки',
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 32,
