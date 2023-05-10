@@ -17,21 +17,23 @@ class SettingsScreen extends StatelessWidget {
     final palette = context.watch<Palette>();
 
     return Scaffold(
-      backgroundColor: palette.backgroundSettings,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: Text(
+          'Настройки',
+          //textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: palette.fontMain,
+            fontSize: 32,
+            height: 1,
+          ),
+        ),
+      ),
+      // backgroundColor: palette.backgroundSettings,
       body: ResponsiveScreen(
         squarishMainArea: ListView(
           children: [
-            _gap,
-            const Text(
-              'Настройки',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                // fontFamily: font,
-                fontSize: 55,
-                height: 1,
-              ),
-            ),
-            _gap,
             // const _NameChangeLine(
             //   'Тема',
             // ),

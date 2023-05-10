@@ -43,6 +43,11 @@ dependencies:
   json_serializable: ^6.6.1
   animated_theme_switcher: ^2.0.8
 
+  slang: ^3.17.0
+  slang_flutter: ^3.17.0
+  flutter_localizations:
+    sdk: flutter
+
 
 dev_dependencies:
   flutter_test:

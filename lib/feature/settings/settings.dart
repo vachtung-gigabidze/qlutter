@@ -12,6 +12,8 @@ class SettingsController {
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;
 
+  ValueNotifier<String> playerName = ValueNotifier('Player');
+
   Future<void> loadStateFromPersistence() async {
     await Future.wait([
       _persistence

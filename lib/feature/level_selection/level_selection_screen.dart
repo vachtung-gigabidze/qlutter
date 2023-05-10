@@ -23,6 +23,14 @@ class LevelSelectionScreen extends StatelessWidget {
     return min(val, maxTextScaleFactor);
   }
 
+  static int columnCount(
+    BuildContext context,
+  ) {
+    final width = MediaQuery.of(context).size.width;
+    final val = (width ~/ 100);
+    return min(val, 6);
+  }
+
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
@@ -31,6 +39,18 @@ class LevelSelectionScreen extends StatelessWidget {
 
     return Scaffold(
       //backgroundColor: palette.backgroundLevelSelection,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: Text(
+              'Выбор уровня',
+              style: TextStyle(fontFamily: palette.fontMain, fontSize: 30),
+            ),
+          ),
+        ),
+      ),
       body: FutureBuilder(
           future: context.read<LevelManager>().readLevels(),
           builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
@@ -38,20 +58,10 @@ class LevelSelectionScreen extends StatelessWidget {
               return ResponsiveScreen(
                 squarishMainArea: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Center(
-                        child: Text(
-                          'Выбор уровня',
-                          style: TextStyle(
-                              fontFamily: palette.fontMain, fontSize: 30),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
+                    // const SizedBox(height: 40),
                     Expanded(
                       child: GridView.count(
-                        crossAxisCount: 6,
+                        crossAxisCount: columnCount(context),
                         children: [
                           for (final level in snapshot.data!.values)
                             Column(

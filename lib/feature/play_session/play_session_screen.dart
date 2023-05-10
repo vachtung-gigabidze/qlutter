@@ -44,7 +44,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   static double textScaleFactor(BuildContext context,
       {double maxTextScaleFactor = 1}) {
     final width = MediaQuery.of(context).size.width;
-    double val = (width / 400) * maxTextScaleFactor;
+    double val = (width / 500) * maxTextScaleFactor;
     return min(val, maxTextScaleFactor);
   }
 
@@ -82,56 +82,60 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
       ],
       child: IgnorePointer(
         ignoring: _duringCelebration,
-        child: Scaffold(
-          //backgroundColor: palette.backgroundPlaySession,
-          body: FutureBuilder(
-              future: _loadLevel(),
-              builder: (context, AsyncSnapshot<bool> snapshot) {
-                if (snapshot.hasData) {
-                  return Stack(
+        child: FutureBuilder(
+            future: _loadLevel(),
+            builder: (context, AsyncSnapshot<bool> snapshot) {
+              if (snapshot.hasData) {
+                return Scaffold(
+                  appBar: AppBar(
+                    //backgroundColor: Colors.transparent,
+                    automaticallyImplyLeading: false,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InkResponse(
+                            onTap: () => setState(() {
+                              if (field != null) {
+                                fieldCopy = Field.copyField(field!);
+                              }
+                            }),
+                            child: const Icon(Icons.refresh, size: 50),
+                          ),
+                        ),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              level.levelId == 0
+                                  ? 'Обучение'
+                                  : 'Уровень: ${level.levelId}',
+                              style: TextStyle(
+                                fontFamily: palette.fontMain,
+                                fontSize: 26,
+                                // color: palette.ink,
+                              ),
+                            )),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: InkResponse(
+                            onTap: () => showInformationDialog(context),
+                            child: const Icon(
+                              Icons.info_outline,
+                              size: 50,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  //backgroundColor: palette.backgroundPlaySession,
+                  body: Stack(
                     children: [
                       Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: InkResponse(
-                                    onTap: () => setState(() {
-                                      if (field != null) {
-                                        fieldCopy = Field.copyField(field!);
-                                      }
-                                    }),
-                                    child: const Icon(Icons.refresh, size: 50),
-                                  ),
-                                ),
-                                Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      level.levelId == 0
-                                          ? 'Обучение'
-                                          : 'Уровень: ${level.levelId}',
-                                      style: TextStyle(
-                                        fontFamily: palette.fontMain,
-                                        fontSize: 26,
-                                        // color: palette.ink,
-                                      ),
-                                    )),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: InkResponse(
-                                    onTap: () => showInformationDialog(context),
-                                    child: const Icon(
-                                      Icons.info_outline,
-                                      size: 50,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                             (level.levelId == 0) ? tutorial() : const Spacer(),
                             Consumer<LevelState>(
                               builder: (context, levelState, child) =>
@@ -150,24 +154,6 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                               ),
                             ),
                             const Spacer(),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () =>
-                                      GoRouter.of(context).go('/play'),
-                                  child: Text(
-                                    'Назад',
-                                    style: TextStyle(
-                                      fontFamily: palette.fontMain,
-                                      fontSize: 26,
-                                      //color: palette.ink,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                       ),
@@ -182,12 +168,24 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                         ),
                       ),
                     ],
-                  );
-                } else {
-                  return const AppLoader();
-                }
-              }),
-        ),
+                  ),
+
+                  //   ElevatedButton(
+                  //   onPressed: () => GoRouter.of(context).go('/play'),
+                  //   child: Text(
+                  //     'Назад',
+                  //     style: TextStyle(
+                  //       fontFamily: palette.fontMain,
+                  //       fontSize: 26,
+                  //       //color: palette.ink,
+                  //     ),
+                  //   ),
+                  // ),
+                );
+              } else {
+                return const AppLoader();
+              }
+            }),
       ),
     );
   }

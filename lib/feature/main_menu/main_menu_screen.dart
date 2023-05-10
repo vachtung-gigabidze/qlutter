@@ -22,7 +22,7 @@ class MainMenuScreen extends StatelessWidget {
         body: ResponsiveScreen(
           mainAreaProminence: 0.45,
           squarishMainArea: Stack(children: [
-            const RiveAnimation.asset("assets/rive/balls.riv"),
+            //const RiveAnimation.asset("assets/rive/balls.riv"),
             Positioned.fill(
                 child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
@@ -58,13 +58,27 @@ class MainMenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              // _gap,
+              // ElevatedButton(
+              //   onPressed: () {
+              //     GoRouter.of(context).go('/progress');
+              //   },
+              //   child: Text(
+              //     'Рекорды',
+              //     style: TextStyle(
+              //       fontFamily: palette.fontMain,
+              //       fontSize: 32,
+              //       //color: palette.ink,
+              //     ),
+              //   ),
+              // ),
               _gap,
               ElevatedButton(
                 onPressed: () {
-                  GoRouter.of(context).go('/progress');
+                  GoRouter.of(context).go('/settings');
                 },
                 child: Text(
-                  'Рекорды',
+                  'Настройки',
                   style: TextStyle(
                     fontFamily: palette.fontMain,
                     fontSize: 32,
@@ -72,39 +86,39 @@ class MainMenuScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              _gap,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ThemeSwitcher.withTheme(
-                    builder: (_, switcher, theme) => IconButton(
-                      onPressed: () => switcher.changeTheme(
-                          theme: theme.brightness == Brightness.light
-                              ? palette.dark
-                              : palette.light),
-                      icon: Icon(
-                        theme.brightness == Brightness.light
-                            ? Icons.nightlight
-                            : Icons.wb_sunny,
-                        size: 34,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      showInformationDialog(context);
-                    },
-                    icon: const Icon(Icons.info_outline, size: 34),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      GoRouter.of(context).go('/settings');
-                    },
-                    icon: const Icon(Icons.settings, size: 34),
-                  ),
-                ],
-              ),
-              _gap,
+              // _gap,
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     ThemeSwitcher.withTheme(
+              //       builder: (_, switcher, theme) => IconButton(
+              //         onPressed: () => switcher.changeTheme(
+              //             theme: theme.brightness == Brightness.light
+              //                 ? palette.dark
+              //                 : palette.light),
+              //         icon: Icon(
+              //           theme.brightness == Brightness.light
+              //               ? Icons.nightlight
+              //               : Icons.wb_sunny,
+              //           size: 34,
+              //         ),
+              //       ),
+              //     ),
+              //     IconButton(
+              //       onPressed: () {
+              //         showInformationDialog(context);
+              //       },
+              //       icon: const Icon(Icons.info_outline, size: 34),
+              //     ),
+              //     IconButton(
+              //       onPressed: () {
+              //         GoRouter.of(context).go('/settings');
+              //       },
+              //       icon: const Icon(Icons.settings, size: 34),
+              //     ),
+              //   ],
+              // ),
+              // _gap,
             ],
           ),
         ),

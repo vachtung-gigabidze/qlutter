@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
 @Singleton()
@@ -51,6 +52,15 @@ class Palette {
               background: backgroundMain,
             ),
         scaffoldBackgroundColor: backgroundMain,
+        appBarTheme: ThemeData.light().appBarTheme.copyWith(
+            iconTheme: IconThemeData(color: Colors.black),
+            color: backgroundMain,
+            foregroundColor: Colors.black,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: backgroundMain,
+              statusBarIconBrightness: Brightness.dark,
+              statusBarBrightness: Brightness.dark,
+            )),
         textTheme: TextTheme(
           bodyMedium: TextStyle(
             fontFamily: fontMain,
@@ -70,6 +80,15 @@ class Palette {
             ),
         elevatedButtonTheme: ThemeData.dark().elevatedButtonTheme,
         scaffoldBackgroundColor: Colors.grey[900],
+        appBarTheme: ThemeData.dark().appBarTheme.copyWith(
+            iconTheme: IconThemeData(color: Colors.white70),
+            color: Colors.grey[900],
+            foregroundColor: Colors.white70,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.grey[900],
+              statusBarIconBrightness: Brightness.light,
+              statusBarBrightness: Brightness.light,
+            )),
         textTheme: TextTheme(
           bodyMedium: TextStyle(
             fontFamily: fontMain,
