@@ -1,3 +1,4 @@
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -18,95 +19,111 @@ class SettingsScreen extends StatelessWidget {
     final palette = context.watch<Palette>();
     final t = Translations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        title: Text(
-          t.setting.title,
-          //textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: palette.fontMain,
-            fontSize: 32,
-            height: 1,
+    return ThemeSwitchingArea(
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text(
+            t.setting.title,
+            //textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: palette.fontMain,
+              fontSize: 32,
+              height: 1,
+            ),
           ),
         ),
-      ),
-      // backgroundColor: palette.backgroundSettings,
-      body: ResponsiveScreen(
-        squarishMainArea: ListView(
-          children: [
-            // const _NameChangeLine(
-            //   'Тема',
-            // ),
-            ValueListenableBuilder<String>(
-              valueListenable: settings.theme,
-              builder: (context, soundsOn, child) => _SettingsLine(
-                t.setting.theme,
-                const Icon(Icons.lightbulb_outline_rounded),
-                onSelected: () => settings.setLanguage('light'),
+        // backgroundColor: palette.backgroundSettings,
+        body: ResponsiveScreen(
+          squarishMainArea: ListView(
+            children: [
+              // const _NameChangeLine(
+              //   'Тема',
+              // ),
+              ValueListenableBuilder<String>(
+                valueListenable: settings.theme,
+                builder: (context, theme, child) => _SettingsLine(
+                  t.setting.theme,
+                  ThemeSwitcher.withTheme(
+                    builder: (_, switcher, theme) => IconButton(
+                      onPressed: () => switcher.changeTheme(
+                          theme: theme.brightness == Brightness.light
+                              ? palette.dark
+                              : palette.light),
+                      icon: Icon(
+                        theme.brightness == Brightness.light
+                            ? Icons.nightlight
+                            : Icons.wb_sunny,
+                        size: 34,
+                      ),
+                    ),
+                  ),
+                  //const Icon(Icons.lightbulb_outline_rounded),
+                  onSelected: () => settings.setTheme('dark'),
+                ),
               ),
-            ),
-            ValueListenableBuilder<String>(
-              valueListenable: settings.language,
-              builder: (context, musicOn, child) => _LanguageChangeLine(
-                t.setting.language,
-                //const Icon(Icons.language),
-                //onSelected: () => settings.setLanguage('russian'),
+              ValueListenableBuilder<String>(
+                valueListenable: settings.language,
+                builder: (context, language, child) => _SettingsLine(
+                  t.setting.language,
+                  const Icon(Icons.language),
+                  onSelected: () => settings.setLanguage('russian'),
+                ),
               ),
-            ),
-            // Consumer<InAppPurchaseController?>(
-            //     builder: (context, inAppPurchase, child) {
-            //   if (inAppPurchase == null) {
-            //     // In-app purchases are not supported yet.
-            //     // Go to lib/main.dart and uncomment the lines that create
-            //     // the InAppPurchaseController.
-            //     return const SizedBox.shrink();
-            //   }
+              // Consumer<InAppPurchaseController?>(
+              //     builder: (context, inAppPurchase, child) {
+              //   if (inAppPurchase == null) {
+              //     // In-app purchases are not supported yet.
+              //     // Go to lib/main.dart and uncomment the lines that create
+              //     // the InAppPurchaseController.
+              //     return const SizedBox.shrink();
+              //   }
 
-            //   Widget icon;
-            //   VoidCallback? callback;
-            //   if (inAppPurchase.adRemoval.active) {
-            //     icon = const Icon(Icons.check);
-            //   } else if (inAppPurchase.adRemoval.pending) {
-            //     icon = const CircularProgressIndicator();
-            //   } else {
-            //     icon = const Icon(Icons.ad_units);
-            //     callback = () {
-            //       inAppPurchase.buy();
-            //     };
-            //   }
-            //   return _SettingsLine(
-            //     'Remove ads',
-            //     icon,
-            //     onSelected: callback,
-            //   );
-            // }),
-            // _SettingsLine(
-            //   'Сброс прогресса',
-            //   const Icon(Icons.delete),
-            //   onSelected: () {
-            //     context.read<PlayerProgress>().reset();
+              //   Widget icon;
+              //   VoidCallback? callback;
+              //   if (inAppPurchase.adRemoval.active) {
+              //     icon = const Icon(Icons.check);
+              //   } else if (inAppPurchase.adRemoval.pending) {
+              //     icon = const CircularProgressIndicator();
+              //   } else {
+              //     icon = const Icon(Icons.ad_units);
+              //     callback = () {
+              //       inAppPurchase.buy();
+              //     };
+              //   }
+              //   return _SettingsLine(
+              //     'Remove ads',
+              //     icon,
+              //     onSelected: callback,
+              //   );
+              // }),
+              // _SettingsLine(
+              //   'Сброс прогресса',
+              //   const Icon(Icons.delete),
+              //   onSelected: () {
+              //     context.read<PlayerProgress>().reset();
 
-            //     final messenger = ScaffoldMessenger.of(context);
-            //     messenger.showSnackBar(
-            //       const SnackBar(content: Text('Прогресс сброшен')),
-            //     );
-            //   },
-            // ),
-            // _gap,
-          ],
-        ),
-        rectangularMenuArea: ElevatedButton(
-          onPressed: () {
-            GoRouter.of(context).pop();
-          },
-          child: Text(t.setting.back,
-              style: TextStyle(
-                fontFamily: palette.fontMain,
-                fontSize: 26,
-                color: palette.ink,
-              )),
+              //     final messenger = ScaffoldMessenger.of(context);
+              //     messenger.showSnackBar(
+              //       const SnackBar(content: Text('Прогресс сброшен')),
+              //     );
+              //   },
+              // ),
+              // _gap,
+            ],
+          ),
+          rectangularMenuArea: ElevatedButton(
+            onPressed: () {
+              GoRouter.of(context).pop();
+            },
+            child: Text(t.setting.back,
+                style: TextStyle(
+                  fontFamily: palette.fontMain,
+                  fontSize: 26,
+                  // color: palette.ink,
+                )),
+          ),
         ),
       ),
     );
