@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 import 'language_dialog.dart';
@@ -15,13 +16,14 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.watch<SettingsController>();
     final palette = context.watch<Palette>();
+    final t = Translations.of(context);
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(
-          'Настройки',
+          t.setting.title,
           //textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: palette.fontMain,
@@ -40,15 +42,15 @@ class SettingsScreen extends StatelessWidget {
             ValueListenableBuilder<String>(
               valueListenable: settings.theme,
               builder: (context, soundsOn, child) => _SettingsLine(
-                'Тема',
+                t.setting.theme,
                 const Icon(Icons.lightbulb_outline_rounded),
                 onSelected: () => settings.setLanguage('light'),
               ),
             ),
             ValueListenableBuilder<String>(
               valueListenable: settings.language,
-              builder: (context, musicOn, child) => const _LanguageChangeLine(
-                'Язык',
+              builder: (context, musicOn, child) => _LanguageChangeLine(
+                t.setting.language,
                 //const Icon(Icons.language),
                 //onSelected: () => settings.setLanguage('russian'),
               ),
@@ -99,7 +101,7 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () {
             GoRouter.of(context).pop();
           },
-          child: Text('Назад',
+          child: Text(t.setting.back,
               style: TextStyle(
                 fontFamily: palette.fontMain,
                 fontSize: 26,

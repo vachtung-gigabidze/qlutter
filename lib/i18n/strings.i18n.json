@@ -1,32 +1,40 @@
 {
-  "main":{
-"play":"Play",
-"setting":"Setting"
-  } ,
-  "levels":{
-    "title":"Levels",
-    "tutorial":"Tutorial",
-    "back":"Back"
+  "main": {
+    "play": "Play",
+    "setting": "Setting"
+  },
+  "levels": {
+    "title": "Levels",
+    "tutorial": "Tutorial",
+    "back": "Back"
   },
   "session": {
     "title": "Level",
-    "back":"Back",
+    "back": "Back",
     "tutorial": {
-      "title":"Tutorial",
-      "step1":"Step 1: Press on the ball.",
-      "step2":"Step 2: Press on the arrow.",
-      "step3":"Step 3: Repeat steps 1 and 2."
+      "title": "Tutorial",
+      "steps": [
+        "Step 1: Press on the ball.",
+        "Step 2: Press on the arrow.",
+        "Step 3: Repeat steps 1 and 2."
+      ]
     }
   },
-  "win":{
-    "title":"Win!",
-    "time":"Time",
-    "step":"Step",
-    "next":"Next",
-    "back":"Levels"
+  "win": {
+    "title": "Win!",
+    "time": "Time",
+    "step": "Step",
+    "next": "Next",
+    "back": "Levels"
   },
-  "info":{
-    "back":"Close",
-    "text":"The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle."
+  "info": {
+    "back": "Close",
+    "text": "The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle."
+  },
+  "setting": {
+    "title": "Setting",
+    "theme": "Theme",
+    "language": "Language",
+    "back": "Back"
   }
 }

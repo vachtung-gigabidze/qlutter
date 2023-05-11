@@ -1,9 +1,9 @@
 /// Generated file. Do not edit.
 ///
 /// Locales: 2
-/// Strings: 36 (18 per locale)
+/// Strings: 44 (22 per locale)
 ///
-/// Built on 2023-05-10 at 17:44 UTC
+/// Built on 2023-05-11 at 10:06 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -152,6 +152,7 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 	late final _StringsSessionEn session = _StringsSessionEn._(_root);
 	late final _StringsWinEn win = _StringsWinEn._(_root);
 	late final _StringsInfoEn info = _StringsInfoEn._(_root);
+	late final _StringsSettingEn setting = _StringsSettingEn._(_root);
 }
 
 // Path: main
@@ -214,6 +215,19 @@ class _StringsInfoEn {
 	String get text => 'The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle.';
 }
 
+// Path: setting
+class _StringsSettingEn {
+	_StringsSettingEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Setting';
+	String get theme => 'Theme';
+	String get language => 'Language';
+	String get back => 'Back';
+}
+
 // Path: session.tutorial
 class _StringsSessionTutorialEn {
 	_StringsSessionTutorialEn._(this._root);
@@ -222,9 +236,11 @@ class _StringsSessionTutorialEn {
 
 	// Translations
 	String get title => 'Tutorial';
-	String get step1 => 'Step 1: Press on the ball.';
-	String get step2 => 'Step 2: Press on the arrow.';
-	String get step3 => 'Step 3: Repeat steps 1 and 2.';
+	List<String> get steps => [
+		'Step 1: Press on the ball.',
+		'Step 2: Press on the arrow.',
+		'Step 3: Repeat steps 1 and 2.',
+	];
 }
 
 // Path: <root>
@@ -257,6 +273,7 @@ class _StringsRu implements _StringsEn {
 	@override late final _StringsSessionRu session = _StringsSessionRu._(_root);
 	@override late final _StringsWinRu win = _StringsWinRu._(_root);
 	@override late final _StringsInfoRu info = _StringsInfoRu._(_root);
+	@override late final _StringsSettingRu setting = _StringsSettingRu._(_root);
 }
 
 // Path: main
@@ -319,6 +336,19 @@ class _StringsInfoRu implements _StringsInfoEn {
 	@override String get text => 'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой до первого препятствия.';
 }
 
+// Path: setting
+class _StringsSettingRu implements _StringsSettingEn {
+	_StringsSettingRu._(this._root);
+
+	@override final _StringsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Настройка';
+	@override String get theme => 'Тема';
+	@override String get language => 'Язык';
+	@override String get back => 'Назад';
+}
+
 // Path: session.tutorial
 class _StringsSessionTutorialRu implements _StringsSessionTutorialEn {
 	_StringsSessionTutorialRu._(this._root);
@@ -327,9 +357,11 @@ class _StringsSessionTutorialRu implements _StringsSessionTutorialEn {
 
 	// Translations
 	@override String get title => 'Обучение';
-	@override String get step1 => 'Шаг 1: Нажмите на шар.';
-	@override String get step2 => 'Шаг 2: Нажмите на стрелочку.';
-	@override String get step3 => 'Шаг 3: Повторить шаги 1 и 2.';
+	@override List<String> get steps => [
+		'Шаг 1: Нажмите на шар.',
+		'Шаг 2: Нажмите на стрелочку.',
+		'Шаг 3: Повторить шаги 1 и 2.',
+	];
 }
 
 /// Flat map(s) containing all translations.
@@ -346,9 +378,9 @@ extension on _StringsEn {
 			case 'session.title': return 'Level';
 			case 'session.back': return 'Back';
 			case 'session.tutorial.title': return 'Tutorial';
-			case 'session.tutorial.step1': return 'Step 1: Press on the ball.';
-			case 'session.tutorial.step2': return 'Step 2: Press on the arrow.';
-			case 'session.tutorial.step3': return 'Step 3: Repeat steps 1 and 2.';
+			case 'session.tutorial.steps.0': return 'Step 1: Press on the ball.';
+			case 'session.tutorial.steps.1': return 'Step 2: Press on the arrow.';
+			case 'session.tutorial.steps.2': return 'Step 3: Repeat steps 1 and 2.';
 			case 'win.title': return 'Win!';
 			case 'win.time': return 'Time';
 			case 'win.step': return 'Step';
@@ -356,6 +388,10 @@ extension on _StringsEn {
 			case 'win.back': return 'Levels';
 			case 'info.back': return 'Close';
 			case 'info.text': return 'The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle.';
+			case 'setting.title': return 'Setting';
+			case 'setting.theme': return 'Theme';
+			case 'setting.language': return 'Language';
+			case 'setting.back': return 'Back';
 			default: return null;
 		}
 	}
@@ -372,9 +408,9 @@ extension on _StringsRu {
 			case 'session.title': return 'Уровень';
 			case 'session.back': return 'Назад';
 			case 'session.tutorial.title': return 'Обучение';
-			case 'session.tutorial.step1': return 'Шаг 1: Нажмите на шар.';
-			case 'session.tutorial.step2': return 'Шаг 2: Нажмите на стрелочку.';
-			case 'session.tutorial.step3': return 'Шаг 3: Повторить шаги 1 и 2.';
+			case 'session.tutorial.steps.0': return 'Шаг 1: Нажмите на шар.';
+			case 'session.tutorial.steps.1': return 'Шаг 2: Нажмите на стрелочку.';
+			case 'session.tutorial.steps.2': return 'Шаг 3: Повторить шаги 1 и 2.';
 			case 'win.title': return 'Победа!';
 			case 'win.time': return 'Время';
 			case 'win.step': return 'Ход';
@@ -382,6 +418,10 @@ extension on _StringsRu {
 			case 'win.back': return 'Уровни';
 			case 'info.back': return 'Закрыть';
 			case 'info.text': return 'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой до первого препятствия.';
+			case 'setting.title': return 'Настройка';
+			case 'setting.theme': return 'Тема';
+			case 'setting.language': return 'Язык';
+			case 'setting.back': return 'Назад';
 			default: return null;
 		}
 	}

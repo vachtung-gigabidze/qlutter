@@ -159,11 +159,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                               ),
                               const Spacer(),
                               (level.levelId == 0)
-                                  ? tutorial([
-                                      t.session.tutorial.step1,
-                                      t.session.tutorial.step2,
-                                      t.session.tutorial.step3
-                                    ])
+                                  ? tutorial(t.session.tutorial.steps)
                                   : const Spacer(),
                               const Spacer(),
                             ],
