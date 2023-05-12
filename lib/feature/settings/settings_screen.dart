@@ -42,10 +42,13 @@ class SettingsScreen extends StatelessWidget {
                   t.setting.theme,
                   ThemeSwitcher.withTheme(
                     builder: (_, switcher, theme) => IconButton(
-                      onPressed: () => switcher.changeTheme(
-                          theme: theme.brightness == Brightness.light
-                              ? palette.dark
-                              : palette.light),
+                      onPressed: () {
+                        switcher.changeTheme(
+                            theme: theme.brightness == Brightness.light
+                                ? palette.dark
+                                : palette.light);
+                        settings.setTheme('');
+                      },
                       icon: Icon(
                         theme.brightness == Brightness.light
                             ? Icons.nightlight
@@ -53,7 +56,9 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onSelected: () => settings.setTheme('dark'),
+                  onSelected: () {
+                    settings.setTheme('dark');
+                  },
                 ),
               ),
               ValueListenableBuilder<String>(

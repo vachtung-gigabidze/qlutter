@@ -34,7 +34,7 @@ class MainAppRunner implements AppRunner {
     LocaleSettings.useDeviceLocale();
     // LocaleSettings.setLocale(AppLocale.values.last);
 
-    runApp(TranslationProvider(child: appBuilder.buildApp()));
+    runApp(TranslationProvider(child: await appBuilder.buildApp()));
     // },
     //   storage: storage,
     // );

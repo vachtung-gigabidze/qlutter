@@ -28,7 +28,7 @@ class SettingsController {
   }
 
   void setTheme(String t) {
-    theme.value = t;
+    theme.value = theme.value == 'dark' ? 'light' : 'dark';
     _persistence.saveTheme(theme.value);
   }
 

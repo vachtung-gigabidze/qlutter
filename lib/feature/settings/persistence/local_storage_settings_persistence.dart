@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'settings_persistence.dart';
@@ -14,8 +15,13 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
 
   @override
   Future<String> getTheme({required String defaultValue}) async {
+    final isPlatformDark =
+        WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
     final prefs = await instanceFuture;
-    return prefs.getString('there') ?? defaultValue;
+    final theme = prefs.getString('there');
+
+    final initTheme = theme ?? (isPlatformDark ? "dark" : "light");
+    return initTheme;
   }
 
   @override
@@ -27,6 +33,6 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
   @override
   Future<void> saveTheme(String value) async {
     final prefs = await instanceFuture;
-    await prefs.setString('there', value);
+    await prefs.setString('there', value == 'light' ? 'dark' : 'light');
   }
 }

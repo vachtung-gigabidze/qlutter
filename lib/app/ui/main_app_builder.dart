@@ -94,14 +94,19 @@ class MainAppBuilder implements AppBuilder {
   GamesServicesController? gamesServicesController;
 
   @override
-  Widget buildApp() {
+  Future<Widget> buildApp() async {
     final palette = locator.get<Palette>();
+    final setting = LocalStorageSettingsPersistence();
+    final themePers = await setting.getTheme(defaultValue: '');
+
+    ThemeData initTheme = themePers == 'light' ? palette.light : palette.dark;
+
     return _GlobalProviders(
-      settingsPersistence: LocalStorageSettingsPersistence(),
+      settingsPersistence: setting,
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
       gamesServicesController: gamesServicesController,
       child: ThemeProvider(
-          initTheme: palette.light,
+          initTheme: initTheme,
           builder: (p0, theme) {
             return MaterialApp.router(
               locale: TranslationProvider.of(p0).flutterLocale,
