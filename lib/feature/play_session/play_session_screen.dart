@@ -46,7 +46,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   static double textScaleFactor(BuildContext context,
       {double maxTextScaleFactor = 1}) {
     final width = MediaQuery.of(context).size.width;
-    double val = (width / 500) * maxTextScaleFactor;
+    double val = (width / 600) * maxTextScaleFactor;
     return min(val, maxTextScaleFactor);
   }
 

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-
+import 'package:qlutter/i18n/strings.g.dart';
 import 'persistence/settings_persistence.dart';
 
 class SettingsController {
@@ -7,7 +7,7 @@ class SettingsController {
 
   ValueNotifier<String> theme = ValueNotifier('light');
 
-  ValueNotifier<String> language = ValueNotifier('Русский');
+  ValueNotifier<String> language = ValueNotifier('ru');
 
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;
@@ -20,7 +20,7 @@ class SettingsController {
           .getTheme(defaultValue: 'light')
           .then((value) => theme.value = value),
       _persistence
-          .getLanguage(defaultValue: 'Русский')
+          .getLanguage(defaultValue: 'ru')
           .then((value) => language.value = value),
       // _persistence.getMusicOn().then((value) => musicOn.value = value),
       // _persistence.getPlayerName().then((value) => playerName.value = value),
@@ -33,27 +33,12 @@ class SettingsController {
   }
 
   void setLanguage(String l) {
-    language.value = l;
-    _persistence.saveLanguage(language.value);
+    //language.value = l;
+    // _persistence.saveLanguage(language.value);
+    AppLocale locale = AppLocale.values
+        .firstWhere((local) => local != LocaleSettings.currentLocale);
+
+    _persistence.saveLanguage(locale.languageTag);
+    LocaleSettings.setLocale(locale);
   }
-
-  // void setPlayerName(String name) {
-  //   playerName.value = name;
-  //   _persistence.savePlayerName(playerName.value);
-  // }
-
-  // void toggleMusicOn() {
-  //   musicOn.value = !musicOn.value;
-  //   _persistence.saveMusicOn(musicOn.value);
-  // }
-
-  // void toggleMuted() {
-  //   muted.value = !muted.value;
-  //   _persistence.saveMuted(muted.value);
-  // }
-
-  // void toggleSoundsOn() {
-  //   soundsOn.value = !soundsOn.value;
-  //   _persistence.saveSoundsOn(soundsOn.value);
-  // }
 }

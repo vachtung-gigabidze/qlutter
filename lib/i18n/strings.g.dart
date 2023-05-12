@@ -1,9 +1,9 @@
 /// Generated file. Do not edit.
 ///
 /// Locales: 2
-/// Strings: 44 (22 per locale)
+/// Strings: 48 (24 per locale)
 ///
-/// Built on 2023-05-11 at 10:06 UTC
+/// Built on 2023-05-12 at 08:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -163,7 +163,7 @@ class _StringsMainEn {
 
 	// Translations
 	String get play => 'Play';
-	String get setting => 'Setting';
+	String get setting => 'Settings';
 }
 
 // Path: levels
@@ -222,9 +222,9 @@ class _StringsSettingEn {
 	final _StringsEn _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Setting';
+	String get title => 'Settings';
 	String get theme => 'Theme';
-	String get language => 'Language';
+	late final _StringsSettingLanguageEn language = _StringsSettingLanguageEn._(_root);
 	String get back => 'Back';
 }
 
@@ -241,6 +241,28 @@ class _StringsSessionTutorialEn {
 		'Step 2: Press on the arrow.',
 		'Step 3: Repeat steps 1 and 2.',
 	];
+}
+
+// Path: setting.language
+class _StringsSettingLanguageEn {
+	_StringsSettingLanguageEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Language';
+	late final _StringsSettingLanguageLanguagesEn languages = _StringsSettingLanguageLanguagesEn._(_root);
+}
+
+// Path: setting.language.languages
+class _StringsSettingLanguageLanguagesEn {
+	_StringsSettingLanguageLanguagesEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get ru => 'Russian';
+	String get en => 'English';
 }
 
 // Path: <root>
@@ -343,9 +365,9 @@ class _StringsSettingRu implements _StringsSettingEn {
 	@override final _StringsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get title => 'Настройка';
+	@override String get title => 'Настройки';
 	@override String get theme => 'Тема';
-	@override String get language => 'Язык';
+	@override late final _StringsSettingLanguageRu language = _StringsSettingLanguageRu._(_root);
 	@override String get back => 'Назад';
 }
 
@@ -364,6 +386,28 @@ class _StringsSessionTutorialRu implements _StringsSessionTutorialEn {
 	];
 }
 
+// Path: setting.language
+class _StringsSettingLanguageRu implements _StringsSettingLanguageEn {
+	_StringsSettingLanguageRu._(this._root);
+
+	@override final _StringsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Язык';
+	@override late final _StringsSettingLanguageLanguagesRu languages = _StringsSettingLanguageLanguagesRu._(_root);
+}
+
+// Path: setting.language.languages
+class _StringsSettingLanguageLanguagesRu implements _StringsSettingLanguageLanguagesEn {
+	_StringsSettingLanguageLanguagesRu._(this._root);
+
+	@override final _StringsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get ru => 'Русский';
+	@override String get en => 'Английский';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 
@@ -371,7 +415,7 @@ extension on _StringsEn {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'main.play': return 'Play';
-			case 'main.setting': return 'Setting';
+			case 'main.setting': return 'Settings';
 			case 'levels.title': return 'Levels';
 			case 'levels.tutorial': return 'Tutorial';
 			case 'levels.back': return 'Back';
@@ -388,9 +432,11 @@ extension on _StringsEn {
 			case 'win.back': return 'Levels';
 			case 'info.back': return 'Close';
 			case 'info.text': return 'The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle.';
-			case 'setting.title': return 'Setting';
+			case 'setting.title': return 'Settings';
 			case 'setting.theme': return 'Theme';
-			case 'setting.language': return 'Language';
+			case 'setting.language.title': return 'Language';
+			case 'setting.language.languages.ru': return 'Russian';
+			case 'setting.language.languages.en': return 'English';
 			case 'setting.back': return 'Back';
 			default: return null;
 		}
@@ -418,9 +464,11 @@ extension on _StringsRu {
 			case 'win.back': return 'Уровни';
 			case 'info.back': return 'Закрыть';
 			case 'info.text': return 'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой до первого препятствия.';
-			case 'setting.title': return 'Настройка';
+			case 'setting.title': return 'Настройки';
 			case 'setting.theme': return 'Тема';
-			case 'setting.language': return 'Язык';
+			case 'setting.language.title': return 'Язык';
+			case 'setting.language.languages.ru': return 'Русский';
+			case 'setting.language.languages.en': return 'Английский';
 			case 'setting.back': return 'Назад';
 			default: return null;
 		}

@@ -1,7 +1,7 @@
 {
   "main": {
     "play": "Play",
-    "setting": "Setting"
+    "setting": "Settings"
   },
   "levels": {
     "title": "Levels",
@@ -32,9 +32,15 @@
     "text": "The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle."
   },
   "setting": {
-    "title": "Setting",
+    "title": "Settings",
     "theme": "Theme",
-    "language": "Language",
+    "language": {
+      "title": "Language",
+      "languages": {
+        "ru": "Russian",
+        "en": "English"
+      }
+    },
     "back": "Back"
   }
 }

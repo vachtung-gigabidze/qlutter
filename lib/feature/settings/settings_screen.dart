@@ -11,7 +11,7 @@ import 'settings.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  static const _gap = SizedBox(height: 60);
+  // static const _gap = SizedBox(height: 60);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,6 @@ class SettingsScreen extends StatelessWidget {
           centerTitle: true,
           title: Text(
             t.setting.title,
-            //textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: palette.fontMain,
               fontSize: 32,
@@ -34,13 +33,9 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ),
-        // backgroundColor: palette.backgroundSettings,
         body: ResponsiveScreen(
           squarishMainArea: ListView(
             children: [
-              // const _NameChangeLine(
-              //   'Тема',
-              // ),
               ValueListenableBuilder<String>(
                 valueListenable: settings.theme,
                 builder: (context, theme, child) => _SettingsLine(
@@ -55,20 +50,18 @@ class SettingsScreen extends StatelessWidget {
                         theme.brightness == Brightness.light
                             ? Icons.nightlight
                             : Icons.wb_sunny,
-                        size: 34,
                       ),
                     ),
                   ),
-                  //const Icon(Icons.lightbulb_outline_rounded),
                   onSelected: () => settings.setTheme('dark'),
                 ),
               ),
               ValueListenableBuilder<String>(
                 valueListenable: settings.language,
                 builder: (context, language, child) => _SettingsLine(
-                  t.setting.language,
-                  const Icon(Icons.language),
-                  onSelected: () => settings.setLanguage('russian'),
+                  t.setting.language.title,
+                  Text(language),
+                  onSelected: () => settings.setLanguage('en'),
                 ),
               ),
               // Consumer<InAppPurchaseController?>(
