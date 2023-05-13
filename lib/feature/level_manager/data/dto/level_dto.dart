@@ -51,7 +51,7 @@ class LevelDto {
     return Level(
         field.map((r) => r.map((e) => e!.toItem(i++)).toList()).toList(),
         levelId)
-      ..size = Size(size.h + .0, size.w + .0);
+      ..size = Size(size.w + .0, size.h + .0);
   }
 
   static Future<Map<int, LevelDto>> openLevels(String levelsFile) async {
@@ -65,8 +65,8 @@ class LevelDto {
     while (levelId != 60) {
       levelId = int.parse(rows[rowNum]);
       rowNum++;
-      final h = int.parse(rows[rowNum].split(' ')[1]);
       final w = int.parse(rows[rowNum].split(' ')[0]);
+      final h = int.parse(rows[rowNum].split(' ')[1]);
       rowNum++;
       field = [];
       for (var i = 0; i < h; i++) {

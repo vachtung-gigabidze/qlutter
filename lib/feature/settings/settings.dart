@@ -5,9 +5,9 @@ import 'persistence/settings_persistence.dart';
 class SettingsController {
   final SettingsPersistence _persistence;
 
-  ValueNotifier<String> theme = ValueNotifier('light');
+  ValueNotifier<String> theme = ValueNotifier('');
 
-  ValueNotifier<String> language = ValueNotifier('ru');
+  ValueNotifier<String> language = ValueNotifier('en');
 
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;
@@ -17,10 +17,10 @@ class SettingsController {
   Future<void> loadStateFromPersistence() async {
     await Future.wait([
       _persistence
-          .getTheme(defaultValue: 'light')
+          .getTheme(defaultValue: '')
           .then((value) => theme.value = value),
       _persistence
-          .getLanguage(defaultValue: 'ru')
+          .getLanguage(defaultValue: 'en')
           .then((value) => language.value = value),
       // _persistence.getMusicOn().then((value) => musicOn.value = value),
       // _persistence.getPlayerName().then((value) => playerName.value = value),
@@ -28,16 +28,16 @@ class SettingsController {
   }
 
   void setTheme(String t) {
-    theme.value = theme.value == 'dark' ? 'light' : 'dark';
+    // theme.value = theme.value == 'dark' ? 'light' : 'dark';
     _persistence.saveTheme(theme.value);
   }
 
   void setLanguage(String l) {
-    //language.value = l;
     // _persistence.saveLanguage(language.value);
     AppLocale locale = AppLocale.values
         .firstWhere((local) => local != LocaleSettings.currentLocale);
 
+    language.value = LocaleSettings.currentLocale.languageTag;
     _persistence.saveLanguage(locale.languageTag);
     LocaleSettings.setLocale(locale);
   }

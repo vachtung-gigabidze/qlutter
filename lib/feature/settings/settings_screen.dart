@@ -57,7 +57,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   onSelected: () {
-                    settings.setTheme('dark');
+                    //settings.setTheme('dark');
                   },
                 ),
               ),
@@ -66,7 +66,7 @@ class SettingsScreen extends StatelessWidget {
                 builder: (context, language, child) => _SettingsLine(
                   t.setting.language.title,
                   Text(language),
-                  onSelected: () => settings.setLanguage('en'),
+                  onSelected: () => settings.setLanguage(''),
                 ),
               ),
               // Consumer<InAppPurchaseController?>(

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
+import 'package:qlutter/feature/field_view/field_view_preview.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
@@ -69,23 +70,22 @@ class LevelSelectionScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: FittedBox(
-                                    child: InkWell(
-                                      onTap: () {
-                                        GoRouter.of(context).go(
-                                            '/play/session/${level.levelId}');
-                                      },
-                                      child: FieldView(
-                                        //backgroundColor:
-                                        //  palette.backgroundLevelSelection,
-                                        parentSize: const Size(150, 150),
-                                        key: ValueKey<List<List<Item?>>>(
-                                            level.field),
-                                        field: Field(level),
-                                        onChanged: (p0, s0) {},
-                                        onWin: () {},
-                                        onRefresh: () {},
-                                        isView: true,
+                                  child: AbsorbPointer(
+                                    absorbing: level.levelId > 3,
+                                    child: FittedBox(
+                                      child: InkWell(
+                                        onTap: () {
+                                          GoRouter.of(context).go(
+                                              '/play/session/${level.levelId}');
+                                        },
+                                        child: FieldViewPreview(
+                                          //backgroundColor:
+                                          //  palette.backgroundLevelSelection,
+                                          parentSize: const Size(150, 150),
+                                          key: UniqueKey(),
+                                          field: Field(level),
+                                          enable: level.levelId <= 1,
+                                        ),
                                       ),
                                     ),
                                   ),

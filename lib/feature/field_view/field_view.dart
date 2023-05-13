@@ -240,28 +240,35 @@ class FieldViewState extends State<FieldView> {
       height = widget.parentSize!.height;
     } else {
       width = MediaQuery.of(context).size.width;
-      height = MediaQuery.of(context).size.height -
-          ((field.level.levelId == 0) ? 300 : 100);
+      height = MediaQuery.of(context).size.height;
+      if (width > height) {
+        width -= 400;
+      }
+      height -= ((field.level.levelId == 0) ? 450 : 300);
     }
-    double m = min<double>(width, height);
+    double m = min<double>(
+        width / field.level.size.width, height / field.level.size.height);
     m *= .95;
-    double i = max<double>(field.level.size.height, field.level.size.width);
+    //double i = max<double>(field.level.size.height, field.level.size.width);
 
-    elementSize = m / i;
+    elementSize = m; //m / i;
     fieldSize = Size(elementSize, elementSize);
-    maxViewSize = Size(field.level.size.height * elementSize,
-        field.level.size.width * elementSize);
+    maxViewSize = Size(field.level.size.width * elementSize,
+        field.level.size.height * elementSize);
   }
 
   @override
   Widget build(BuildContext context) {
     palette ??= context.watch<Palette>();
     setSize(context);
-    return SizedBox(
-      height: maxViewSize.height,
-      width: maxViewSize.width,
-      child: Stack(
-        children: generateFieldItem(field.level.field),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: SizedBox(
+        height: maxViewSize.height,
+        width: maxViewSize.width,
+        child: Stack(
+          children: generateFieldItem(field.level.field),
+        ),
       ),
     );
   }

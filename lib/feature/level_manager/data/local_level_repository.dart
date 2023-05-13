@@ -17,7 +17,7 @@ class LocalLevelRepository implements LevelRepository {
       final levelDTOs = await LevelDto.openLevels(levelTxt);
 
       List<Level> levels =
-          levelDTOs.values.take(24).map((value) => value.toLevel()).toList();
+          levelDTOs.values.map((value) => value.toLevel()).toList();
 
       return levels;
     } catch (e) {
