@@ -9,6 +9,7 @@ import 'package:qlutter/feature/field_view/field_view_preview.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 // import 'package:qlutter/feature/player_progress/player_progress.dart';
 // import '../player_progress/player_progress.dart';
@@ -36,7 +37,7 @@ class LevelSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-    // final playerProgress = context.watch<PlayerProgress>();
+    final playerProgress = context.watch<PlayerProgress>();
     // final levelManager = context.read<LevelManager>();
     final t = Translations.of(context);
     return Scaffold(
@@ -71,7 +72,8 @@ class LevelSelectionScreen extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: AbsorbPointer(
-                                    absorbing: level.levelId > 3,
+                                    absorbing: level.levelId >
+                                        playerProgress.highestLevelReached,
                                     child: FittedBox(
                                       child: InkWell(
                                         onTap: () {
@@ -84,7 +86,9 @@ class LevelSelectionScreen extends StatelessWidget {
                                           parentSize: const Size(150, 150),
                                           key: UniqueKey(),
                                           field: Field(level),
-                                          enable: level.levelId <= 1,
+                                          enable: level.levelId <=
+                                              playerProgress
+                                                  .highestLevelReached,
                                         ),
                                       ),
                                     ),

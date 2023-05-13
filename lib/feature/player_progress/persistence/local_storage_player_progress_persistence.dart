@@ -8,7 +8,7 @@ class LocalStoragePlayerProgressPersistence extends PlayerProgressPersistence {
   @override
   Future<int> getHighestLevelReached() async {
     final prefs = await instanceFuture;
-    return prefs.getInt('highestLevelReached') ?? 3;
+    return prefs.getInt('highestLevelReached') ?? 1;
   }
 
   @override

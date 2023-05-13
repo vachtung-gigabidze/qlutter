@@ -130,7 +130,7 @@ class FieldViewPreviewState extends State<FieldViewPreview> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Opacity(
-        opacity: widget.enable ? 1 : 0.2,
+        opacity: widget.enable ? 0.9 : 0.2,
         child: _child,
       ),
     );

@@ -1,7 +1,5 @@
 import 'player_progress_persistence.dart';
 
-/// An in-memory implementation of [PlayerProgressPersistence].
-/// Useful for testing.
 class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   int level = 0;
 
