@@ -9,15 +9,15 @@ class LocalStorageSettingsPersistence extends SettingsPersistence {
       SharedPreferences.getInstance();
 
   @override
-  Future<String> getLanguage({required String defaultValue}) async {
+  Future<String> getLanguage() async {
     //final local = LocaleSettings.useDeviceLocale();
     final prefs = await instanceFuture;
     //defaultValue = local.languageCode;
-    return prefs.getString('language') ?? defaultValue;
+    return prefs.getString('language') ?? "en";
   }
 
   @override
-  Future<String> getTheme({required String defaultValue}) async {
+  Future<String> getTheme() async {
     final isPlatformDark =
         WidgetsBinding.instance.window.platformBrightness == Brightness.dark;
     final prefs = await instanceFuture;

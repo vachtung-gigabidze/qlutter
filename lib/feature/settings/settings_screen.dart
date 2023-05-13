@@ -47,7 +47,7 @@ class SettingsScreen extends StatelessWidget {
                             theme: theme.brightness == Brightness.light
                                 ? palette.dark
                                 : palette.light);
-                        settings.setTheme('');
+                        settings.setTheme(theme.brightness.name);
                       },
                       icon: Icon(
                         theme.brightness == Brightness.light

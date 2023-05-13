@@ -97,7 +97,7 @@ class MainAppBuilder implements AppBuilder {
   Future<Widget> buildApp() async {
     final palette = locator.get<Palette>();
     final setting = LocalStorageSettingsPersistence();
-    final themePers = await setting.getTheme(defaultValue: '');
+    final themePers = await setting.getTheme();
 
     ThemeData initTheme = themePers == 'light' ? palette.light : palette.dark;
 

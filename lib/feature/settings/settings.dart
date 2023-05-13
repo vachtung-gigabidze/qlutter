@@ -16,20 +16,16 @@ class SettingsController {
 
   Future<void> loadStateFromPersistence() async {
     await Future.wait([
-      _persistence
-          .getTheme(defaultValue: '')
-          .then((value) => theme.value = value),
-      _persistence
-          .getLanguage(defaultValue: 'en')
-          .then((value) => language.value = value),
+      _persistence.getTheme().then((value) => theme.value = value),
+      _persistence.getLanguage().then((value) => language.value = value),
       // _persistence.getMusicOn().then((value) => musicOn.value = value),
       // _persistence.getPlayerName().then((value) => playerName.value = value),
     ]);
   }
 
-  void setTheme(String t) {
+  void setTheme(String theme) {
     // theme.value = theme.value == 'dark' ? 'light' : 'dark';
-    _persistence.saveTheme(theme.value);
+    _persistence.saveTheme(theme);
   }
 
   void setLanguage(String l) {

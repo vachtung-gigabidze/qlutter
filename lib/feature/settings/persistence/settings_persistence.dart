@@ -1,7 +1,7 @@
 abstract class SettingsPersistence {
-  Future<String> getTheme({required String defaultValue});
+  Future<String> getTheme();
 
-  Future<String> getLanguage({required String defaultValue});
+  Future<String> getLanguage();
 
   Future<void> saveTheme(String value);
 
