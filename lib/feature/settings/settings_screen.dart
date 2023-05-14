@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final settings = context.watch<SettingsController>();
     final palette = context.watch<Palette>();
-    final t = Translations.of(context);
+    final localization = Translations.of(context);
 
     return ThemeSwitchingArea(
       child: Scaffold(
@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: Text(
-            t.setting.title,
+            localization.setting.title,
             style: TextStyle(
               fontFamily: palette.fontMain,
               fontSize: 32,
@@ -36,29 +36,24 @@ class SettingsScreen extends StatelessWidget {
         body: ResponsiveScreen(
           squarishMainArea: ListView(
             children: [
-              ValueListenableBuilder<String>(
-                valueListenable: settings.theme,
-                builder: (context, theme, child) => _SettingsLine(
-                  t.setting.theme,
-                  ThemeSwitcher.withTheme(
-                    builder: (_, switcher, theme) => IconButton(
-                      onPressed: () {
-                        switcher.changeTheme(
-                            theme: theme.brightness == Brightness.light
-                                ? palette.dark
-                                : palette.light);
-                        settings.setTheme(theme.brightness.name);
-                      },
-                      icon: Icon(
-                        theme.brightness == Brightness.light
-                            ? Icons.nightlight
-                            : Icons.wb_sunny,
-                      ),
+              ThemeSwitcher.withTheme(
+                builder: (_, switcher, t) => ValueListenableBuilder<String>(
+                  valueListenable: settings.theme,
+                  builder: (context, theme, child) => _SettingsLine(
+                    localization.setting.theme,
+                    Icon(
+                      settings.theme.value == 'dark'
+                          ? Icons.nightlight
+                          : Icons.wb_sunny,
                     ),
+                    onSelected: () {
+                      switcher.changeTheme(
+                          theme: t.brightness == Brightness.light
+                              ? palette.dark
+                              : palette.light);
+                      settings.setTheme(t.brightness.name);
+                    },
                   ),
-                  onSelected: () {
-                    //settings.setTheme('dark');
-                  },
                 ),
               ),
               ValueListenableBuilder<String>(
@@ -66,7 +61,7 @@ class SettingsScreen extends StatelessWidget {
                 builder: (context, language, child) => _SettingsLine(
                   t.setting.language.title,
                   Text(language),
-                  onSelected: () => settings.setLanguage(''),
+                  onSelected: () => settings.setLanguage(language),
                 ),
               ),
               // Consumer<InAppPurchaseController?>(

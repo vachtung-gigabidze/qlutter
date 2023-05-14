@@ -12,7 +12,7 @@ class SettingsController {
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;
 
-  ValueNotifier<String> playerName = ValueNotifier('Player');
+  // ValueNotifier<String> playerName = ValueNotifier('Player');
 
   Future<void> loadStateFromPersistence() async {
     await Future.wait([
@@ -23,9 +23,10 @@ class SettingsController {
     ]);
   }
 
-  void setTheme(String theme) {
+  void setTheme(String t) {
+    theme.value = t;
     // theme.value = theme.value == 'dark' ? 'light' : 'dark';
-    _persistence.saveTheme(theme);
+    _persistence.saveTheme(t);
   }
 
   void setLanguage(String l) {
@@ -33,8 +34,9 @@ class SettingsController {
     AppLocale locale = AppLocale.values
         .firstWhere((local) => local != LocaleSettings.currentLocale);
 
-    language.value = LocaleSettings.currentLocale.languageTag;
-    _persistence.saveLanguage(locale.languageTag);
+    language.value = l;
+    //LocaleSettings.currentLocale.languageTag;
+    _persistence.saveLanguage(l);
     LocaleSettings.setLocale(locale);
   }
 }
