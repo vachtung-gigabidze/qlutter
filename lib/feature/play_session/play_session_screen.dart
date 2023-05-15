@@ -238,11 +238,11 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
 
     await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
-    locator.get<LevelRepository>().sendProcess(
-        levelId: score.level,
-        steps: score.score,
-        seconds: score.duration.inSeconds,
-        dateTime: DateTime.now());
+    // locator.get<LevelRepository>().sendProcess(
+    //     levelId: score.level,
+    //     steps: score.score,
+    //     seconds: score.duration.inSeconds,
+    //     dateTime: DateTime.now());
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }

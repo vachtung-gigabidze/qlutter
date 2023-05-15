@@ -7,7 +7,7 @@ class SettingsController {
 
   ValueNotifier<String> theme = ValueNotifier('');
 
-  ValueNotifier<String> language = ValueNotifier('en');
+  ValueNotifier<String> language = ValueNotifier('');
 
   SettingsController({required SettingsPersistence persistence})
       : _persistence = persistence;

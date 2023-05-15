@@ -2,6 +2,7 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
@@ -11,7 +12,7 @@ import 'settings.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  // static const _gap = SizedBox(height: 60);
+  static const _gap = SizedBox(height: 60);
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +57,16 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              _gap,
               ValueListenableBuilder<String>(
                 valueListenable: settings.language,
                 builder: (context, language, child) => _SettingsLine(
                   t.setting.language.title,
-                  Text(language),
-                  onSelected: () => settings.setLanguage(language),
+                  Text(language == 'en'
+                      ? t.setting.language.languages.ru
+                      : t.setting.language.languages.en),
+                  onSelected: () =>
+                      settings.setLanguage(language == 'en' ? 'ru' : 'en'),
                 ),
               ),
               // Consumer<InAppPurchaseController?>(
@@ -91,18 +96,19 @@ class SettingsScreen extends StatelessWidget {
               //     onSelected: callback,
               //   );
               // }),
-              // _SettingsLine(
-              //   'Сброс прогресса',
-              //   const Icon(Icons.delete),
-              //   onSelected: () {
-              //     context.read<PlayerProgress>().reset();
+              _gap,
+              _SettingsLine(
+                t.setting.reset,
+                const Icon(Icons.delete),
+                onSelected: () {
+                  context.read<PlayerProgress>().reset();
 
-              //     final messenger = ScaffoldMessenger.of(context);
-              //     messenger.showSnackBar(
-              //       const SnackBar(content: Text('Прогресс сброшен')),
-              //     );
-              //   },
-              // ),
+                  final messenger = ScaffoldMessenger.of(context);
+                  messenger.showSnackBar(
+                    SnackBar(content: Text(t.setting.reset)),
+                  );
+                },
+              ),
               // _gap,
             ],
           ),

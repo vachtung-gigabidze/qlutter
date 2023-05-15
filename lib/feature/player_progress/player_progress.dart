@@ -26,7 +26,7 @@ class PlayerProgress extends ChangeNotifier {
   }
 
   void reset() {
-    _highestLevelReached = 0;
+    _highestLevelReached = 1;
     notifyListeners();
     _store.saveHighestLevelReached(_highestLevelReached);
   }

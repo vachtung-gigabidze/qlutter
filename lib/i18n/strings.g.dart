@@ -1,9 +1,9 @@
 /// Generated file. Do not edit.
 ///
 /// Locales: 2
-/// Strings: 48 (24 per locale)
+/// Strings: 50 (25 per locale)
 ///
-/// Built on 2023-05-12 at 08:25 UTC
+/// Built on 2023-05-15 at 06:54 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -224,6 +224,7 @@ class _StringsSettingEn {
 	// Translations
 	String get title => 'Settings';
 	String get theme => 'Theme';
+	String get reset => 'Reset progress';
 	late final _StringsSettingLanguageEn language = _StringsSettingLanguageEn._(_root);
 	String get back => 'Back';
 }
@@ -367,6 +368,7 @@ class _StringsSettingRu implements _StringsSettingEn {
 	// Translations
 	@override String get title => 'Настройки';
 	@override String get theme => 'Тема';
+	@override String get reset => 'Сброс прогресса';
 	@override late final _StringsSettingLanguageRu language = _StringsSettingLanguageRu._(_root);
 	@override String get back => 'Назад';
 }
@@ -434,6 +436,7 @@ extension on _StringsEn {
 			case 'info.text': return 'The goal is to roll all the colored balls on the playing field into holes of the same color. The balls move only in a straight line to the first obstacle.';
 			case 'setting.title': return 'Settings';
 			case 'setting.theme': return 'Theme';
+			case 'setting.reset': return 'Reset progress';
 			case 'setting.language.title': return 'Language';
 			case 'setting.language.languages.ru': return 'Russian';
 			case 'setting.language.languages.en': return 'English';
@@ -466,6 +469,7 @@ extension on _StringsRu {
 			case 'info.text': return 'Цель закатить все цветные шарики на игровом поле в лунки того же цвета. Шарики двигаются только по прямой до первого препятствия.';
 			case 'setting.title': return 'Настройки';
 			case 'setting.theme': return 'Тема';
+			case 'setting.reset': return 'Сброс прогресса';
 			case 'setting.language.title': return 'Язык';
 			case 'setting.language.languages.ru': return 'Русский';
 			case 'setting.language.languages.en': return 'Английский';

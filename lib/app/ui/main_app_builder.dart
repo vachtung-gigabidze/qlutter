@@ -42,7 +42,8 @@ class MainAppBuilder implements AppBuilder {
                       child: const LevelSelectionScreen(
                           key: Key('level selection')),
                       color: Theme.of(context)
-                          .backgroundColor, //context.watch<Palette>().backgroundLevelSelection,
+                          .colorScheme
+                          .background, //context.watch<Palette>().backgroundLevelSelection,
                     ),
                 routes: [
                   GoRoute(
@@ -56,7 +57,8 @@ class MainAppBuilder implements AppBuilder {
                           key: const Key('play session'),
                         ),
                         color: Theme.of(context)
-                            .backgroundColor, // context.watch<Palette>().backgroundPlaySession,
+                            .colorScheme
+                            .background, // context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
@@ -72,7 +74,8 @@ class MainAppBuilder implements AppBuilder {
                           key: const Key('win game'),
                         ),
                         color: Theme.of(context)
-                            .backgroundColor, //context.watch<Palette>().backgroundPlaySession,
+                            .colorScheme
+                            .background, //context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   )
@@ -98,7 +101,9 @@ class MainAppBuilder implements AppBuilder {
     final palette = locator.get<Palette>();
     final setting = LocalStorageSettingsPersistence();
     final themePers = await setting.getTheme();
-
+    final languagePers = await setting.getLanguage();
+    LocaleSettings.setLocale(
+        AppLocale.values.firstWhere((e) => e.languageTag == languagePers));
     ThemeData initTheme = themePers == 'light' ? palette.light : palette.dark;
 
     return _GlobalProviders(
