@@ -6,7 +6,7 @@ import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
-import 'language_dialog.dart';
+// import 'language_dialog.dart';
 import 'settings.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -129,43 +129,43 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-class _LanguageChangeLine extends StatelessWidget {
-  final String title;
+// class _LanguageChangeLine extends StatelessWidget {
+//   final String title;
 
-  const _LanguageChangeLine(this.title);
+//   const _LanguageChangeLine(this.title);
 
-  @override
-  Widget build(BuildContext context) {
-    final settings = context.watch<SettingsController>();
+//   @override
+//   Widget build(BuildContext context) {
+//     final settings = context.watch<SettingsController>();
 
-    return InkResponse(
-      highlightShape: BoxShape.rectangle,
-      onTap: () => showLanguageDialog(context),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(title,
-                style: const TextStyle(
-                  fontSize: 30,
-                )),
-            const Spacer(),
-            ValueListenableBuilder(
-              valueListenable: settings.language,
-              builder: (context, name, child) => Text(
-                '‘$name’',
-                style: const TextStyle(
-                  fontSize: 30,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//     return InkResponse(
+//       highlightShape: BoxShape.rectangle,
+//       onTap: () => showLanguageDialog(context),
+//       child: Padding(
+//         padding: const EdgeInsets.symmetric(horizontal: 8),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Text(title,
+//                 style: const TextStyle(
+//                   fontSize: 30,
+//                 )),
+//             const Spacer(),
+//             ValueListenableBuilder(
+//               valueListenable: settings.language,
+//               builder: (context, name, child) => Text(
+//                 '‘$name’',
+//                 style: const TextStyle(
+//                   fontSize: 30,
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _SettingsLine extends StatelessWidget {
   final String title;

@@ -4,9 +4,9 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:qlutter/feature/settings/information_dialog.dart';
+// import 'package:qlutter/feature/settings/information_dialog.dart';
 import 'package:qlutter/i18n/strings.g.dart';
-import 'package:rive/rive.dart';
+// import 'package:rive/rive.dart';
 import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 

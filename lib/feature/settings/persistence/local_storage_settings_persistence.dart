@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/i18n/strings.g.dart';
+// import 'package:qlutter/i18n/strings.g.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'settings_persistence.dart';

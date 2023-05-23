@@ -23,28 +23,12 @@ class Palette {
   Color get cellColor2 => Colors.red;
   Color get cellColor3 => Colors.blue;
   Color get cellColor4 => Colors.deepPurple;
-  // Color get cellColor4 => Colors.yellow;
   Color get cellColor5 => Colors.deepOrangeAccent;
   Color get cellColor6 => Colors.indigo;
   String get fontMain => 'DS Goose';
   TextStyle get headTableStyle => TextStyle(fontSize: 16, fontFamily: fontMain);
   TextStyle get rowTableStyle => const TextStyle(fontSize: 12);
 
-  // ThemeData get light => ThemeData.from(
-  //       colorScheme: ColorScheme.fromSeed(
-  //         brightness: Brightness.light,
-  //         seedColor: darkPen,
-  //         background: backgroundMain,
-  //       ),
-  //       textTheme: TextTheme(
-  //         bodyMedium: TextStyle(
-  //           fontFamily: fontMain,
-  //           fontSize: 26,
-  //           color: ink,
-  //         ),
-  //       ),
-  //       useMaterial3: true,
-  //     );
   ThemeData get light => ThemeData.light().copyWith(
         useMaterial3: true,
         colorScheme: ThemeData.light().colorScheme.copyWith(
@@ -53,7 +37,7 @@ class Palette {
             ),
         scaffoldBackgroundColor: backgroundMain,
         appBarTheme: ThemeData.light().appBarTheme.copyWith(
-            iconTheme: IconThemeData(color: Colors.black),
+            iconTheme: const IconThemeData(color: Colors.black),
             color: backgroundMain,
             foregroundColor: Colors.black,
             systemOverlayStyle: SystemUiOverlayStyle(
@@ -81,7 +65,7 @@ class Palette {
         elevatedButtonTheme: ThemeData.dark().elevatedButtonTheme,
         scaffoldBackgroundColor: Colors.grey[900],
         appBarTheme: ThemeData.dark().appBarTheme.copyWith(
-            iconTheme: IconThemeData(color: Colors.white70),
+            iconTheme: const IconThemeData(color: Colors.white70),
             color: Colors.grey[900],
             foregroundColor: Colors.white70,
             systemOverlayStyle: SystemUiOverlayStyle(
@@ -97,37 +81,4 @@ class Palette {
           ),
         ),
       );
-  // ThemeData get dark => ThemeData.from(
-  //       colorScheme: ColorScheme.fromSeed(
-  //         brightness: Brightness.dark,
-  //         seedColor: Colors.white54,
-  //         background: Colors.grey[900],
-  //       ),
-  //       textTheme: TextTheme(
-  //         bodyLarge: TextStyle(
-  //           fontFamily: fontMain,
-  //           fontSize: 26,
-  //           color: Color.fromARGB(255, 219, 41, 41),
-  //         ),
-  //         labelMedium: TextStyle(
-  //           fontFamily: fontMain,
-  //           fontSize: 26,
-  //           color: Colors.white,
-  //         ),
-  //         bodyMedium: TextStyle(
-  //           fontFamily: fontMain,
-  //           fontSize: 26,
-  //           color: Colors.white,
-  //         ),
-  //       ),
-  //       useMaterial3: true,
-  //     );
-  /*
-  Color get cellColor1 => const Color(0xfff5bfd2);
-  Color get cellColor2 => const Color(0xffa1cdce);
-  Color get cellColor3 => const Color(0xffe5db9c);
-  Color get cellColor4 => const Color(0xffbeb4c5);
-  Color get cellColor5 => const Color(0xffe6a57e);
-  Color get cellColor6 => const Color(0xff218b82);
-  */
 }

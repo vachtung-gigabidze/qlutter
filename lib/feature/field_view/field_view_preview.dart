@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'dart:ui';
+// import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
@@ -126,12 +126,12 @@ class FieldViewPreviewState extends State<FieldViewPreview> {
         field.level.size.height * elementSize);
   }
 
-  Widget _blur(Widget _child, Color color) {
+  Widget _blur(Widget child, Color color) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Opacity(
         opacity: widget.enable ? 0.9 : 0.2,
-        child: _child,
+        child: child,
       ),
     );
   }
