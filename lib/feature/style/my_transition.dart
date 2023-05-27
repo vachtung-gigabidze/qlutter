@@ -47,16 +47,13 @@ class _MyReveal extends StatefulWidget {
 class _MyRevealState extends State<_MyReveal> {
   static final _log = Logger('_InkRevealState');
 
-  late bool _finished; // = false;
+  bool _finished = false;
 
   final _tween = Tween(begin: const Offset(0, -1), end: Offset.zero);
 
   @override
   void initState() {
     super.initState();
-
-    _finished = false;
-
     widget.animation.addStatusListener(_statusListener);
   }
 
@@ -65,10 +62,7 @@ class _MyRevealState extends State<_MyReveal> {
     if (oldWidget.animation != widget.animation) {
       oldWidget.animation.removeStatusListener(_statusListener);
       widget.animation.addStatusListener(_statusListener);
-    } else if (oldWidget.animation == widget.animation) {
-      _finished = true;
     }
-
     super.didUpdateWidget(oldWidget);
   }
 

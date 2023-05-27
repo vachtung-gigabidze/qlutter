@@ -52,7 +52,8 @@ class SettingsScreen extends StatelessWidget {
                           theme: t.brightness == Brightness.light
                               ? palette.dark
                               : palette.light);
-                      settings.setTheme(t.brightness.name);
+                      settings.setTheme(
+                          t.brightness.name == 'light' ? 'dark' : 'light');
                     },
                   ),
                 ),

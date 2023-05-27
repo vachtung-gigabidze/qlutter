@@ -41,9 +41,8 @@ class MainAppBuilder implements AppBuilder {
                 pageBuilder: (context, state) => buildMyTransition<void>(
                       child: const LevelSelectionScreen(
                           key: Key('level selection')),
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background, //context.watch<Palette>().backgroundLevelSelection,
+                      color: Theme.of(context).colorScheme.background,
+                      // context.watch<Palette>().backgroundLevelSelection,
                     ),
                 routes: [
                   GoRoute(
@@ -56,9 +55,8 @@ class MainAppBuilder implements AppBuilder {
                           levelNumber,
                           key: const Key('play session'),
                         ),
-                        color: Theme.of(context)
-                            .colorScheme
-                            .background, // context.watch<Palette>().backgroundPlaySession,
+                        color: Theme.of(context).colorScheme.background,
+                        //context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   ),
