@@ -58,6 +58,19 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   slang_build_runner: ^3.17.0 
 
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/icon/qlutter.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/qlutter.png"
+    background_color: "#0175C2"
+    theme_color: "#0175C2"
+
 flutter:  
   uses-material-design: true
 
@@ -78,12 +91,12 @@ flutter:
     - assets/rive/
     - assets/data/
     
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon/icon_foreground.png"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+# flutter_icons:
+#   android: true
+#   ios: false
+#   image_path: "assets/icon/icon_foreground.png"
+#   adaptive_icon_background: "#FFFFFF"
+#   adaptive_icon_foreground: "assets/icon/icon_foreground.png"
 
 flutter_native_splash:
   color: "#121212"
