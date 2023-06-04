@@ -10,7 +10,7 @@ import 'package:qlutter/feature/level_manager/level_manager.dart';
 // import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
-import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
+// import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/ui/level_records_screen.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
 import 'package:qlutter/feature/main_menu/main_menu_screen.dart';
@@ -98,11 +98,12 @@ class MainAppBuilder implements AppBuilder {
   Future<Widget> buildApp() async {
     final palette = locator.get<Palette>();
     final setting = LocalStorageSettingsPersistence();
-    final themePers = await setting.getTheme();
-    final languagePers = await setting.getLanguage();
+    final themeSetting = await setting.getTheme();
+    final languageSetting = await setting.getLanguage();
     LocaleSettings.setLocale(
-        AppLocale.values.firstWhere((e) => e.languageTag == languagePers));
-    ThemeData initTheme = themePers == 'light' ? palette.light : palette.dark;
+        AppLocale.values.firstWhere((e) => e.languageTag == languageSetting));
+    ThemeData initTheme =
+        themeSetting == 'light' ? palette.light : palette.dark;
 
     return _GlobalProviders(
       settingsPersistence: setting,
@@ -146,9 +147,9 @@ class _GlobalProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LevelProgressCubit>.value(
-          value: locator.get<LevelProgressCubit>()..getBestRecords(),
-        ),
+        // BlocProvider<LevelProgressCubit>.value(
+        //   value: locator.get<LevelProgressCubit>()..getBestRecords(),
+        // ),
         Provider<LevelManager>.value(
           value: locator.get<LevelManager>()..readLevels(),
         ),

@@ -18,8 +18,6 @@ import 'package:qlutter/feature/level_manager/domain/level_repository.dart'
 import 'package:qlutter/feature/level_manager/level_manager.dart' as _i5;
 import 'package:qlutter/feature/level_records/data/network_level_records_repository.dart'
     as _i12;
-import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart'
-    as _i13;
 import 'package:qlutter/feature/level_records/domain/level_record_repository.dart'
     as _i11;
 import 'package:qlutter/feature/style/palette.dart' as _i8;
@@ -44,8 +42,6 @@ extension GetItInjectableX on _i1.GetIt {
     gh.singleton<_i9.AppApi>(_i10.DioAppApi(gh<_i3.AppConfig>()));
     gh.factory<_i11.LevelRecordRepository>(
         () => _i12.NetworkLevelRecordsRepository(gh<_i9.AppApi>()));
-    gh.singleton<_i13.LevelProgressCubit>(
-        _i13.LevelProgressCubit(gh<_i11.LevelRecordRepository>()));
     return this;
   }
 }

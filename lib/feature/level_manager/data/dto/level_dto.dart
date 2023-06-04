@@ -1,4 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart'
+    show JsonSerializable;
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
