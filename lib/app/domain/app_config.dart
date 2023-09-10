@@ -1,4 +1,4 @@
-abstract class AppConfig {
-  String get baseUrl;
-  String get host;
-}
+// abstract class AppConfig {
+//   String get baseUrl;
+//   String get host;
+// }

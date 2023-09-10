@@ -11,7 +11,7 @@ import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
 // import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
-import 'package:qlutter/feature/level_records/ui/level_records_screen.dart';
+// import 'package:qlutter/feature/level_records/ui/level_records_screen.dart';
 import 'package:qlutter/feature/level_selection/level_selection_screen.dart';
 import 'package:qlutter/feature/main_menu/main_menu_screen.dart';
 import 'package:qlutter/feature/play_session/play_session_screen.dart';
@@ -83,11 +83,11 @@ class MainAppBuilder implements AppBuilder {
               builder: (context, state) =>
                   const SettingsScreen(key: Key('settings')),
             ),
-            GoRoute(
-              path: 'progress',
-              builder: (context, state) =>
-                  const LevelRecordsScreen(key: Key('progress')),
-            ),
+            // GoRoute(
+            //   path: 'progress',
+            //   builder: (context, state) =>
+            //       const LevelRecordsScreen(key: Key('progress')),
+            // ),
           ]),
     ],
   );
