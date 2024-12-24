@@ -62,7 +62,7 @@ class FieldViewState extends State<FieldView> {
       key: key,
       top: (t * fieldSize.height),
       left: (r * fieldSize.height),
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.bounceOut,
       onEnd: () {
         if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
@@ -243,8 +243,10 @@ class FieldViewState extends State<FieldView> {
       height = MediaQuery.of(context).size.height;
       if (width > height) {
         width -= 400;
+        height -= ((field.level.levelId == 0) ? 250 : 100);
+      } else {
+        height -= ((field.level.levelId == 0) ? 450 : 300);
       }
-      height -= ((field.level.levelId == 0) ? 450 : 300);
     }
     double m = min<double>(
         width / field.level.size.width, height / field.level.size.height);
