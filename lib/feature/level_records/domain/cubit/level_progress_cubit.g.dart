@@ -6,43 +6,43 @@ part of 'level_progress_cubit.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_LevelProgressStateEmpty _$$_LevelProgressStateEmptyFromJson(
+_$LevelProgressStateEmptyImpl _$$LevelProgressStateEmptyImplFromJson(
         Map<String, dynamic> json) =>
-    _$_LevelProgressStateEmpty(
+    _$LevelProgressStateEmptyImpl(
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_LevelProgressStateEmptyToJson(
-        _$_LevelProgressStateEmpty instance) =>
+Map<String, dynamic> _$$LevelProgressStateEmptyImplToJson(
+        _$LevelProgressStateEmptyImpl instance) =>
     <String, dynamic>{
       'runtimeType': instance.$type,
     };
 
-_$_LevelProgressStateLoaded _$$_LevelProgressStateLoadedFromJson(
+_$LevelProgressStateLoadedImpl _$$LevelProgressStateLoadedImplFromJson(
         Map<String, dynamic> json) =>
-    _$_LevelProgressStateLoaded(
+    _$LevelProgressStateLoadedImpl(
       (json['records'] as List<dynamic>)
           .map((e) => LevelRecord.fromJson(e as Map<String, dynamic>))
           .toList(),
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_LevelProgressStateLoadedToJson(
-        _$_LevelProgressStateLoaded instance) =>
+Map<String, dynamic> _$$LevelProgressStateLoadedImplToJson(
+        _$LevelProgressStateLoadedImpl instance) =>
     <String, dynamic>{
       'records': instance.records,
       'runtimeType': instance.$type,
     };
 
-_$_LevelProgressStateError _$$_LevelProgressStateErrorFromJson(
+_$LevelProgressStateErrorImpl _$$LevelProgressStateErrorImplFromJson(
         Map<String, dynamic> json) =>
-    _$_LevelProgressStateError(
+    _$LevelProgressStateErrorImpl(
       json['error'],
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_LevelProgressStateErrorToJson(
-        _$_LevelProgressStateError instance) =>
+Map<String, dynamic> _$$LevelProgressStateErrorImplToJson(
+        _$LevelProgressStateErrorImpl instance) =>
     <String, dynamic>{
       'error': instance.error,
       'runtimeType': instance.$type,

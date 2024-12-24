@@ -12,7 +12,7 @@ part of 'level_progress_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 LevelProgressState _$LevelProgressStateFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -75,6 +75,8 @@ mixin _$LevelProgressState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this LevelProgressState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -94,31 +96,41 @@ class _$LevelProgressStateCopyWithImpl<$Res, $Val extends LevelProgressState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$_LevelProgressStateEmptyCopyWith<$Res> {
-  factory _$$_LevelProgressStateEmptyCopyWith(_$_LevelProgressStateEmpty value,
-          $Res Function(_$_LevelProgressStateEmpty) then) =
-      __$$_LevelProgressStateEmptyCopyWithImpl<$Res>;
+abstract class _$$LevelProgressStateEmptyImplCopyWith<$Res> {
+  factory _$$LevelProgressStateEmptyImplCopyWith(
+          _$LevelProgressStateEmptyImpl value,
+          $Res Function(_$LevelProgressStateEmptyImpl) then) =
+      __$$LevelProgressStateEmptyImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LevelProgressStateEmptyCopyWithImpl<$Res>
-    extends _$LevelProgressStateCopyWithImpl<$Res, _$_LevelProgressStateEmpty>
-    implements _$$_LevelProgressStateEmptyCopyWith<$Res> {
-  __$$_LevelProgressStateEmptyCopyWithImpl(_$_LevelProgressStateEmpty _value,
-      $Res Function(_$_LevelProgressStateEmpty) _then)
+class __$$LevelProgressStateEmptyImplCopyWithImpl<$Res>
+    extends _$LevelProgressStateCopyWithImpl<$Res,
+        _$LevelProgressStateEmptyImpl>
+    implements _$$LevelProgressStateEmptyImplCopyWith<$Res> {
+  __$$LevelProgressStateEmptyImplCopyWithImpl(
+      _$LevelProgressStateEmptyImpl _value,
+      $Res Function(_$LevelProgressStateEmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_LevelProgressStateEmpty implements _LevelProgressStateEmpty {
-  _$_LevelProgressStateEmpty({final String? $type}) : $type = $type ?? 'empty';
+class _$LevelProgressStateEmptyImpl implements _LevelProgressStateEmpty {
+  _$LevelProgressStateEmptyImpl({final String? $type})
+      : $type = $type ?? 'empty';
 
-  factory _$_LevelProgressStateEmpty.fromJson(Map<String, dynamic> json) =>
-      _$$_LevelProgressStateEmptyFromJson(json);
+  factory _$LevelProgressStateEmptyImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LevelProgressStateEmptyImplFromJson(json);
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -129,13 +141,13 @@ class _$_LevelProgressStateEmpty implements _LevelProgressStateEmpty {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LevelProgressStateEmpty);
+            other is _$LevelProgressStateEmptyImpl);
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -209,43 +221,47 @@ class _$_LevelProgressStateEmpty implements _LevelProgressStateEmpty {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LevelProgressStateEmptyToJson(
+    return _$$LevelProgressStateEmptyImplToJson(
       this,
     );
   }
 }
 
 abstract class _LevelProgressStateEmpty implements LevelProgressState {
-  factory _LevelProgressStateEmpty() = _$_LevelProgressStateEmpty;
+  factory _LevelProgressStateEmpty() = _$LevelProgressStateEmptyImpl;
 
   factory _LevelProgressStateEmpty.fromJson(Map<String, dynamic> json) =
-      _$_LevelProgressStateEmpty.fromJson;
+      _$LevelProgressStateEmptyImpl.fromJson;
 }
 
 /// @nodoc
-abstract class _$$_LevelProgressStateLoadedCopyWith<$Res> {
-  factory _$$_LevelProgressStateLoadedCopyWith(
-          _$_LevelProgressStateLoaded value,
-          $Res Function(_$_LevelProgressStateLoaded) then) =
-      __$$_LevelProgressStateLoadedCopyWithImpl<$Res>;
+abstract class _$$LevelProgressStateLoadedImplCopyWith<$Res> {
+  factory _$$LevelProgressStateLoadedImplCopyWith(
+          _$LevelProgressStateLoadedImpl value,
+          $Res Function(_$LevelProgressStateLoadedImpl) then) =
+      __$$LevelProgressStateLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<LevelRecord> records});
 }
 
 /// @nodoc
-class __$$_LevelProgressStateLoadedCopyWithImpl<$Res>
-    extends _$LevelProgressStateCopyWithImpl<$Res, _$_LevelProgressStateLoaded>
-    implements _$$_LevelProgressStateLoadedCopyWith<$Res> {
-  __$$_LevelProgressStateLoadedCopyWithImpl(_$_LevelProgressStateLoaded _value,
-      $Res Function(_$_LevelProgressStateLoaded) _then)
+class __$$LevelProgressStateLoadedImplCopyWithImpl<$Res>
+    extends _$LevelProgressStateCopyWithImpl<$Res,
+        _$LevelProgressStateLoadedImpl>
+    implements _$$LevelProgressStateLoadedImplCopyWith<$Res> {
+  __$$LevelProgressStateLoadedImplCopyWithImpl(
+      _$LevelProgressStateLoadedImpl _value,
+      $Res Function(_$LevelProgressStateLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? records = null,
   }) {
-    return _then(_$_LevelProgressStateLoaded(
+    return _then(_$LevelProgressStateLoadedImpl(
       null == records
           ? _value._records
           : records // ignore: cast_nullable_to_non_nullable
@@ -256,14 +272,14 @@ class __$$_LevelProgressStateLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LevelProgressStateLoaded implements _LevelProgressStateLoaded {
-  _$_LevelProgressStateLoaded(final List<LevelRecord> records,
+class _$LevelProgressStateLoadedImpl implements _LevelProgressStateLoaded {
+  _$LevelProgressStateLoadedImpl(final List<LevelRecord> records,
       {final String? $type})
       : _records = records,
         $type = $type ?? 'loaded';
 
-  factory _$_LevelProgressStateLoaded.fromJson(Map<String, dynamic> json) =>
-      _$$_LevelProgressStateLoadedFromJson(json);
+  factory _$LevelProgressStateLoadedImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LevelProgressStateLoadedImplFromJson(json);
 
   final List<LevelRecord> _records;
   @override
@@ -282,24 +298,26 @@ class _$_LevelProgressStateLoaded implements _LevelProgressStateLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LevelProgressStateLoaded &&
+            other is _$LevelProgressStateLoadedImpl &&
             const DeepCollectionEquality().equals(other._records, _records));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_records));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LevelProgressStateLoadedCopyWith<_$_LevelProgressStateLoaded>
-      get copyWith => __$$_LevelProgressStateLoadedCopyWithImpl<
-          _$_LevelProgressStateLoaded>(this, _$identity);
+  _$$LevelProgressStateLoadedImplCopyWith<_$LevelProgressStateLoadedImpl>
+      get copyWith => __$$LevelProgressStateLoadedImplCopyWithImpl<
+          _$LevelProgressStateLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -371,7 +389,7 @@ class _$_LevelProgressStateLoaded implements _LevelProgressStateLoaded {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LevelProgressStateLoadedToJson(
+    return _$$LevelProgressStateLoadedImplToJson(
       this,
     );
   }
@@ -379,40 +397,48 @@ class _$_LevelProgressStateLoaded implements _LevelProgressStateLoaded {
 
 abstract class _LevelProgressStateLoaded implements LevelProgressState {
   factory _LevelProgressStateLoaded(final List<LevelRecord> records) =
-      _$_LevelProgressStateLoaded;
+      _$LevelProgressStateLoadedImpl;
 
   factory _LevelProgressStateLoaded.fromJson(Map<String, dynamic> json) =
-      _$_LevelProgressStateLoaded.fromJson;
+      _$LevelProgressStateLoadedImpl.fromJson;
 
   List<LevelRecord> get records;
-  @JsonKey(ignore: true)
-  _$$_LevelProgressStateLoadedCopyWith<_$_LevelProgressStateLoaded>
+
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LevelProgressStateLoadedImplCopyWith<_$LevelProgressStateLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$_LevelProgressStateErrorCopyWith<$Res> {
-  factory _$$_LevelProgressStateErrorCopyWith(_$_LevelProgressStateError value,
-          $Res Function(_$_LevelProgressStateError) then) =
-      __$$_LevelProgressStateErrorCopyWithImpl<$Res>;
+abstract class _$$LevelProgressStateErrorImplCopyWith<$Res> {
+  factory _$$LevelProgressStateErrorImplCopyWith(
+          _$LevelProgressStateErrorImpl value,
+          $Res Function(_$LevelProgressStateErrorImpl) then) =
+      __$$LevelProgressStateErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({dynamic error});
 }
 
 /// @nodoc
-class __$$_LevelProgressStateErrorCopyWithImpl<$Res>
-    extends _$LevelProgressStateCopyWithImpl<$Res, _$_LevelProgressStateError>
-    implements _$$_LevelProgressStateErrorCopyWith<$Res> {
-  __$$_LevelProgressStateErrorCopyWithImpl(_$_LevelProgressStateError _value,
-      $Res Function(_$_LevelProgressStateError) _then)
+class __$$LevelProgressStateErrorImplCopyWithImpl<$Res>
+    extends _$LevelProgressStateCopyWithImpl<$Res,
+        _$LevelProgressStateErrorImpl>
+    implements _$$LevelProgressStateErrorImplCopyWith<$Res> {
+  __$$LevelProgressStateErrorImplCopyWithImpl(
+      _$LevelProgressStateErrorImpl _value,
+      $Res Function(_$LevelProgressStateErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? error = freezed,
   }) {
-    return _then(_$_LevelProgressStateError(
+    return _then(_$LevelProgressStateErrorImpl(
       freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -423,12 +449,12 @@ class __$$_LevelProgressStateErrorCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LevelProgressStateError implements _LevelProgressStateError {
-  _$_LevelProgressStateError(this.error, {final String? $type})
+class _$LevelProgressStateErrorImpl implements _LevelProgressStateError {
+  _$LevelProgressStateErrorImpl(this.error, {final String? $type})
       : $type = $type ?? 'error';
 
-  factory _$_LevelProgressStateError.fromJson(Map<String, dynamic> json) =>
-      _$$_LevelProgressStateErrorFromJson(json);
+  factory _$LevelProgressStateErrorImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LevelProgressStateErrorImplFromJson(json);
 
   @override
   final dynamic error;
@@ -442,25 +468,26 @@ class _$_LevelProgressStateError implements _LevelProgressStateError {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LevelProgressStateError &&
+            other is _$LevelProgressStateErrorImpl &&
             const DeepCollectionEquality().equals(other.error, error));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LevelProgressStateErrorCopyWith<_$_LevelProgressStateError>
-      get copyWith =>
-          __$$_LevelProgressStateErrorCopyWithImpl<_$_LevelProgressStateError>(
-              this, _$identity);
+  _$$LevelProgressStateErrorImplCopyWith<_$LevelProgressStateErrorImpl>
+      get copyWith => __$$LevelProgressStateErrorImplCopyWithImpl<
+          _$LevelProgressStateErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -532,7 +559,7 @@ class _$_LevelProgressStateError implements _LevelProgressStateError {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LevelProgressStateErrorToJson(
+    return _$$LevelProgressStateErrorImplToJson(
       this,
     );
   }
@@ -540,13 +567,16 @@ class _$_LevelProgressStateError implements _LevelProgressStateError {
 
 abstract class _LevelProgressStateError implements LevelProgressState {
   factory _LevelProgressStateError(final dynamic error) =
-      _$_LevelProgressStateError;
+      _$LevelProgressStateErrorImpl;
 
   factory _LevelProgressStateError.fromJson(Map<String, dynamic> json) =
-      _$_LevelProgressStateError.fromJson;
+      _$LevelProgressStateErrorImpl.fromJson;
 
   dynamic get error;
-  @JsonKey(ignore: true)
-  _$$_LevelProgressStateErrorCopyWith<_$_LevelProgressStateError>
+
+  /// Create a copy of LevelProgressState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LevelProgressStateErrorImplCopyWith<_$LevelProgressStateErrorImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

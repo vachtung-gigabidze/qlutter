@@ -41,21 +41,22 @@ class MainAppBuilder implements AppBuilder {
                 pageBuilder: (context, state) => buildMyTransition<void>(
                       child: const LevelSelectionScreen(
                           key: Key('level selection')),
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.surface,
                       // context.watch<Palette>().backgroundLevelSelection,
                     ),
                 routes: [
                   GoRoute(
                     path: 'session/:level',
                     pageBuilder: (context, state) {
-                      final levelNumber = int.parse(state.params['level']!);
+                      final levelNumber =
+                          int.parse(state.pathParameters['level']!);
                       //final level = levelManager.levels![levelNumber];
                       return buildMyTransition<void>(
                         child: PlaySessionScreen(
                           levelNumber,
                           key: const Key('play session'),
                         ),
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.surface,
                         //context.watch<Palette>().backgroundPlaySession,
                       );
                     },
@@ -73,7 +74,7 @@ class MainAppBuilder implements AppBuilder {
                         ),
                         color: Theme.of(context)
                             .colorScheme
-                            .background, //context.watch<Palette>().backgroundPlaySession,
+                            .surface, //context.watch<Palette>().backgroundPlaySession,
                       );
                     },
                   )

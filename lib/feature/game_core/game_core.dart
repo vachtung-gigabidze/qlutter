@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/style/palette.dart';
 
 class Item {
   Color color;
@@ -13,7 +14,7 @@ class Item {
 }
 
 class Block extends Item {
-  Block() : super(color: Colors.grey);
+  Block() : super(color: Palette().blockColor);
 }
 
 class Ball extends Item {

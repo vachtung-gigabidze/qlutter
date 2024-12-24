@@ -6,25 +6,29 @@ part of 'level_cubit.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_LevelStateEmpty _$$_LevelStateEmptyFromJson(Map<String, dynamic> json) =>
-    _$_LevelStateEmpty(
+_$LevelStateEmptyImpl _$$LevelStateEmptyImplFromJson(
+        Map<String, dynamic> json) =>
+    _$LevelStateEmptyImpl(
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_LevelStateEmptyToJson(_$_LevelStateEmpty instance) =>
+Map<String, dynamic> _$$LevelStateEmptyImplToJson(
+        _$LevelStateEmptyImpl instance) =>
     <String, dynamic>{
       'runtimeType': instance.$type,
     };
 
-_$_LevelStateLoaded _$$_LevelStateLoadedFromJson(Map<String, dynamic> json) =>
-    _$_LevelStateLoaded(
+_$LevelStateLoadedImpl _$$LevelStateLoadedImplFromJson(
+        Map<String, dynamic> json) =>
+    _$LevelStateLoadedImpl(
       (json['levels'] as List<dynamic>)
           .map((e) => LevelDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       $type: json['runtimeType'] as String?,
     );
 
-Map<String, dynamic> _$$_LevelStateLoadedToJson(_$_LevelStateLoaded instance) =>
+Map<String, dynamic> _$$LevelStateLoadedImplToJson(
+        _$LevelStateLoadedImpl instance) =>
     <String, dynamic>{
       'levels': instance.levels,
       'runtimeType': instance.$type,

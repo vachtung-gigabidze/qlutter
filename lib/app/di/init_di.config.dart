@@ -4,44 +4,45 @@
 // InjectableConfigGenerator
 // **************************************************************************
 
-// ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:get_it/get_it.dart' as _i1;
-import 'package:injectable/injectable.dart' as _i2;
-import 'package:qlutter/app/data/dio_app_api.dart' as _i10;
-import 'package:qlutter/app/data/main_app_config.dart' as _i4;
-import 'package:qlutter/app/domain/app_api.dart' as _i9;
-import 'package:qlutter/app/domain/app_config.dart' as _i3;
-import 'package:qlutter/feature/level_manager/data/local_level_repository.dart'
-    as _i7;
-import 'package:qlutter/feature/level_manager/domain/level_repository.dart'
-    as _i6;
-import 'package:qlutter/feature/level_manager/level_manager.dart' as _i5;
-import 'package:qlutter/feature/level_records/data/network_level_records_repository.dart'
-    as _i12;
-import 'package:qlutter/feature/level_records/domain/level_record_repository.dart'
-    as _i11;
-import 'package:qlutter/feature/style/palette.dart' as _i8;
+// ignore_for_file: type=lint
+// coverage:ignore-file
 
-/// ignore_for_file: unnecessary_lambdas
-/// ignore_for_file: lines_longer_than_80_chars
-extension GetItInjectableX on _i1.GetIt {
-  /// initializes the registration of main-scope dependencies inside of [GetIt]
-  _i1.GetIt init({
+// ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:get_it/get_it.dart' as _i174;
+import 'package:injectable/injectable.dart' as _i526;
+import 'package:qlutter/app/data/dio_app_api.dart' as _i1028;
+import 'package:qlutter/app/data/main_app_config.dart' as _i836;
+import 'package:qlutter/app/domain/app_api.dart' as _i652;
+import 'package:qlutter/app/domain/app_config.dart' as _i1025;
+import 'package:qlutter/feature/level_manager/data/local_level_repository.dart'
+    as _i959;
+import 'package:qlutter/feature/level_manager/domain/level_repository.dart'
+    as _i906;
+import 'package:qlutter/feature/level_manager/level_manager.dart' as _i897;
+import 'package:qlutter/feature/level_records/data/network_level_records_repository.dart'
+    as _i168;
+import 'package:qlutter/feature/level_records/domain/level_record_repository.dart'
+    as _i239;
+import 'package:qlutter/feature/style/palette.dart' as _i530;
+
+extension GetItInjectableX on _i174.GetIt {
+// initializes the registration of main-scope dependencies inside of GetIt
+  _i174.GetIt init({
     String? environment,
-    _i2.EnvironmentFilter? environmentFilter,
+    _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i2.GetItHelper(
+    final gh = _i526.GetItHelper(
       this,
       environment,
       environmentFilter,
     );
-    gh.singleton<_i3.AppConfig>(_i4.ProdAppConfig());
-    gh.singleton<_i5.LevelManager>(_i5.LevelManager());
-    gh.factory<_i6.LevelRepository>(() => _i7.LocalLevelRepository());
-    gh.singleton<_i8.Palette>(_i8.Palette());
-    gh.singleton<_i9.AppApi>(_i10.DioAppApi(gh<_i3.AppConfig>()));
-    gh.factory<_i11.LevelRecordRepository>(
-        () => _i12.NetworkLevelRecordsRepository(gh<_i9.AppApi>()));
+    gh.singleton<_i897.LevelManager>(() => _i897.LevelManager());
+    gh.singleton<_i530.Palette>(() => _i530.Palette());
+    gh.factory<_i906.LevelRepository>(() => _i959.LocalLevelRepository());
+    gh.singleton<_i1025.AppConfig>(() => _i836.ProdAppConfig());
+    gh.singleton<_i652.AppApi>(() => _i1028.DioAppApi(gh<_i1025.AppConfig>()));
+    gh.factory<_i239.LevelRecordRepository>(
+        () => _i168.NetworkLevelRecordsRepository(gh<_i652.AppApi>()));
     return this;
   }
 }

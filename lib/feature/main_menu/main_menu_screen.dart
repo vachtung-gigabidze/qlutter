@@ -23,27 +23,32 @@ class MainMenuScreen extends StatelessWidget {
         //backgroundColor: palette.backgroundMain,
         body: ResponsiveScreen(
           mainAreaProminence: 0.45,
-          squarishMainArea: Stack(children: [
-            //const RiveAnimation.asset("assets/rive/balls.riv"),
-            Positioned.fill(
-                child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-              child: const SizedBox(),
-            )),
-            Center(
-              child: Transform.rotate(
-                angle: -0.1,
-                child: const Text(
-                  'Qlutter',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    //fontFamily: palette.fontMain,
-                    fontSize: 100,
+          squarishMainArea: Stack(
+            children: [
+              Positioned.fill(child: Image.asset('assets/icon/qlutter.png')),
+              Stack(children: [
+                //const RiveAnimation.asset("assets/rive/balls.riv"),
+                Positioned.fill(
+                    child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  child: const SizedBox(),
+                )),
+                Center(
+                  child: Transform.rotate(
+                    angle: -0.1,
+                    child: const Text(
+                      'Qlutter',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        //fontFamily: palette.fontMain,
+                        fontSize: 100,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ]),
+              ]),
+            ],
+          ),
           rectangularMenuArea: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

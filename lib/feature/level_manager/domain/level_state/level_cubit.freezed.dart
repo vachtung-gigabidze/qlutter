@@ -12,7 +12,7 @@ part of 'level_cubit.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 LevelState _$LevelStateFromJson(Map<String, dynamic> json) {
   switch (json['runtimeType']) {
@@ -67,6 +67,8 @@ mixin _$LevelState {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
+
+  /// Serializes this LevelState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 }
 
@@ -86,31 +88,37 @@ class _$LevelStateCopyWithImpl<$Res, $Val extends LevelState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of LevelState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$_LevelStateEmptyCopyWith<$Res> {
-  factory _$$_LevelStateEmptyCopyWith(
-          _$_LevelStateEmpty value, $Res Function(_$_LevelStateEmpty) then) =
-      __$$_LevelStateEmptyCopyWithImpl<$Res>;
+abstract class _$$LevelStateEmptyImplCopyWith<$Res> {
+  factory _$$LevelStateEmptyImplCopyWith(_$LevelStateEmptyImpl value,
+          $Res Function(_$LevelStateEmptyImpl) then) =
+      __$$LevelStateEmptyImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$_LevelStateEmptyCopyWithImpl<$Res>
-    extends _$LevelStateCopyWithImpl<$Res, _$_LevelStateEmpty>
-    implements _$$_LevelStateEmptyCopyWith<$Res> {
-  __$$_LevelStateEmptyCopyWithImpl(
-      _$_LevelStateEmpty _value, $Res Function(_$_LevelStateEmpty) _then)
+class __$$LevelStateEmptyImplCopyWithImpl<$Res>
+    extends _$LevelStateCopyWithImpl<$Res, _$LevelStateEmptyImpl>
+    implements _$$LevelStateEmptyImplCopyWith<$Res> {
+  __$$LevelStateEmptyImplCopyWithImpl(
+      _$LevelStateEmptyImpl _value, $Res Function(_$LevelStateEmptyImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LevelState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$_LevelStateEmpty implements _LevelStateEmpty {
-  _$_LevelStateEmpty({final String? $type}) : $type = $type ?? 'empty';
+class _$LevelStateEmptyImpl implements _LevelStateEmpty {
+  _$LevelStateEmptyImpl({final String? $type}) : $type = $type ?? 'empty';
 
-  factory _$_LevelStateEmpty.fromJson(Map<String, dynamic> json) =>
-      _$$_LevelStateEmptyFromJson(json);
+  factory _$LevelStateEmptyImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LevelStateEmptyImplFromJson(json);
 
   @JsonKey(name: 'runtimeType')
   final String $type;
@@ -121,12 +129,12 @@ class _$_LevelStateEmpty implements _LevelStateEmpty {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_LevelStateEmpty);
+        (other.runtimeType == runtimeType && other is _$LevelStateEmptyImpl);
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => runtimeType.hashCode;
 
@@ -194,42 +202,44 @@ class _$_LevelStateEmpty implements _LevelStateEmpty {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LevelStateEmptyToJson(
+    return _$$LevelStateEmptyImplToJson(
       this,
     );
   }
 }
 
 abstract class _LevelStateEmpty implements LevelState {
-  factory _LevelStateEmpty() = _$_LevelStateEmpty;
+  factory _LevelStateEmpty() = _$LevelStateEmptyImpl;
 
   factory _LevelStateEmpty.fromJson(Map<String, dynamic> json) =
-      _$_LevelStateEmpty.fromJson;
+      _$LevelStateEmptyImpl.fromJson;
 }
 
 /// @nodoc
-abstract class _$$_LevelStateLoadedCopyWith<$Res> {
-  factory _$$_LevelStateLoadedCopyWith(
-          _$_LevelStateLoaded value, $Res Function(_$_LevelStateLoaded) then) =
-      __$$_LevelStateLoadedCopyWithImpl<$Res>;
+abstract class _$$LevelStateLoadedImplCopyWith<$Res> {
+  factory _$$LevelStateLoadedImplCopyWith(_$LevelStateLoadedImpl value,
+          $Res Function(_$LevelStateLoadedImpl) then) =
+      __$$LevelStateLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<LevelDto> levels});
 }
 
 /// @nodoc
-class __$$_LevelStateLoadedCopyWithImpl<$Res>
-    extends _$LevelStateCopyWithImpl<$Res, _$_LevelStateLoaded>
-    implements _$$_LevelStateLoadedCopyWith<$Res> {
-  __$$_LevelStateLoadedCopyWithImpl(
-      _$_LevelStateLoaded _value, $Res Function(_$_LevelStateLoaded) _then)
+class __$$LevelStateLoadedImplCopyWithImpl<$Res>
+    extends _$LevelStateCopyWithImpl<$Res, _$LevelStateLoadedImpl>
+    implements _$$LevelStateLoadedImplCopyWith<$Res> {
+  __$$LevelStateLoadedImplCopyWithImpl(_$LevelStateLoadedImpl _value,
+      $Res Function(_$LevelStateLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LevelState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? levels = null,
   }) {
-    return _then(_$_LevelStateLoaded(
+    return _then(_$LevelStateLoadedImpl(
       null == levels
           ? _value._levels
           : levels // ignore: cast_nullable_to_non_nullable
@@ -240,13 +250,13 @@ class __$$_LevelStateLoadedCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_LevelStateLoaded implements _LevelStateLoaded {
-  _$_LevelStateLoaded(final List<LevelDto> levels, {final String? $type})
+class _$LevelStateLoadedImpl implements _LevelStateLoaded {
+  _$LevelStateLoadedImpl(final List<LevelDto> levels, {final String? $type})
       : _levels = levels,
         $type = $type ?? 'loaded';
 
-  factory _$_LevelStateLoaded.fromJson(Map<String, dynamic> json) =>
-      _$$_LevelStateLoadedFromJson(json);
+  factory _$LevelStateLoadedImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LevelStateLoadedImplFromJson(json);
 
   final List<LevelDto> _levels;
   @override
@@ -265,23 +275,26 @@ class _$_LevelStateLoaded implements _LevelStateLoaded {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LevelStateLoaded &&
+            other is _$LevelStateLoadedImpl &&
             const DeepCollectionEquality().equals(other._levels, _levels));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_levels));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LevelState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LevelStateLoadedCopyWith<_$_LevelStateLoaded> get copyWith =>
-      __$$_LevelStateLoadedCopyWithImpl<_$_LevelStateLoaded>(this, _$identity);
+  _$$LevelStateLoadedImplCopyWith<_$LevelStateLoadedImpl> get copyWith =>
+      __$$LevelStateLoadedImplCopyWithImpl<_$LevelStateLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -347,20 +360,24 @@ class _$_LevelStateLoaded implements _LevelStateLoaded {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LevelStateLoadedToJson(
+    return _$$LevelStateLoadedImplToJson(
       this,
     );
   }
 }
 
 abstract class _LevelStateLoaded implements LevelState {
-  factory _LevelStateLoaded(final List<LevelDto> levels) = _$_LevelStateLoaded;
+  factory _LevelStateLoaded(final List<LevelDto> levels) =
+      _$LevelStateLoadedImpl;
 
   factory _LevelStateLoaded.fromJson(Map<String, dynamic> json) =
-      _$_LevelStateLoaded.fromJson;
+      _$LevelStateLoadedImpl.fromJson;
 
   List<LevelDto> get levels;
-  @JsonKey(ignore: true)
-  _$$_LevelStateLoadedCopyWith<_$_LevelStateLoaded> get copyWith =>
+
+  /// Create a copy of LevelState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LevelStateLoadedImplCopyWith<_$LevelStateLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
