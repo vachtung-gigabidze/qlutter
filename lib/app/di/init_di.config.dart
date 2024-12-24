@@ -10,7 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
-import 'package:qlutter/app/data/dio_app_api.dart' as _i1028;
 import 'package:qlutter/app/data/main_app_config.dart' as _i836;
 import 'package:qlutter/app/domain/app_api.dart' as _i652;
 import 'package:qlutter/app/domain/app_config.dart' as _i1025;
@@ -40,7 +39,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i530.Palette>(() => _i530.Palette());
     gh.factory<_i906.LevelRepository>(() => _i959.LocalLevelRepository());
     gh.singleton<_i1025.AppConfig>(() => _i836.ProdAppConfig());
-    gh.singleton<_i652.AppApi>(() => _i1028.DioAppApi(gh<_i1025.AppConfig>()));
     gh.factory<_i239.LevelRecordRepository>(
         () => _i168.NetworkLevelRecordsRepository(gh<_i652.AppApi>()));
     return this;

@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 
 abstract class AppApi {
   Future<dynamic> request(String path);
@@ -16,5 +16,5 @@ abstract class AppApi {
     DateTime? dateTime,
   });
 
-  Future<dynamic> fetch(RequestOptions requestOptions);
+  // Future<dynamic> fetch(RequestOptions requestOptions);
 }

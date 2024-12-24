@@ -24,12 +24,12 @@ dependencies:
   logging: ^1.1.0
   provider: ^6.0.2
 
-  dio: ^5.0.1
+  # dio: ^5.0.1
   freezed: ^2.3.2  
   injectable: ^2.1.0  
   flutter_bloc: ^8.1.2
   get_it: ^8.0.3
-  pretty_dio_logger: ^1.1.1
+  # pretty_dio_logger: ^1.1.1
   hydrated_bloc: ^9.1.0
   # hive: ^2.2.3
   path_provider: ^2.0.13
@@ -37,7 +37,7 @@ dependencies:
 
   # google_mobile_ads: ^2.0.1  # Ads
   # in_app_purchase: ^3.0.1  # In-app purchases
-  rive: ^0.13.20
+  # rive: ^0.13.20
   flutter_svg: ^2.0.3 
   json_annotation: ^4.8.0
   json_serializable: ^6.6.1
