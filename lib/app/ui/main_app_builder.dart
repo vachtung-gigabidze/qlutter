@@ -32,64 +32,69 @@ class MainAppBuilder implements AppBuilder {
   static final _router = GoRouter(
     routes: [
       GoRoute(
-          path: '/',
-          builder: (context, state) =>
-              const MainMenuScreen(key: Key('main menu')),
-          routes: [
-            GoRoute(
-                path: 'play',
-                pageBuilder: (context, state) => buildMyTransition<void>(
-                      child: const LevelSelectionScreen(
-                          key: Key('level selection')),
-                      color: Theme.of(context).colorScheme.surface,
-                      // context.watch<Palette>().backgroundLevelSelection,
-                    ),
-                routes: [
-                  GoRoute(
-                    path: 'session/:level',
-                    pageBuilder: (context, state) {
-                      final levelNumber =
-                          int.parse(state.pathParameters['level']!);
-                      //final level = levelManager.levels![levelNumber];
-                      return buildMyTransition<void>(
-                        child: PlaySessionScreen(
-                          levelNumber,
-                          key: const Key('play session'),
-                        ),
-                        color: Theme.of(context).colorScheme.surface,
-                        //context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
+        path: '/',
+        builder:
+            (context, state) => const MainMenuScreen(key: Key('main menu')),
+        routes: [
+          GoRoute(
+            path: 'play',
+            pageBuilder:
+                (context, state) => buildMyTransition<void>(
+                  child: const LevelSelectionScreen(
+                    key: Key('level selection'),
                   ),
-                  GoRoute(
-                    path: 'won',
-                    pageBuilder: (context, state) {
-                      final map = state.extra! as Map<String, dynamic>;
-                      final score = map['score'] as Score;
+                  color: Theme.of(context).colorScheme.surface,
+                  // context.watch<Palette>().backgroundLevelSelection,
+                ),
+            routes: [
+              GoRoute(
+                path: 'session/:level',
+                pageBuilder: (context, state) {
+                  final levelNumber = int.parse(state.pathParameters['level']!);
+                  //final level = levelManager.levels![levelNumber];
+                  return buildMyTransition<void>(
+                    child: PlaySessionScreen(
+                      levelNumber,
+                      key: const Key('play session'),
+                    ),
+                    color: Theme.of(context).colorScheme.surface,
+                    //context.watch<Palette>().backgroundPlaySession,
+                  );
+                },
+              ),
+              GoRoute(
+                path: 'won',
+                pageBuilder: (context, state) {
+                  final map = state.extra! as Map<String, dynamic>;
+                  final score = map['score'] as Score;
 
-                      return buildMyTransition<void>(
-                        child: WinGameScreen(
-                          score: score,
-                          key: const Key('win game'),
-                        ),
-                        color: Theme.of(context)
+                  return buildMyTransition<void>(
+                    child: WinGameScreen(
+                      score: score,
+                      key: const Key('win game'),
+                    ),
+                    color:
+                        Theme.of(context)
                             .colorScheme
                             .surface, //context.watch<Palette>().backgroundPlaySession,
-                      );
-                    },
-                  )
-                ]),
-            GoRoute(
-              path: 'settings',
-              builder: (context, state) =>
-                  const SettingsScreen(key: Key('settings')),
-            ),
-            GoRoute(
-              path: 'progress',
-              builder: (context, state) =>
-                  const LevelRecordsScreen(key: Key('progress')),
-            ),
-          ]),
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: 'settings',
+            builder:
+                (context, state) => const SettingsScreen(key: Key('settings')),
+          ),
+          GoRoute(
+            path: 'progress',
+            builder:
+                (context, state) =>
+                    const LevelRecordsScreen(key: Key('progress')),
+          ),
+        ],
+      ),
     ],
   );
 
@@ -102,40 +107,43 @@ class MainAppBuilder implements AppBuilder {
     final themeSetting = await setting.getTheme();
     final languageSetting = await setting.getLanguage();
     LocaleSettings.setLocale(
-        AppLocale.values.firstWhere((e) => e.languageTag == languageSetting));
+      AppLocale.values.firstWhere((e) => e.languageTag == languageSetting),
+    );
+
     ThemeData initTheme =
         themeSetting == 'light' ? palette.light : palette.dark;
-
     return _GlobalProviders(
       settingsPersistence: setting,
       playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
       gamesServicesController: gamesServicesController,
       child: ThemeProvider(
-          initTheme: initTheme,
-          builder: (p0, theme) {
-            return MaterialApp.router(
-              locale: TranslationProvider.of(p0).flutterLocale,
-              supportedLocales: AppLocaleUtils.supportedLocales,
-              localizationsDelegates: GlobalMaterialLocalizations.delegates,
-              debugShowCheckedModeBanner: false,
-              title: 'Qlutter',
-              theme: theme,
-              routeInformationProvider: _router.routeInformationProvider,
-              routeInformationParser: _router.routeInformationParser,
-              routerDelegate: _router.routerDelegate,
-              scaffoldMessengerKey: scaffoldMessengerKey,
-            );
-          }),
+        initTheme: initTheme,
+        builder: (p0, theme) {
+          return MaterialApp.router(
+            locale: TranslationProvider.of(p0).flutterLocale,
+            supportedLocales: AppLocaleUtils.supportedLocales,
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            debugShowCheckedModeBanner: false,
+            title: 'Qlutter',
+            theme: theme,
+            routeInformationProvider: _router.routeInformationProvider,
+            routeInformationParser: _router.routeInformationParser,
+            routerDelegate: _router.routerDelegate,
+            scaffoldMessengerKey: scaffoldMessengerKey,
+          );
+        },
+      ),
     );
   }
 }
 
 class _GlobalProviders extends StatelessWidget {
-  const _GlobalProviders(
-      {required this.child,
-      required this.playerProgressPersistence,
-      required this.settingsPersistence,
-      this.gamesServicesController});
+  const _GlobalProviders({
+    required this.child,
+    required this.playerProgressPersistence,
+    required this.settingsPersistence,
+    this.gamesServicesController,
+  });
 
   final Widget child;
   final PlayerProgressPersistence playerProgressPersistence;
@@ -162,16 +170,16 @@ class _GlobalProviders extends StatelessWidget {
           },
         ),
         Provider<GamesServicesController?>.value(
-            value: gamesServicesController),
+          value: gamesServicesController,
+        ),
         Provider<SettingsController>(
           lazy: false,
-          create: (context) => SettingsController(
-            persistence: settingsPersistence,
-          )..loadStateFromPersistence(),
+          create:
+              (context) =>
+                  SettingsController(persistence: settingsPersistence)
+                    ..loadStateFromPersistence(),
         ),
-        Provider(
-          create: (context) => Palette(),
-        ),
+        Provider(create: (context) => Palette()),
       ],
       child: child,
     );
