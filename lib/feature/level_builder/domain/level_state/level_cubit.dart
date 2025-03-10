@@ -1,8 +1,8 @@
 import 'dart:async';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:qlutter/feature/level_manager/data/dto/level_dto.dart';
-import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
+import 'package:qlutter/feature/level_builder/data/dto/level_dto.dart';
+import 'package:qlutter/feature/level_builder/domain/level_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'level_state.dart';
@@ -38,9 +38,7 @@ class LevelCubit extends HydratedCubit<LevelState> {
   @override
   Map<String, dynamic>? toJson(LevelState state) {
     return state
-            .whenOrNull(
-              loaded: (levelList) => LevelState.loaded(levelList),
-            )
+            .whenOrNull(loaded: (levelList) => LevelState.loaded(levelList))
             ?.toJson() ??
         LevelState.empty().toJson();
   }

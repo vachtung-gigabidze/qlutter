@@ -1,12 +1,12 @@
 import 'package:injectable/injectable.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
-import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
-import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
+import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_builder/domain/level_repository.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
 
 @Singleton()
-class LevelManager {
+class LevelBuilder {
   static const int emptyCell = 0;
   static const int blockCell = 1;
   static const int ballCall1 = 2;
@@ -26,7 +26,7 @@ class LevelManager {
   Map<int, Level>? levels;
   Field? field;
 
-  LevelManager();
+  LevelBuilder();
 
   Future<Map<int, Level>> readLevels() async {
     LevelRepository repo = locator.get<LevelRepository>();

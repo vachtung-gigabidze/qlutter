@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class Item {

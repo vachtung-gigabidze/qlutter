@@ -7,8 +7,8 @@ import 'package:qlutter/app/ui/app_loader.dart';
 // import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/game/field_view/field_view_preview.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
-import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
-import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
+import 'package:qlutter/feature/level_builder/level_builder.dart';
 import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 // import 'package:qlutter/feature/player_progress/player_progress.dart';
@@ -55,7 +55,7 @@ class LevelSelectionScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: context.read<LevelManager>().readLevels(),
+        future: context.read<LevelBuilder>().readLevels(),
         builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
           if (snapshot.hasData) {
             return AppResponsiveScreen(

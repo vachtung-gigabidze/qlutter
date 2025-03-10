@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/app/di/init_di.dart';
-import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class AppTextButton extends StatelessWidget {
   const AppTextButton({
@@ -8,11 +6,13 @@ class AppTextButton extends StatelessWidget {
     required this.onPressed,
     required this.text,
     this.backGroundColor = const Color(0xFF165932),
+    required this.fontFamily,
   });
 
   final VoidCallback onPressed;
   final String text;
   final Color backGroundColor;
+  final String fontFamily;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class AppTextButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontFamily: locator.get<Palette>().fontMain,
+            fontFamily: fontFamily, //locator.get<Palette>().fontMain,
             fontSize: 16,
             color: const Color(0xFFFFFFFF),
           ),

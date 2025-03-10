@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
-import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/level_builder/level_builder.dart';
 import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import 'package:qlutter/app/ui/components/app_responsive.dart';

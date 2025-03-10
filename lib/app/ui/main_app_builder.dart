@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
-import 'package:qlutter/feature/level_manager/level_manager.dart';
+import 'package:qlutter/feature/level_builder/level_builder.dart';
 // import 'package:qlutter/feature/app_lifecycle/app_lifecycle.dart';
 import 'package:qlutter/feature/games_services/games_services.dart';
 import 'package:qlutter/feature/games_services/score.dart';
@@ -102,7 +102,7 @@ class MainAppBuilder implements AppBuilder {
   // GamesServicesController? gamesServicesController;
   @override
   Future<Widget> buildApp() async {
-    final palette = locator.get<Palette>();
+    // final palette = locator.get<Palette>();
     final setting = LocalStorageSettingsPersistence();
     final themeSetting = await setting.getTheme();
     final languageSetting = await setting.getLanguage();
