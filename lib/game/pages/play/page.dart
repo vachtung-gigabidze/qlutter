@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
-// import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
-// import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
-import 'package:qlutter/app/ui/components/app_palette.dart';
-import 'package:qlutter/feature/style/responsive_screen.dart';
+import 'package:qlutter/app/ui/components/components.dart';
+import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 
 class PlayScreen extends StatefulWidget {
@@ -118,7 +116,7 @@ class _PlayScreenState extends State<PlayScreen> {
                   ),
                 ),
                 //backgroundColor: palette.backgroundPlaySession,
-                body: ResponsiveScreen(
+                body: AppResponsiveScreen(
                   squarishMainArea: Stack(
                     children: [
                       Center(
@@ -173,7 +171,6 @@ class _PlayScreenState extends State<PlayScreen> {
                       style: TextStyle(
                         fontFamily: palette.fontMain,
                         fontSize: 26,
-                        //color: palette.ink,
                       ),
                     ),
                   ),
@@ -203,8 +200,6 @@ class _PlayScreenState extends State<PlayScreen> {
   @override
   void initState() {
     super.initState();
-
-    // level = context.read<LevelManager>().levels![widget.levelNumber]!;
   }
 
   Future<void> _playerWon(int steps) async {
@@ -228,11 +223,6 @@ class _PlayScreenState extends State<PlayScreen> {
 
     await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
-    // locator.get<LevelRepository>().sendProcess(
-    //     levelId: score.level,
-    //     steps: score.score,
-    //     seconds: score.duration.inSeconds,
-    //     dateTime: DateTime.now());
 
     GoRouter.of(context).go('/play/won', extra: {'score': score});
   }

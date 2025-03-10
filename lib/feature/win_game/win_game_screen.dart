@@ -5,7 +5,7 @@ import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import '../games_services/score.dart';
 import '../../app/ui/components/app_palette.dart';
-import '../style/responsive_screen.dart';
+import '../../app/ui/components/app_responsive.dart';
 
 class WinGameScreen extends StatelessWidget {
   final Score score;
@@ -22,7 +22,7 @@ class WinGameScreen extends StatelessWidget {
 
     return Scaffold(
       //backgroundColor: palette.backgroundPlaySession,
-      body: ResponsiveScreen(
+      body: AppResponsiveScreen(
         squarishMainArea: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

@@ -42,6 +42,8 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
     }
   }
 
+  void reset() async {}
+
   @override
   void initState() {
     super.initState();
@@ -58,6 +60,7 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
           final s = snapshot.data;
           return SettingProvider(
             saveSetting: saveSetting,
+            reset: reset,
             setting: s ?? setting,
             child: widget.child,
           );
@@ -70,12 +73,14 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
 class SettingProvider extends InheritedWidget {
   const SettingProvider({
     required this.saveSetting,
+    required this.reset,
     required this.setting,
     super.key,
     required this.child,
   }) : super(child: child);
   final Setting setting;
   final void Function(Setting setting) saveSetting;
+  final void Function() reset;
 
   @override
   final Widget child;

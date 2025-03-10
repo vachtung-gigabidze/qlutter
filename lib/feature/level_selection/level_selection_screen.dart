@@ -14,7 +14,7 @@ import 'package:qlutter/i18n/strings.g.dart';
 // import 'package:qlutter/feature/player_progress/player_progress.dart';
 // import '../player_progress/player_progress.dart';
 import '../../app/ui/components/app_palette.dart';
-import '../style/responsive_screen.dart';
+import '../../app/ui/components/app_responsive.dart';
 
 class LevelSelectionScreen extends StatelessWidget {
   const LevelSelectionScreen({super.key});
@@ -58,7 +58,7 @@ class LevelSelectionScreen extends StatelessWidget {
         future: context.read<LevelManager>().readLevels(),
         builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
           if (snapshot.hasData) {
-            return ResponsiveScreen(
+            return AppResponsiveScreen(
               squarishMainArea: Column(
                 children: [
                   // const SizedBox(height: 40),

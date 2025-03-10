@@ -1,5 +1,11 @@
+import 'dart:ui';
+
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:qlutter/app/ui/components/components.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({super.key});
@@ -12,7 +18,7 @@ class MainMenuScreen extends StatelessWidget {
     return ThemeSwitchingArea(
       child: Scaffold(
         //backgroundColor: palette.backgroundMain,
-        body: ResponsiveScreen(
+        body: AppResponsiveScreen(
           mainAreaProminence: 0.45,
           squarishMainArea: Stack(
             children: [

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:qlutter/app/ui/components/components.dart';
 import 'dart:math';
 import 'package:qlutter/i18n/strings.g.dart';
 
@@ -23,7 +25,7 @@ class LevelMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-    final playerProgress = context.watch<PlayerProgress>();
+    // final playerProgress = context.watch<PlayerProgress>();
     // final levelManager = context.read<LevelManager>();
     final t = Translations.of(context);
     return Scaffold(
@@ -44,7 +46,7 @@ class LevelMenuScreen extends StatelessWidget {
         future: context.read<LevelManager>().readLevels(),
         builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
           if (snapshot.hasData) {
-            return ResponsiveScreen(
+            return AppResponsiveScreen(
               squarishMainArea: Column(
                 children: [
                   // const SizedBox(height: 40),

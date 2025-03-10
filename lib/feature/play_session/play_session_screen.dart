@@ -12,7 +12,7 @@ import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level
 // import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
-import 'package:qlutter/feature/style/responsive_screen.dart';
+import 'package:qlutter/app/ui/components/app_responsive.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import '../game_internals/level_state.dart';
 import '../games_services/score.dart';
@@ -122,7 +122,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                   ),
                 ),
                 //backgroundColor: palette.backgroundPlaySession,
-                body: ResponsiveScreen(
+                body: AppResponsiveScreen(
                   squarishMainArea: Stack(
                     children: [
                       Center(

@@ -5,7 +5,7 @@ import 'package:qlutter/app/ui/app_loader.dart';
 import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
-import 'package:qlutter/feature/style/responsive_screen.dart';
+import 'package:qlutter/app/ui/components/app_responsive.dart';
 
 // Widget _gap = const SizedBox(
 //   width: 10,
@@ -19,7 +19,7 @@ class LevelRecordsScreen extends StatelessWidget {
     Palette palette = context.watch<Palette>();
 
     return Scaffold(
-      body: ResponsiveScreen(
+      body: AppResponsiveScreen(
         mainAreaProminence: 0.45,
         squarishMainArea: BlocBuilder<LevelProgressCubit, LevelProgressState>(
           builder:

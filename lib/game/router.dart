@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlutter/app/ui/components/app_transition.dart';
+import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/game/pages/pages.dart';
 
 class GameRouter {

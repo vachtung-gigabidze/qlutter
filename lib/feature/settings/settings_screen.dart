@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 import '../../app/ui/components/app_palette.dart';
-import '../style/responsive_screen.dart';
+import '../../app/ui/components/app_responsive.dart';
 // import 'language_dialog.dart';
 import 'settings.dart';
 
@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
         ),
-        body: ResponsiveScreen(
+        body: AppResponsiveScreen(
           squarishMainArea: ListView(
             children: [
               ThemeSwitcher.withTheme(
