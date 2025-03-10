@@ -1,5 +1,7 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:qlutter/i18n/strings.g.dart';
 
 class GameWidget extends StatelessWidget {
   const GameWidget({super.key});
@@ -24,7 +26,7 @@ class GameWidget extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               title: 'Qlutter',
               theme: theme,
-              routeInformationProvider: _router.routeInformationProvider,
+              routeInformationProvider: Router.router.routeInformationProvider,
               routeInformationParser: _router.routeInformationParser,
               routerDelegate: _router.routerDelegate,
               scaffoldMessengerKey: scaffoldMessengerKey,

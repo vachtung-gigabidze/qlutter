@@ -12,25 +12,21 @@ import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level
 // import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:qlutter/feature/settings/information_dialog.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 import 'package:qlutter/feature/style/responsive_screen.dart';
 import 'package:qlutter/i18n/strings.g.dart';
-import '../game_internals/level_state.dart';
-import '../games_services/score.dart';
-import '../player_progress/player_progress.dart';
-import '../style/confetti.dart';
-import '../../app/ui/components/app_palette.dart';
 
-class PlaySessionScreen extends StatefulWidget {
+class PlayScreen extends StatefulWidget {
   final int levelNumber;
 
-  const PlaySessionScreen(this.levelNumber, {super.key});
+  const PlayScreen(this.levelNumber, {super.key});
 
   @override
-  State<PlaySessionScreen> createState() => _PlaySessionScreenState();
+  State<PlayScreen> createState() => _PlayScreenState();
 }
 
-class _PlaySessionScreenState extends State<PlaySessionScreen> {
-  static final _log = Logger('PlaySessionScreen');
+class _PlayScreenState extends State<PlayScreen> {
+  static final _log = Logger('PlayScreen');
 
   static const _celebrationDuration = Duration(milliseconds: 2000);
 
@@ -158,14 +154,16 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
                           ],
                         ),
                       ),
-                      SizedBox.expand(
-                        child: Visibility(
-                          visible: _duringCelebration,
-                          child: IgnorePointer(
-                            child: Confetti(isStopped: !_duringCelebration),
-                          ),
-                        ),
-                      ),
+                      // SizedBox.expand(
+                      //   child: Visibility(
+                      //     visible: _duringCelebration,
+                      //     child: IgnorePointer(
+                      //       child: Confetti(
+                      //         isStopped: !_duringCelebration,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                   rectangularMenuArea: ElevatedButton(

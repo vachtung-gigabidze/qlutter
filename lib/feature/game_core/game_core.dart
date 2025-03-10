@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
-import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class Item {
   Color color;
@@ -44,9 +44,12 @@ class Field {
   }
 
   static Field copyField(Field field) {
-    Field newField = Field(Level(
-        field.level.field.map((row) => [...row]).toList(), field.level.levelId)
-      ..size = field.level.size);
+    Field newField = Field(
+      Level(
+        field.level.field.map((row) => [...row]).toList(),
+        field.level.levelId,
+      )..size = field.level.size,
+    );
     return newField;
   }
 
@@ -181,14 +184,23 @@ class Field {
   bool acceptHole(Coordinates coordinates) {
     bool isAccepted = false;
 
-    isAccepted = (acceptBall(coordinates,
-            Coordinates(coordinates.horizontal, coordinates.vertical - 1)) ||
-        acceptBall(coordinates,
-            Coordinates(coordinates.horizontal, coordinates.vertical + 1)) ||
-        acceptBall(coordinates,
-            Coordinates(coordinates.horizontal + 1, coordinates.vertical)) ||
-        acceptBall(coordinates,
-            Coordinates(coordinates.horizontal - 1, coordinates.vertical)));
+    isAccepted =
+        (acceptBall(
+              coordinates,
+              Coordinates(coordinates.horizontal, coordinates.vertical - 1),
+            ) ||
+            acceptBall(
+              coordinates,
+              Coordinates(coordinates.horizontal, coordinates.vertical + 1),
+            ) ||
+            acceptBall(
+              coordinates,
+              Coordinates(coordinates.horizontal + 1, coordinates.vertical),
+            ) ||
+            acceptBall(
+              coordinates,
+              Coordinates(coordinates.horizontal - 1, coordinates.vertical),
+            ));
 
     return isAccepted;
   }
@@ -210,7 +222,7 @@ class Field {
       level.field[coordinates.horizontal][coordinates.vertical + 1] == null,
       level.field[coordinates.horizontal][coordinates.vertical - 1] == null,
       level.field[coordinates.horizontal + 1][coordinates.vertical] == null,
-      level.field[coordinates.horizontal - 1][coordinates.vertical] == null
+      level.field[coordinates.horizontal - 1][coordinates.vertical] == null,
     ];
   }
 

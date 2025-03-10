@@ -1,23 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:qlutter/app/ui/app_loader.dart';
-// import 'package:qlutter/feature/field_view/field_view.dart';
-import 'package:qlutter/feature/field_view/field_view_preview.dart';
-import 'package:qlutter/feature/game_core/game_core.dart';
-import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
-import 'package:qlutter/feature/level_manager/level_manager.dart';
-import 'package:qlutter/feature/player_progress/player_progress.dart';
+import 'dart:math';
 import 'package:qlutter/i18n/strings.g.dart';
-// import 'package:qlutter/feature/player_progress/player_progress.dart';
-// import '../player_progress/player_progress.dart';
-import '../../app/ui/components/app_palette.dart';
-import '../style/responsive_screen.dart';
 
-class LevelSelectionScreen extends StatelessWidget {
-  const LevelSelectionScreen({super.key});
+class LevelMenuScreen extends StatelessWidget {
+  const LevelMenuScreen({super.key});
 
   static double textScaleFactor(
     BuildContext context, {

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/player_progress/player_progress.dart';
 import 'package:qlutter/i18n/strings.g.dart';
-import '../style/palette.dart';
+import '../../app/ui/components/app_palette.dart';
 import '../style/responsive_screen.dart';
 // import 'language_dialog.dart';
 import 'settings.dart';
@@ -38,37 +38,47 @@ class SettingsScreen extends StatelessWidget {
           squarishMainArea: ListView(
             children: [
               ThemeSwitcher.withTheme(
-                builder: (_, switcher, t) => ValueListenableBuilder<String>(
-                  valueListenable: settings.theme,
-                  builder: (context, theme, child) => _SettingsLine(
-                    localization.setting.theme,
-                    Icon(
-                      settings.theme.value == 'dark'
-                          ? Icons.nightlight
-                          : Icons.wb_sunny,
+                builder:
+                    (_, switcher, t) => ValueListenableBuilder<String>(
+                      valueListenable: settings.theme,
+                      builder:
+                          (context, theme, child) => _SettingsLine(
+                            localization.setting.theme,
+                            Icon(
+                              settings.theme.value == 'dark'
+                                  ? Icons.nightlight
+                                  : Icons.wb_sunny,
+                            ),
+                            onSelected: () {
+                              switcher.changeTheme(
+                                theme:
+                                    t.brightness == Brightness.light
+                                        ? palette.dark
+                                        : palette.light,
+                              );
+                              settings.setTheme(
+                                t.brightness.name == 'light' ? 'dark' : 'light',
+                              );
+                            },
+                          ),
                     ),
-                    onSelected: () {
-                      switcher.changeTheme(
-                          theme: t.brightness == Brightness.light
-                              ? palette.dark
-                              : palette.light);
-                      settings.setTheme(
-                          t.brightness.name == 'light' ? 'dark' : 'light');
-                    },
-                  ),
-                ),
               ),
               _gap,
               ValueListenableBuilder<String>(
                 valueListenable: settings.language,
-                builder: (context, language, child) => _SettingsLine(
-                  t.setting.language.title,
-                  Text(language == 'en'
-                      ? t.setting.language.languages.ru
-                      : t.setting.language.languages.en),
-                  onSelected: () =>
-                      settings.setLanguage(language == 'en' ? 'ru' : 'en'),
-                ),
+                builder:
+                    (context, language, child) => _SettingsLine(
+                      t.setting.language.title,
+                      Text(
+                        language == 'en'
+                            ? t.setting.language.languages.ru
+                            : t.setting.language.languages.en,
+                      ),
+                      onSelected:
+                          () => settings.setLanguage(
+                            language == 'en' ? 'ru' : 'en',
+                          ),
+                    ),
               ),
               // Consumer<InAppPurchaseController?>(
               //     builder: (context, inAppPurchase, child) {
@@ -117,12 +127,14 @@ class SettingsScreen extends StatelessWidget {
             onPressed: () {
               GoRouter.of(context).pop();
             },
-            child: Text(t.setting.back,
-                style: TextStyle(
-                  fontFamily: palette.fontMain,
-                  fontSize: 26,
-                  // color: palette.ink,
-                )),
+            child: Text(
+              t.setting.back,
+              style: TextStyle(
+                fontFamily: palette.fontMain,
+                fontSize: 26,
+                // color: palette.ink,
+              ),
+            ),
           ),
         ),
       ),
@@ -187,10 +199,7 @@ class _SettingsLine extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title,
-                style: const TextStyle(
-                  fontSize: 30,
-                )),
+            Text(title, style: const TextStyle(fontSize: 30)),
             const Spacer(),
             icon,
           ],

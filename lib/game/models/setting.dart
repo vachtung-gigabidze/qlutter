@@ -3,27 +3,35 @@ import 'dart:convert';
 
 class Setting {
   String theme;
-  String currentDialogueId;
-  Setting({required this.selectedStory, required this.currentDialogueId});
+  String lastLevel;
+  String language;
+  Setting({
+    required this.theme,
+    required this.lastLevel,
+    required this.language,
+  });
 
-  Setting copyWith({String? selectedStory, String? currentDialogueId}) {
+  Setting copyWith({String? theme, String? lastLevel, String? language}) {
     return Setting(
-      selectedStory: selectedStory ?? this.selectedStory,
-      currentDialogueId: currentDialogueId ?? this.currentDialogueId,
+      theme: theme ?? this.theme,
+      lastLevel: lastLevel ?? this.lastLevel,
+      language: language ?? this.language,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'selectedStory': selectedStory,
-      'currentDialogueId': currentDialogueId,
+      'theme': theme,
+      'lastLevel': lastLevel,
+      'language': language,
     };
   }
 
   factory Setting.fromMap(Map<String, dynamic> map) {
     return Setting(
-      selectedStory: map['selectedStory'] as String,
-      currentDialogueId: map['currentDialogueId'] as String,
+      theme: map['theme'] as String,
+      lastLevel: map['lastLevel'] as String,
+      language: map['language'] as String,
     );
   }
 
@@ -34,16 +42,17 @@ class Setting {
 
   @override
   String toString() =>
-      'Setting(selectedStory: $selectedStory, currentDialogueId: $currentDialogueId)';
+      'Setting(theme: $theme, lastLevel: $lastLevel, language: $language)';
 
   @override
   bool operator ==(covariant Setting other) {
     if (identical(this, other)) return true;
 
-    return other.selectedStory == selectedStory &&
-        other.currentDialogueId == currentDialogueId;
+    return other.theme == theme &&
+        other.lastLevel == lastLevel &&
+        other.language == language;
   }
 
   @override
-  int get hashCode => selectedStory.hashCode ^ currentDialogueId.hashCode;
+  int get hashCode => theme.hashCode ^ lastLevel.hashCode ^ language.hashCode;
 }

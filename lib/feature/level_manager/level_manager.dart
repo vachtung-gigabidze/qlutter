@@ -3,7 +3,7 @@ import 'package:qlutter/app/di/init_di.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/domain/level_repository.dart';
-import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 
 @Singleton()
 class LevelManager {
@@ -39,9 +39,12 @@ class LevelManager {
   }
 
   Field copyField(Field field) {
-    Field newField = Field(Level(
-        field.level.field.map((row) => [...row]).toList(), field.level.levelId)
-      ..size = field.level.size);
+    Field newField = Field(
+      Level(
+        field.level.field.map((row) => [...row]).toList(),
+        field.level.levelId,
+      )..size = field.level.size,
+    );
     return newField;
   }
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:qlutter/game/pages/main_menu/page.dart';
+import 'package:qlutter/app/ui/components/app_transition.dart';
+import 'package:qlutter/game/pages/pages.dart';
 
-class Router {
-  static final _router = GoRouter(
+class GameRouter {
+  static final router = GoRouter(
     routes: [
       GoRoute(
         path: '/',
@@ -14,9 +15,7 @@ class Router {
             path: 'play',
             pageBuilder:
                 (context, state) => buildMyTransition<void>(
-                  child: const LevelSelectionScreen(
-                    key: Key('level selection'),
-                  ),
+                  child: const LevelMenuScreen(key: Key('level selection')),
                   color: Theme.of(context).colorScheme.surface,
                   // context.watch<Palette>().backgroundLevelSelection,
                 ),
@@ -27,7 +26,7 @@ class Router {
                   final levelNumber = int.parse(state.pathParameters['level']!);
                   //final level = levelManager.levels![levelNumber];
                   return buildMyTransition<void>(
-                    child: PlaySessionScreen(
+                    child: PlayScreen(
                       levelNumber,
                       key: const Key('play session'),
                     ),

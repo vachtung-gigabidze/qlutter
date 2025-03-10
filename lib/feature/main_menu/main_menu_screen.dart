@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 // import 'package:qlutter/feature/settings/information_dialog.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 // import 'package:rive/rive.dart';
-import '../style/palette.dart';
+import '../../app/ui/components/app_palette.dart';
 import '../style/responsive_screen.dart';
 
 class MainMenuScreen extends StatelessWidget {
@@ -26,27 +26,30 @@ class MainMenuScreen extends StatelessWidget {
           squarishMainArea: Stack(
             children: [
               Positioned.fill(child: Image.asset('assets/icon/qlutter.png')),
-              Stack(children: [
-                //const RiveAnimation.asset("assets/rive/balls.riv"),
-                Positioned.fill(
+              Stack(
+                children: [
+                  //const RiveAnimation.asset("assets/rive/balls.riv"),
+                  Positioned.fill(
                     child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                  child: const SizedBox(),
-                )),
-                Center(
-                  child: Transform.rotate(
-                    angle: -0.1,
-                    child: const Text(
-                      'Qlutter',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        //fontFamily: palette.fontMain,
-                        fontSize: 100,
+                      filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                      child: const SizedBox(),
+                    ),
+                  ),
+                  Center(
+                    child: Transform.rotate(
+                      angle: -0.1,
+                      child: const Text(
+                        'Qlutter',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          //fontFamily: palette.fontMain,
+                          fontSize: 100,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ]),
+                ],
+              ),
             ],
           ),
           rectangularMenuArea: Column(

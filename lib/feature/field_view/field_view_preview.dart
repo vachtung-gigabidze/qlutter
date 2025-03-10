@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/components/block_item.dart';
-import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class FieldViewPreview extends StatefulWidget {
   final Field field;
@@ -112,27 +112,29 @@ class FieldViewPreviewState extends State<FieldViewPreview> {
       height = widget.parentSize!.height;
     } else {
       width = MediaQuery.of(context).size.width;
-      height = MediaQuery.of(context).size.height -
+      height =
+          MediaQuery.of(context).size.height -
           ((field.level.levelId == 0) ? 400 : 200);
     }
     double m = min<double>(
-        width / field.level.size.width, height / field.level.size.height);
+      width / field.level.size.width,
+      height / field.level.size.height,
+    );
     m *= .95;
     //double i = max<double>(field.level.size.height, field.level.size.width);
 
     elementSize = m; //m / i;
     fieldSize = Size(elementSize, elementSize);
-    maxViewSize = Size(field.level.size.width * elementSize,
-        field.level.size.height * elementSize);
+    maxViewSize = Size(
+      field.level.size.width * elementSize,
+      field.level.size.height * elementSize,
+    );
   }
 
   Widget _blur(Widget child, Color color) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
-      child: Opacity(
-        opacity: widget.enable ? 0.9 : 0.2,
-        child: child,
-      ),
+      child: Opacity(opacity: widget.enable ? 0.9 : 0.2, child: child),
     );
   }
 
@@ -141,13 +143,12 @@ class FieldViewPreviewState extends State<FieldViewPreview> {
     palette ??= context.watch<Palette>();
     setSize(context);
     return _blur(
-        SizedBox(
-          height: maxViewSize.height,
-          width: maxViewSize.width,
-          child: Stack(
-            children: generateFieldItem(field.level.field),
-          ),
-        ),
-        palette?.backgroundMain ?? Colors.white);
+      SizedBox(
+        height: maxViewSize.height,
+        width: maxViewSize.width,
+        child: Stack(children: generateFieldItem(field.level.field)),
+      ),
+      palette?.backgroundMain ?? Colors.white,
+    );
   }
 }

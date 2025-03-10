@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 
 void showInformationDialog(BuildContext context) {
   showGeneralDialog(
-      context: context,
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          InformationDialog(animation: animation));
+    context: context,
+    pageBuilder:
+        (context, animation, secondaryAnimation) =>
+            InformationDialog(animation: animation),
+  );
 }
 
 class InformationDialog extends StatelessWidget {
@@ -20,10 +22,7 @@ class InformationDialog extends StatelessWidget {
     Palette palette = context.watch<Palette>();
     final t = Translations.of(context);
     return ScaleTransition(
-      scale: CurvedAnimation(
-        parent: animation,
-        curve: Curves.easeOutCubic,
-      ),
+      scale: CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
       child: SimpleDialog(
         backgroundColor: palette.backgroundSettings,
         title: null,

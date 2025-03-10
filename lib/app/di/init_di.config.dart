@@ -22,25 +22,22 @@ import 'package:qlutter/feature/level_records/data/network_level_records_reposit
     as _i168;
 import 'package:qlutter/feature/level_records/domain/level_record_repository.dart'
     as _i239;
-import 'package:qlutter/feature/style/palette.dart' as _i530;
+import 'package:qlutter/app/ui/components/app_palette.dart' as _i530;
 
 extension GetItInjectableX on _i174.GetIt {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
     String? environment,
     _i526.EnvironmentFilter? environmentFilter,
   }) {
-    final gh = _i526.GetItHelper(
-      this,
-      environment,
-      environmentFilter,
-    );
+    final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.singleton<_i897.LevelManager>(() => _i897.LevelManager());
     gh.singleton<_i530.Palette>(() => _i530.Palette());
     gh.factory<_i906.LevelRepository>(() => _i959.LocalLevelRepository());
     gh.singleton<_i1025.AppConfig>(() => _i836.ProdAppConfig());
     gh.factory<_i239.LevelRecordRepository>(
-        () => _i168.NetworkLevelRecordsRepository(gh<_i652.AppApi>()));
+      () => _i168.NetworkLevelRecordsRepository(gh<_i652.AppApi>()),
+    );
     return this;
   }
 }

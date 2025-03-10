@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/feature/game_core/game_core.dart';
 import 'package:qlutter/feature/field_view/components/block_item.dart';
-import 'package:qlutter/feature/style/palette.dart';
+import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class FieldView extends StatefulWidget {
   //final Level level;
@@ -15,15 +15,16 @@ class FieldView extends StatefulWidget {
   final Color backgroundColor;
   final bool isView;
 
-  const FieldView(
-      {super.key,
-      required this.field,
-      required this.onChanged,
-      required this.onWin,
-      this.parentSize,
-      this.backgroundColor = Colors.white,
-      required this.onRefresh,
-      this.isView = false});
+  const FieldView({
+    super.key,
+    required this.field,
+    required this.onChanged,
+    required this.onWin,
+    this.parentSize,
+    this.backgroundColor = Colors.white,
+    required this.onRefresh,
+    this.isView = false,
+  });
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -112,84 +113,95 @@ class FieldViewState extends State<FieldView> {
   }
 
   Widget _buildHover(Coordinates c) {
-    List<bool> directionMask =
-        field.canMove(Coordinates(c.horizontal, c.vertical));
+    List<bool> directionMask = field.canMove(
+      Coordinates(c.horizontal, c.vertical),
+    );
     return Positioned(
       top: (c.horizontal - 1) * fieldSize.height,
       left: (c.vertical - 1) * fieldSize.height,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-            hoverColor: Colors.transparent,
-            splashColor: Colors.transparent,
-            splashFactory: NoSplash.splashFactory,
-            onHover: (bool value) {},
-            onTap: () {},
-            child: SizedBox(
-              height: elementSize * 3,
-              width: elementSize * 3,
-              child: Stack(
-                  children: [
-                Positioned(
-                  top: elementSize,
-                  right: 0,
-                  child: InkWell(
-                    onTap: () => moveBall(c, Direction.right),
-                    child: Icon(
-                      Icons.arrow_forward_outlined,
-                      color:
-                          Theme.of(context).colorScheme.primary, //palette?.ink,
-                      size: elementSize,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: elementSize,
-                  left: 0,
-                  child: InkWell(
-                    onTap: () => moveBall(c, Direction.left),
-                    child: Icon(
-                      Icons.arrow_back_outlined,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary, // palette?.ink,
-                      size: elementSize,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: elementSize * 2,
-                  left: elementSize,
-                  child: InkWell(
-                    onTap: () => moveBall(c, Direction.down),
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color:
-                          Theme.of(context).colorScheme.primary, //palette?.ink,
-                      size: elementSize,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: elementSize,
-                  child: InkWell(
-                    onTap: () => moveBall(c, Direction.up),
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color:
-                          Theme.of(context).colorScheme.primary, //palette?.ink,
-                      size: elementSize,
-                    ),
-                  ),
-                ),
-              ]
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          onHover: (bool value) {},
+          onTap: () {},
+          child: SizedBox(
+            height: elementSize * 3,
+            width: elementSize * 3,
+            child: Stack(
+              children:
+                  [
+                        Positioned(
+                          top: elementSize,
+                          right: 0,
+                          child: InkWell(
+                            onTap: () => moveBall(c, Direction.right),
+                            child: Icon(
+                              Icons.arrow_forward_outlined,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary, //palette?.ink,
+                              size: elementSize,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: elementSize,
+                          left: 0,
+                          child: InkWell(
+                            onTap: () => moveBall(c, Direction.left),
+                            child: Icon(
+                              Icons.arrow_back_outlined,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary, // palette?.ink,
+                              size: elementSize,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: elementSize * 2,
+                          left: elementSize,
+                          child: InkWell(
+                            onTap: () => moveBall(c, Direction.down),
+                            child: Icon(
+                              Icons.arrow_downward,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary, //palette?.ink,
+                              size: elementSize,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: elementSize,
+                          child: InkWell(
+                            onTap: () => moveBall(c, Direction.up),
+                            child: Icon(
+                              Icons.arrow_upward,
+                              color:
+                                  Theme.of(
+                                    context,
+                                  ).colorScheme.primary, //palette?.ink,
+                              size: elementSize,
+                            ),
+                          ),
+                        ),
+                      ]
                       .asMap()
                       .entries
                       .where((e) => directionMask[e.key])
                       .map((e) => e.value)
-                      .toList()),
-            )),
+                      .toList(),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -207,9 +219,7 @@ class FieldViewState extends State<FieldView> {
           if (i is Ball) {
             balls.add(_buildBall(i, t, r, Key('Ball${i.id}')));
             if (i.id == selectedItem?.id) {
-              hover = _buildHover(
-                Coordinates(t.toInt(), r.toInt()),
-              );
+              hover = _buildHover(Coordinates(t.toInt(), r.toInt()));
             }
           } else if (i is Hole) {
             holes.add(_buildItem(i, t, r));
@@ -249,14 +259,18 @@ class FieldViewState extends State<FieldView> {
       }
     }
     double m = min<double>(
-        width / field.level.size.width, height / field.level.size.height);
+      width / field.level.size.width,
+      height / field.level.size.height,
+    );
     m *= .95;
     //double i = max<double>(field.level.size.height, field.level.size.width);
 
     elementSize = m; //m / i;
     fieldSize = Size(elementSize, elementSize);
-    maxViewSize = Size(field.level.size.width * elementSize,
-        field.level.size.height * elementSize);
+    maxViewSize = Size(
+      field.level.size.width * elementSize,
+      field.level.size.height * elementSize,
+    );
   }
 
   @override
@@ -268,9 +282,7 @@ class FieldViewState extends State<FieldView> {
       child: SizedBox(
         height: maxViewSize.height,
         width: maxViewSize.width,
-        child: Stack(
-          children: generateFieldItem(field.level.field),
-        ),
+        child: Stack(children: generateFieldItem(field.level.field)),
       ),
     );
   }
