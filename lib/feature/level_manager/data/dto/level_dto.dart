@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart'
     show JsonSerializable;
-import 'package:qlutter/feature/game_core/game_core.dart';
+import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/feature/level_manager/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_manager/level_manager.dart';
 import 'package:flutter/services.dart';
@@ -50,9 +50,9 @@ class LevelDto {
   Level toLevel() {
     int i = 0;
     return Level(
-        field.map((r) => r.map((e) => e!.toItem(i++)).toList()).toList(),
-        levelId)
-      ..size = Size(size.w + .0, size.h + .0);
+      field.map((r) => r.map((e) => e!.toItem(i++)).toList()).toList(),
+      levelId,
+    )..size = Size(size.w + .0, size.h + .0);
   }
 
   static Future<Map<int, LevelDto>> openLevels(String levelsFile) async {
@@ -78,10 +78,8 @@ class LevelDto {
         field.add(fieldRow);
         rowNum++;
       }
-      levels[levelId] = LevelDto(
-        field: field,
-        levelId: levelId,
-      )..size = SizeDto(h, w);
+      levels[levelId] = LevelDto(field: field, levelId: levelId)
+        ..size = SizeDto(h, w);
     }
     return Future.value(levels);
   }

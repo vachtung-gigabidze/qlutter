@@ -2,8 +2,8 @@ import 'dart:math';
 // import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:qlutter/feature/game_core/game_core.dart';
-import 'package:qlutter/feature/field_view/components/block_item.dart';
+import 'package:qlutter/game/game_core/game_core.dart';
+import 'package:qlutter/game/field_view/components/block_item.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class FieldViewPreview extends StatefulWidget {
