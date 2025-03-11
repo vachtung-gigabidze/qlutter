@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
-import 'package:provider/provider.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/game/field_view/field_view.dart';
 import 'package:qlutter/feature/level_builder/level_builder.dart';
@@ -56,7 +55,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
+    final palette = Palette();
     final t = Translations.of(context);
     final setting = SettingProvider.of(context).setting;
     return IgnorePointer(

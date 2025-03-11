@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/components.dart';
 import 'package:qlutter/feature/level_builder/level_builder.dart';
 import 'package:qlutter/game/field_view/field_view_preview.dart';
@@ -32,6 +31,7 @@ class LevelMenuScreen extends StatelessWidget {
     Palette palette = Palette();
     final t = Translations.of(context);
     final setting = SettingProvider.of(context).setting;
+    LevelBuilder lb = LevelBuilder();
     return Scaffold(
       //backgroundColor: palette.backgroundLevelSelection,
       appBar: AppBar(
@@ -47,7 +47,7 @@ class LevelMenuScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: context.read<LevelBuilder>().readLevels(),
+        future: lb.readLevels(),
         builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
           if (snapshot.hasData) {
             return AppResponsiveScreen(

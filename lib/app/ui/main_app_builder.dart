@@ -1,8 +1,6 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
@@ -21,7 +19,7 @@ class _GlobalProviders extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final setting = context.read<SettingProvider>().setting;
+    final setting = SettingProvider.of(context).setting;
     ThemeData initTheme =
         setting.theme == 'light' ? Palette().light : Palette().dark;
     LocaleSettings.setLocale(

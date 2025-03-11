@@ -1,7 +1,6 @@
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/components.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
 import 'package:qlutter/i18n/strings.g.dart';
@@ -84,7 +83,7 @@ class SettingsScreen extends StatelessWidget {
                 t.setting.reset,
                 const Icon(Icons.delete),
                 onSelected: () {
-                  context.read<SettingProvider>().reset();
+                  settingProvider.reset();
 
                   final messenger = ScaffoldMessenger.of(context);
                   messenger.showSnackBar(

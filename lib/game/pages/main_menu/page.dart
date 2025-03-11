@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/components.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 
@@ -12,7 +11,7 @@ class MainMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Palette palette = context.watch<Palette>();
+    Palette palette = Palette();
     final t = Translations.of(context);
 
     return ThemeSwitchingArea(

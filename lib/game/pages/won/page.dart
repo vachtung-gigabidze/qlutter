@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
 import 'package:qlutter/feature/level_builder/level_builder.dart';
 import 'package:qlutter/game/models/score.dart';
@@ -14,8 +13,8 @@ class WinGameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Palette palette = context.watch<Palette>();
-    LevelBuilder lm = context.read<LevelBuilder>();
+    Palette palette = Palette();
+    LevelBuilder lm = LevelBuilder();
     final t = Translations.of(context);
     const gap = SizedBox(height: 10);
     final maxLevel = lm.levels?.length ?? 0;
