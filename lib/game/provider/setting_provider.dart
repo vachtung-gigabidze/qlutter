@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlutter/game/level_builder/level_builder.dart';
 import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/game/models/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,8 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
         setting = Setting.fromJson(v);
         return setting;
       }
+      levelBuilder = LevelBuilder();
+      await levelBuilder.readLevels();
     } catch (e) {}
     setting = Setting(
       theme: "light",
@@ -49,7 +52,7 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
   }
 
   void reset() async {}
-
+  late LevelBuilder levelBuilder;
   @override
   void initState() {
     super.initState();
@@ -68,6 +71,7 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
             saveSetting: saveSetting,
             reset: reset,
             setting: s ?? setting,
+            levelBuilder: levelBuilder,
             child: widget.child,
           );
         }
@@ -81,10 +85,12 @@ class SettingProvider extends InheritedWidget {
     required this.saveSetting,
     required this.reset,
     required this.setting,
+    required this.levelBuilder,
     super.key,
     required this.child,
   }) : super(child: child);
   final Setting setting;
+  final LevelBuilder levelBuilder;
   final void Function(Setting setting) saveSetting;
   final void Function() reset;
 

@@ -1,12 +1,9 @@
-import 'package:freezed_annotation/freezed_annotation.dart'
-    show JsonSerializable;
 import 'package:qlutter/game/game_core/game_core.dart';
-import 'package:qlutter/feature/level_builder/level_builder.dart';
+import 'package:qlutter/game/level_builder/level_builder.dart';
 import 'package:flutter/services.dart';
 
 part 'level_dto.g.dart';
 
-@JsonSerializable()
 class ItemDto {
   ItemDto({required this.code});
   int? code;
@@ -21,7 +18,6 @@ class ItemDto {
   }
 }
 
-@JsonSerializable()
 class SizeDto {
   SizeDto(this.h, this.w);
   final int h;
@@ -33,7 +29,6 @@ class SizeDto {
   Map<String, dynamic> toJson() => _$SizeDtoToJson(this);
 }
 
-@JsonSerializable()
 class LevelDto {
   LevelDto({required this.field, required this.levelId});
 

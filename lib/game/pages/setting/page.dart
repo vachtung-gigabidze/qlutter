@@ -13,7 +13,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settingProvider = SettingProvider.of(context);
-    final setting = settingProvider.setting;
+    // final setting = settingProvider.setting;
     final palette = Palette();
     final localization = Translations.of(context);
 

@@ -17,15 +17,8 @@ dependencies:
   url_launcher: ^6.3.1
   go_router: ^14.8.1
   logging: ^1.3.0
-
-  freezed: ^3.0.3
-  injectable: ^2.5.0
   path_provider: ^2.1.5
-  flutter_svg: ^2.0.17
-  json_annotation: ^4.9.0
-  json_serializable: ^6.9.4
-  animated_theme_switcher: ^2.0.10
-  freezed_annotation: ^3.0.0
+  animated_theme_switcher: ^2.0.10  
   slang: ^4.5.0
   slang_flutter: ^4.5.0
   flutter_native_splash: ^2.4.5
@@ -38,7 +31,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.4.15
-  injectable_generator: ^2.7.0
   flutter_lints: ^5.0.0
   slang_build_runner: ^4.5.0
 

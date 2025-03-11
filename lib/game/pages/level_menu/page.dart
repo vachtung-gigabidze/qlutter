@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlutter/app/ui/components/components.dart';
-import 'package:qlutter/feature/level_builder/level_builder.dart';
+import 'package:qlutter/game/level_builder/level_builder.dart';
 import 'package:qlutter/game/field_view/field_view_preview.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
@@ -30,8 +30,9 @@ class LevelMenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Palette palette = Palette();
     final t = Translations.of(context);
-    final setting = SettingProvider.of(context).setting;
-    LevelBuilder lb = LevelBuilder();
+    final settings = SettingProvider.of(context);
+    final setting = settings.setting;
+    LevelBuilder lb = settings.levelBuilder;
     return Scaffold(
       //backgroundColor: palette.backgroundLevelSelection,
       appBar: AppBar(
@@ -46,80 +47,68 @@ class LevelMenuScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: FutureBuilder(
-        future: lb.readLevels(),
-        builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
-          if (snapshot.hasData) {
-            return AppResponsiveScreen(
-              squarishMainArea: Column(
+      body: AppResponsiveScreen(
+        squarishMainArea: Column(
+          children: [
+            // const SizedBox(height: 40),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: columnCount(context),
                 children: [
-                  // const SizedBox(height: 40),
-                  Expanded(
-                    child: GridView.count(
-                      crossAxisCount: columnCount(context),
+                  for (final level in lb.levels!.values)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        for (final level in snapshot.data!.values)
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: AbsorbPointer(
-                                  absorbing: level.levelId > setting.lastLevel,
-                                  child: FittedBox(
-                                    child: InkWell(
-                                      onTap: () {
-                                        GoRouter.of(
-                                          context,
-                                        ).go('/play/session/${level.levelId}');
-                                      },
-                                      child: FieldViewPreview(
-                                        //backgroundColor:
-                                        //  palette.backgroundLevelSelection,
-                                        parentSize: const Size(150, 150),
-                                        key: UniqueKey(),
-                                        field: Field(level),
-                                        enable:
-                                            level.levelId <= setting.lastLevel,
-                                      ),
-                                    ),
-                                  ),
+                        Expanded(
+                          child: AbsorbPointer(
+                            absorbing: level.levelId > setting.lastLevel,
+                            child: FittedBox(
+                              child: InkWell(
+                                onTap: () {
+                                  GoRouter.of(
+                                    context,
+                                  ).go('/play/session/${level.levelId}');
+                                },
+                                child: FieldViewPreview(
+                                  //backgroundColor:
+                                  //  palette.backgroundLevelSelection,
+                                  parentSize: const Size(150, 150),
+                                  key: UniqueKey(),
+                                  field: Field(level),
+                                  enable: level.levelId <= setting.lastLevel,
                                 ),
                               ),
-                              Text(
-                                level.levelId == 0
-                                    ? t.levels.tutorial
-                                    : level.levelId.toString(),
-                                style: const TextStyle(fontSize: 16),
-                                textScaleFactor:
-                                    level.levelId == 0
-                                        ? textScaleFactor(context)
-                                        : 1,
-                              ),
-                            ],
+                            ),
                           ),
+                        ),
+                        Text(
+                          level.levelId == 0
+                              ? t.levels.tutorial
+                              : level.levelId.toString(),
+                          style: const TextStyle(fontSize: 16),
+                          textScaleFactor:
+                              level.levelId == 0 ? textScaleFactor(context) : 1,
+                        ),
                       ],
                     ),
-                  ),
                 ],
               ),
-              rectangularMenuArea: ElevatedButton(
-                onPressed: () {
-                  GoRouter.of(context).go('/');
-                },
-                child: Text(
-                  t.levels.back,
-                  style: TextStyle(
-                    fontFamily: palette.fontMain,
-                    fontSize: 20,
-                    //color: palette.ink,
-                  ),
-                ),
-              ),
-            );
-          } else {
-            return const AppLoader();
-          }
-        },
+            ),
+          ],
+        ),
+        rectangularMenuArea: ElevatedButton(
+          onPressed: () {
+            GoRouter.of(context).go('/');
+          },
+          child: Text(
+            t.levels.back,
+            style: TextStyle(
+              fontFamily: palette.fontMain,
+              fontSize: 20,
+              //color: palette.ink,
+            ),
+          ),
+        ),
       ),
     );
   }

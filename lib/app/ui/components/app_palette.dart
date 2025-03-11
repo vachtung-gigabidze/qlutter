@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:injectable/injectable.dart';
 
-@Singleton()
 class Palette {
   Color get pen => const Color(0xff1d75fb);
   Color get darkPen => const Color(0xFF0050bc);
@@ -30,56 +28,54 @@ class Palette {
   TextStyle get rowTableStyle => const TextStyle(fontSize: 12);
 
   ThemeData get light => ThemeData.light().copyWith(
-        colorScheme: ThemeData.light().colorScheme.copyWith(
-              primary: ink,
-              surface: backgroundMain,
-            ),
-        scaffoldBackgroundColor: backgroundMain,
-        appBarTheme: ThemeData.light().appBarTheme.copyWith(
-            iconTheme: const IconThemeData(color: Colors.black),
-            color: backgroundMain,
-            foregroundColor: Colors.black,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: backgroundMain,
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.dark,
-            )),
-        buttonTheme: ThemeData.light().buttonTheme.copyWith(
-              buttonColor: Colors.green,
-            ),
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(
-            fontFamily: fontMain,
-            fontSize: 26,
-            color: ink,
-          ),
-        ),
-      );
+    colorScheme: ThemeData.light().colorScheme.copyWith(
+      primary: ink,
+      surface: backgroundMain,
+    ),
+    scaffoldBackgroundColor: backgroundMain,
+    appBarTheme: ThemeData.light().appBarTheme.copyWith(
+      iconTheme: const IconThemeData(color: Colors.black),
+      color: backgroundMain,
+      foregroundColor: Colors.black,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: backgroundMain,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    ),
+    buttonTheme: ThemeData.light().buttonTheme.copyWith(
+      buttonColor: Colors.green,
+    ),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(fontFamily: fontMain, fontSize: 26, color: ink),
+    ),
+  );
 
   ThemeData get dark => ThemeData.dark().copyWith(
-        colorScheme: ThemeData.dark().colorScheme.copyWith(
-              shadow: Colors.white,
-              secondary: Colors.white70,
-              primary: Colors.white70,
-              surface: Colors.grey[800],
-            ),
-        elevatedButtonTheme: ThemeData.dark().elevatedButtonTheme,
-        scaffoldBackgroundColor: Colors.grey[900],
-        appBarTheme: ThemeData.dark().appBarTheme.copyWith(
-            iconTheme: const IconThemeData(color: Colors.white70),
-            color: Colors.grey[900],
-            foregroundColor: Colors.white70,
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.grey[900],
-              statusBarIconBrightness: Brightness.light,
-              statusBarBrightness: Brightness.light,
-            )),
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(
-            fontFamily: fontMain,
-            fontSize: 26,
-            color: Colors.white,
-          ),
-        ),
-      );
+    colorScheme: ThemeData.dark().colorScheme.copyWith(
+      shadow: Colors.white,
+      secondary: Colors.white70,
+      primary: Colors.white70,
+      surface: Colors.grey[800],
+    ),
+    elevatedButtonTheme: ThemeData.dark().elevatedButtonTheme,
+    scaffoldBackgroundColor: Colors.grey[900],
+    appBarTheme: ThemeData.dark().appBarTheme.copyWith(
+      iconTheme: const IconThemeData(color: Colors.white70),
+      color: Colors.grey[900],
+      foregroundColor: Colors.white70,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Colors.grey[900],
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+    ),
+    textTheme: TextTheme(
+      bodyMedium: TextStyle(
+        fontFamily: fontMain,
+        fontSize: 26,
+        color: Colors.white,
+      ),
+    ),
+  );
 }

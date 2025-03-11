@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/game/field_view/field_view.dart';
-import 'package:qlutter/feature/level_builder/level_builder.dart';
+import 'package:qlutter/game/level_builder/level_builder.dart';
 import 'package:qlutter/app/ui/components/components.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
 import 'package:qlutter/i18n/strings.g.dart';
@@ -22,13 +22,13 @@ class PlayScreen extends StatefulWidget {
 class _PlayScreenState extends State<PlayScreen> {
   static final _log = Logger('PlayScreen');
 
-  static const _celebrationDuration = Duration(milliseconds: 2000);
+  // static const _celebrationDuration = Duration(milliseconds: 2000);
 
-  static const _preCelebrationDuration = Duration(milliseconds: 500);
+  // static const _preCelebrationDuration = Duration(milliseconds: 500);
 
   bool _duringCelebration = false;
 
-  late DateTime _startOfPlay;
+  // late DateTime _startOfPlay;
   late Level level;
   Field? field;
   Field? fieldCopy;
@@ -57,11 +57,13 @@ class _PlayScreenState extends State<PlayScreen> {
   Widget build(BuildContext context) {
     final palette = Palette();
     final t = Translations.of(context);
-    final setting = SettingProvider.of(context).setting;
+
+    final settings = SettingProvider.of(context);
+    // final setting = settings.setting;
     return IgnorePointer(
       ignoring: _duringCelebration,
       child: FutureBuilder(
-        future: _loadLevel(),
+        future: _loadLevel(settings.levelBuilder.levels!),
         builder: (context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -162,15 +164,17 @@ class _PlayScreenState extends State<PlayScreen> {
     );
   }
 
-  Future<bool> _loadLevel() async {
-    final levels = await LevelBuilder().readLevels();
+  Future<bool> _loadLevel(Map<int, Level> levels) async {
+    // final settings = SettingProvider.of(context);
+
+    // final levels = settings.levelBuilder.levels!;
 
     level = levels[widget.levelNumber]!;
 
     field = Field(level);
     fieldCopy = Field.copyField(field!);
 
-    _startOfPlay = DateTime.now();
+    // _startOfPlay = DateTime.now();
     return Future.value(true);
   }
 
@@ -191,14 +195,14 @@ class _PlayScreenState extends State<PlayScreen> {
     //final playerProgress = context.read<PlayerProgress>();
     //playerProgress.setLevelReached(widget.levelNumber + 1);
 
-    await Future<void>.delayed(_preCelebrationDuration);
+    // await Future<void>.delayed(_preCelebrationDuration);
     if (!mounted) return;
 
     setState(() {
       _duringCelebration = true;
     });
 
-    await Future<void>.delayed(_celebrationDuration);
+    // await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
 
     GoRouter.of(context).go('/play/won', extra: {'score': null});
