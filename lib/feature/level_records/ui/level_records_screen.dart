@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:qlutter/app/ui/app_loader.dart';
+import 'package:qlutter/app/ui/components/app_loader.dart';
 import 'package:qlutter/feature/level_records/domain/cubit/level_progress_cubit.dart';
 import 'package:qlutter/feature/level_records/domain/entities/level_record.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';

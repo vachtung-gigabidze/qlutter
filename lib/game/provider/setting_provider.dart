@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/game/models/setting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +24,12 @@ class _SettingStateWidgetState extends State<SettingStateWidget> {
         return setting;
       }
     } catch (e) {}
-    setting = Setting(theme: "light", lastLevel: "0", language: "ru");
+    setting = Setting(
+      theme: "light",
+      lastLevel: 0,
+      language: "ru",
+      score: Score(score: 0, duration: Duration(seconds: 0), level: 0),
+    );
     return setting;
   }
 

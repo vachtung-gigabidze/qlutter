@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:qlutter/app/ui/app_loader.dart';
+import 'package:qlutter/app/ui/components/app_loader.dart';
 // import 'package:qlutter/feature/field_view/field_view.dart';
 import 'package:qlutter/game/field_view/field_view_preview.dart';
 import 'package:qlutter/game/game_core/game_core.dart';

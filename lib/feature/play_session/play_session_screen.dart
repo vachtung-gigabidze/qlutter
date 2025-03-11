@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
 // import 'package:qlutter/app/di/init_di.dart';
-import 'package:qlutter/app/ui/app_loader.dart';
+import 'package:qlutter/app/ui/components/app_loader.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/game/field_view/field_view.dart';
 import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
@@ -191,7 +191,7 @@ class _PlaySessionScreenState extends State<PlaySessionScreen> {
   }
 
   Future<bool> _loadLevel() async {
-    final levels = await context.read<LevelManager>().readLevels();
+    final levels = await context.read<LevelBuilder>().readLevels();
 
     level = levels[widget.levelNumber]!;
 

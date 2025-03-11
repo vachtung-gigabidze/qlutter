@@ -1,9 +1,10 @@
 import 'package:injectable/injectable.dart';
-import 'package:qlutter/app/di/init_di.dart';
+import 'package:qlutter/feature/level_builder/data/local_level_repository.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_builder/domain/level_repository.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
+export 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
 
 @Singleton()
 class LevelBuilder {
@@ -29,7 +30,7 @@ class LevelBuilder {
   LevelBuilder();
 
   Future<Map<int, Level>> readLevels() async {
-    LevelRepository repo = locator.get<LevelRepository>();
+    LevelRepository repo = LocalLevelRepository();
     if (levels == null) {
       List<Level> levelList = await repo.getLevels();
       levels = levelList.asMap();
@@ -49,7 +50,7 @@ class LevelBuilder {
   }
 
   static Item? convertLegendToItem(int itemLegend, int id) {
-    final pallete = locator.get<Palette>();
+    final pallete = Palette();
     switch (itemLegend) {
       case emptyCell:
         return null;

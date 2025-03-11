@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart'
     show JsonSerializable;
 import 'package:qlutter/game/game_core/game_core.dart';
-import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_builder/level_builder.dart';
 import 'package:flutter/services.dart';
 

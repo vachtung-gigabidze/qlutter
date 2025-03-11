@@ -15,7 +15,7 @@ class WinGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Palette palette = context.watch<Palette>();
-    LevelManager lm = context.read<LevelManager>();
+    LevelBuilder lm = context.read<LevelBuilder>();
     final t = Translations.of(context);
     const gap = SizedBox(height: 10);
     final maxLevel = lm.levels?.length ?? 0;

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/ui/components/components.dart';
+import 'package:qlutter/feature/level_builder/level_builder.dart';
+import 'package:qlutter/game/field_view/field_view_preview.dart';
+import 'package:qlutter/game/game_core/game_core.dart';
+import 'package:qlutter/game/provider/setting_provider.dart';
 import 'dart:math';
 import 'package:qlutter/i18n/strings.g.dart';
 
@@ -24,10 +29,9 @@ class LevelMenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Palette palette = context.watch<Palette>();
-    // final playerProgress = context.watch<PlayerProgress>();
-    // final levelManager = context.read<LevelManager>();
+    Palette palette = Palette();
     final t = Translations.of(context);
+    final setting = SettingProvider.of(context).setting;
     return Scaffold(
       //backgroundColor: palette.backgroundLevelSelection,
       appBar: AppBar(
@@ -43,7 +47,7 @@ class LevelMenuScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: context.read<LevelManager>().readLevels(),
+        future: context.read<LevelBuilder>().readLevels(),
         builder: (context, AsyncSnapshot<Map<int, Level>> snapshot) {
           if (snapshot.hasData) {
             return AppResponsiveScreen(
@@ -60,9 +64,7 @@ class LevelMenuScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: AbsorbPointer(
-                                  absorbing:
-                                      level.levelId >
-                                      playerProgress.highestLevelReached,
+                                  absorbing: level.levelId > setting.lastLevel,
                                   child: FittedBox(
                                     child: InkWell(
                                       onTap: () {
@@ -77,8 +79,7 @@ class LevelMenuScreen extends StatelessWidget {
                                         key: UniqueKey(),
                                         field: Field(level),
                                         enable:
-                                            level.levelId <=
-                                            playerProgress.highestLevelReached,
+                                            level.levelId <= setting.lastLevel,
                                       ),
                                     ),
                                   ),

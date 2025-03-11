@@ -13,8 +13,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settings = context.watch<SettingProvider>().setting;
-    final palette = context.watch<Palette>();
+    final settingProvider = SettingProvider.of(context);
+    final setting = settingProvider.setting;
+    final palette = Palette();
     final localization = Translations.of(context);
 
     return ThemeSwitchingArea(
@@ -34,50 +35,50 @@ class SettingsScreen extends StatelessWidget {
         body: AppResponsiveScreen(
           squarishMainArea: ListView(
             children: [
-              ThemeSwitcher.withTheme(
-                builder:
-                    (_, switcher, t) => ValueListenableBuilder<String>(
-                      valueListenable: settings.theme,
-                      builder:
-                          (context, theme, child) => _SettingsLine(
-                            localization.setting.theme,
-                            Icon(
-                              settings.theme.value == 'dark'
-                                  ? Icons.nightlight
-                                  : Icons.wb_sunny,
-                            ),
-                            onSelected: () {
-                              switcher.changeTheme(
-                                theme:
-                                    t.brightness == Brightness.light
-                                        ? palette.dark
-                                        : palette.light,
-                              );
-                              settings.setTheme(
-                                t.brightness.name == 'light' ? 'dark' : 'light',
-                              );
-                            },
-                          ),
-                    ),
-              ),
+              // ThemeSwitcher.withTheme(
+              //   builder:
+              //       (_, switcher, t) => ValueListenableBuilder<String>(
+              //         valueListenable: settings.theme,
+              //         builder:
+              //             (context, theme, child) => _SettingsLine(
+              //               localization.setting.theme,
+              //               Icon(
+              //                 settings.theme.value == 'dark'
+              //                     ? Icons.nightlight
+              //                     : Icons.wb_sunny,
+              //               ),
+              //               onSelected: () {
+              //                 switcher.changeTheme(
+              //                   theme:
+              //                       t.brightness == Brightness.light
+              //                           ? palette.dark
+              //                           : palette.light,
+              //                 );
+              //                 settings.setTheme(
+              //                   t.brightness.name == 'light' ? 'dark' : 'light',
+              //                 );
+              //               },
+              //             ),
+              //       ),
+              // ),
               _gap,
-              ValueListenableBuilder<String>(
-                valueListenable: settings.language,
-                builder:
-                    (context, language, child) => _SettingsLine(
-                      t.setting.language.title,
-                      Text(
-                        language == 'en'
-                            ? t.setting.language.languages.ru
-                            : t.setting.language.languages.en,
-                      ),
-                      onSelected:
-                          () => settings.setLanguage(
-                            language == 'en' ? 'ru' : 'en',
-                          ),
-                    ),
-              ),
 
+              // ValueListenableBuilder<String>(
+              //   valueListenable: settings.language,
+              //   builder:
+              //       (context, language, child) => _SettingsLine(
+              //         t.setting.language.title,
+              //         Text(
+              //           language == 'en'
+              //               ? t.setting.language.languages.ru
+              //               : t.setting.language.languages.en,
+              //         ),
+              //         onSelected:
+              //             () => settings.setLanguage(
+              //               language == 'en' ? 'ru' : 'en',
+              //             ),
+              //       ),
+              // ),
               _gap,
               _SettingsLine(
                 t.setting.reset,
