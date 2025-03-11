@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:qlutter/app/domain/app_builder.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
-import 'package:qlutter/feature/style/snack_bar.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
 import 'package:qlutter/game/router.dart';
 import 'package:qlutter/i18n/strings.g.dart';
@@ -41,7 +40,7 @@ class _GlobalProviders extends StatelessWidget {
           routeInformationProvider: GameRouter.router.routeInformationProvider,
           routeInformationParser: GameRouter.router.routeInformationParser,
           routerDelegate: GameRouter.router.routerDelegate,
-          scaffoldMessengerKey: scaffoldMessengerKey,
+          // scaffoldMessengerKey: scaffoldMessengerKey,
         );
       },
     );

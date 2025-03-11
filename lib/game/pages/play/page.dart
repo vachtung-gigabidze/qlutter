@@ -4,14 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logging/logging.dart' hide Level;
 import 'package:provider/provider.dart';
-import 'package:qlutter/app/ui/components/app_loader.dart';
 import 'package:qlutter/game/game_core/game_core.dart';
 import 'package:qlutter/game/field_view/field_view.dart';
-import 'package:qlutter/feature/level_builder/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/feature/level_builder/level_builder.dart';
-import 'package:qlutter/feature/settings/information_dialog.dart';
 import 'package:qlutter/app/ui/components/components.dart';
-import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 
@@ -99,13 +95,6 @@ class _PlayScreenState extends State<PlayScreen> {
                           fontSize: 26,
                           // color: palette.ink,
                         ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkResponse(
-                        onTap: () => showInformationDialog(context),
-                        child: const Icon(Icons.info_outline, size: 50),
                       ),
                     ),
                   ],
