@@ -73,7 +73,7 @@ class LevelMenuScreen extends StatelessWidget {
                                   //backgroundColor:
                                   //  palette.backgroundLevelSelection,
                                   parentSize: const Size(150, 150),
-                                  key: UniqueKey(),
+                                  key: ValueKey(level),
                                   field: Field(level),
                                   enable: level.levelId <= setting.lastLevel,
                                 ),
