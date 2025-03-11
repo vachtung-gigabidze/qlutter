@@ -11,19 +11,17 @@ import 'package:qlutter/game/models/score.dart';
 import 'package:qlutter/game/provider/setting_provider.dart';
 import 'package:qlutter/i18n/strings.g.dart';
 
-class PlayScreen extends StatefulWidget {
+class PlaySceneScreen extends StatefulWidget {
   final int levelNumber;
 
-  const PlayScreen(this.levelNumber, {super.key});
+  const PlaySceneScreen(this.levelNumber, {super.key});
 
   @override
-  State<PlayScreen> createState() => _PlayScreenState();
+  State<PlaySceneScreen> createState() => _PlaySceneScreenState();
 }
 
-class _PlayScreenState extends State<PlayScreen> {
+class _PlaySceneScreenState extends State<PlaySceneScreen> {
   static final _log = Logger('PlayScreen');
-
-  // static const _celebrationDuration = Duration(milliseconds: 2000);
 
   static const _preCelebrationDuration = Duration(milliseconds: 500);
 

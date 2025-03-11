@@ -16,7 +16,7 @@ class GameRouter {
             path: 'play',
             pageBuilder:
                 (context, state) => buildMyTransition<void>(
-                  child: const LevelMenuScreen(key: Key('level selection')),
+                  child: const LevelSelectScreen(key: Key('level selection')),
                   color: Theme.of(context).colorScheme.surface,
                   // context.watch<Palette>().backgroundLevelSelection,
                 ),
@@ -27,7 +27,7 @@ class GameRouter {
                   final levelNumber = int.parse(state.pathParameters['level']!);
                   //final level = levelManager.levels![levelNumber];
                   return buildMyTransition<void>(
-                    child: PlayScreen(
+                    child: PlaySceneScreen(
                       levelNumber,
                       key: const Key('play session'),
                     ),

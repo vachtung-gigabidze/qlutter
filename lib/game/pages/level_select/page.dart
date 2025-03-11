@@ -8,8 +8,8 @@ import 'package:qlutter/game/provider/setting_provider.dart';
 import 'dart:math';
 import 'package:qlutter/i18n/strings.g.dart';
 
-class LevelMenuScreen extends StatelessWidget {
-  const LevelMenuScreen({super.key});
+class LevelSelectScreen extends StatelessWidget {
+  const LevelSelectScreen({super.key});
 
   static double textScaleFactor(
     BuildContext context, {
