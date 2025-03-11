@@ -29,7 +29,7 @@ class _PlayScreenState extends State<PlayScreen> {
 
   bool _duringCelebration = false;
 
-  // late DateTime _startOfPlay;
+  late DateTime _startOfPlay;
   late Level level;
   Field? field;
   Field? fieldCopy;
@@ -175,7 +175,7 @@ class _PlayScreenState extends State<PlayScreen> {
     field = Field(level);
     fieldCopy = Field.copyField(field!);
 
-    // _startOfPlay = DateTime.now();
+    _startOfPlay = DateTime.now();
     return Future.value(true);
   }
 
@@ -187,11 +187,11 @@ class _PlayScreenState extends State<PlayScreen> {
   Future<void> _playerWon(int steps) async {
     _log.info('Level ${widget.levelNumber} won');
 
-    // final score = Score(
-    //   widget.levelNumber,
-    //   steps,
-    //   DateTime.now().difference(_startOfPlay),
-    // );
+    final score = Score(
+      level: widget.levelNumber,
+      score: 0,
+      duration: DateTime.now().difference(_startOfPlay),
+    );
 
     //final playerProgress = context.read<PlayerProgress>();
     //playerProgress.setLevelReached(widget.levelNumber + 1);
@@ -206,11 +206,6 @@ class _PlayScreenState extends State<PlayScreen> {
     // await Future<void>.delayed(_celebrationDuration);
     if (!mounted) return;
 
-    GoRouter.of(context).go(
-      '/play/won',
-      extra: {
-        'score': Score(duration: Duration(seconds: 1), level: 0, score: 1),
-      },
-    );
+    GoRouter.of(context).go('/play/won', extra: {'score': score});
   }
 }
