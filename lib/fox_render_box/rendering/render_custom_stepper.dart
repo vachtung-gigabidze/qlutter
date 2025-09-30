@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:qlutter/render/models/step_data.dart';
-import 'package:qlutter/render/rendering/painting/stepper_painter.dart';
+import 'package:qlutter/fox_render_box/models/step_data.dart';
+import 'package:qlutter/fox_render_box/rendering/painting/stepper_painter.dart';
 
 class RenderCustomStepper extends RenderBox with WidgetsBindingObserver {
   List<StepData> _steps;

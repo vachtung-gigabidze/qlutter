@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:qlutter/render/models/step_data.dart' show StepData;
+import 'package:qlutter/fox_render_box/models/step_data.dart' show StepData;
 
 class StepperPainter {
   static const _iconSize = 32.0;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/render/models/step_data.dart';
-import 'package:qlutter/render/rendering/render_custom_stepper.dart';
+import 'package:qlutter/fox_render_box/models/step_data.dart';
+import 'package:qlutter/fox_render_box/rendering/render_custom_stepper.dart';
 
 class CustomStepper extends LeafRenderObjectWidget {
   final List<StepData> steps;
