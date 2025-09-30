@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:qlutter/render/models/step_data.dart';
 import 'package:qlutter/render/rendering/painting/stepper_painter.dart';

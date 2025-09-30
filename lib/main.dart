@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/render/models/step_data.dart';
 
 import 'render/widgets/custom_stepper.dart';
 
@@ -27,12 +26,9 @@ class StepperExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final steps = [
-      const StepData(title: 'Step 1', subtitle: 'Description 1'),
-      const StepData(
-        title: 'Step 2',
-        subtitle: 'Description 2 with longer text',
-      ),
-      const StepData(title: 'Step 3', subtitle: 'Description 3'),
+      (title: 'Step 1', subtitle: 'Description 1'),
+      (title: 'Step 2', subtitle: 'Description 2 with longer text'),
+      (title: 'Step 3', subtitle: 'Description 3'),
     ];
 
     return SingleChildScrollView(

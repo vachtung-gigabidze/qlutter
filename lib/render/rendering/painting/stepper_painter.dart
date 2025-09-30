@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:qlutter/render/models/step_data.dart' show StepData;
 
 class StepperPainter {
@@ -11,7 +10,13 @@ class StepperPainter {
 
   final List<Rect> _stepRects = [];
   Size _size = Size.zero;
-  final _textPainter = TextPainter(textDirection: TextDirection.ltr);
+  final _textPainter = TextPainter(
+    textDirection: TextDirection.ltr,
+    textAlign: TextAlign.left,
+    ellipsis: '...',
+    maxLines: 2,
+  );
+  Picture? _picture;
 
   Size layout({
     required List<StepData> steps,
@@ -20,6 +25,8 @@ class StepperPainter {
     required TextDirection textDirection,
   }) {
     _stepRects.clear();
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder);
 
     double maxWidth = 0;
     double totalHeight = 0;
@@ -39,6 +46,7 @@ class StepperPainter {
 
       final titleHeight = _textPainter.height;
 
+      _textPainter.paint(canvas, Offset(50, totalHeight));
       // Измеряем подзаголовок
       _textPainter
         ..text = TextSpan(
@@ -47,6 +55,7 @@ class StepperPainter {
         )
         ..layout(maxWidth: constraints.maxWidth - _iconSize - _padding * 2);
 
+      _textPainter.paint(canvas, Offset(50, totalHeight + _textPainter.height));
       final subtitleHeight = _textPainter.height;
       final stepHeight = titleHeight + subtitleHeight + _padding;
 
@@ -60,11 +69,6 @@ class StepperPainter {
       totalHeight += stepHeight;
     }
 
-    _size = Size(maxWidth, totalHeight);
-    return _size;
-  }
-
-  void paint(Canvas canvas, Size size) {
     final linePaint = Paint()
       ..color = Colors.grey
       ..strokeWidth = _lineWidth;
@@ -86,6 +90,7 @@ class StepperPainter {
           linePaint,
         );
       }
+      // canvas.drawRawPoints(PointMode.points, points, paint)
 
       // Рисуем кружок
       canvas.drawCircle(
@@ -94,6 +99,16 @@ class StepperPainter {
         circlePaint,
       );
     }
+    _picture = recorder.endRecording();
+
+    _size = Size(maxWidth, totalHeight);
+    return _size;
+  }
+
+  void paint(Canvas canvas, Size size) {
+    if (_picture == null) return;
+
+    canvas.drawPicture(_picture!);
   }
 
   Rect getStepRect(int index) {
