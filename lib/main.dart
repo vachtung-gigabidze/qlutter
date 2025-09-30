@@ -29,6 +29,11 @@ class StepperExample extends StatelessWidget {
       (title: 'Step 1', subtitle: 'Description 1'),
       (title: 'Step 2', subtitle: 'Description 2 with longer text'),
       (title: 'Step 3', subtitle: 'Description 3'),
+      (title: 'Step 4', subtitle: 'Description 4'),
+      (title: 'Step 5', subtitle: 'Description 5'),
+      (title: 'Step 6', subtitle: 'Description 6 with longer text'),
+      (title: 'Step 7', subtitle: 'Description 7'),
+      (title: 'Step 8', subtitle: 'Description 8'),
     ];
 
     return SingleChildScrollView(

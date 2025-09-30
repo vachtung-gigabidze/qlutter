@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:qlutter/render/models/step_data.dart';
 import 'package:qlutter/render/rendering/painting/stepper_painter.dart';
 
-class RenderCustomStepper extends RenderBox {
+class RenderCustomStepper extends RenderBox with WidgetsBindingObserver {
   List<StepData> _steps;
   List<StepData> get steps => _steps;
   set steps(List<StepData> value) {
@@ -23,6 +25,24 @@ class RenderCustomStepper extends RenderBox {
     if (_textDirection == value) return;
     _textDirection = value;
     markNeedsLayout();
+  }
+
+  Ticker? _animationTicker;
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    WidgetsBinding.instance.addObserver(this);
+    _animationTicker = Ticker((elapsed) {
+      markNeedsPaint();
+    })..start();
+  }
+
+  @override
+  void detach() {
+    super.detach();
+    _animationTicker?.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   TextStyle _textStyle;
