@@ -3,14 +3,14 @@ import 'package:qlutter/game/level_builder/domain/entities/level_entity/level_en
 import 'package:qlutter/app/ui/components/app_palette.dart';
 
 class Item {
-  Color color;
   Item({required this.color});
+  Color color;
 
   @override
   int get hashCode => Object.hash(runtimeType, color);
 
   @override
-  bool operator ==(other) => other is Item && other.color == color;
+  bool operator ==(Object other) => other is Item && other.color == color;
 }
 
 class Block extends Item {
@@ -18,9 +18,9 @@ class Block extends Item {
 }
 
 class Ball extends Item {
+  Ball(Color color, this.id) : super(color: color);
   bool get selected => true;
   int id;
-  Ball(Color color, this.id) : super(color: color);
 }
 
 class Hole extends Item {
@@ -30,21 +30,20 @@ class Hole extends Item {
 enum Direction { left, right, up, down, nowhere }
 
 class Field {
-  Level level;
-  late int ballsCount;
-  late int moveCount;
-  late DateTime? start;
-  late DateTime? end;
-
   Field(this.level) {
     start = null;
     end = null;
     moveCount = 0;
     ballsCount = level.ballsCount;
   }
+  Level level;
+  late int ballsCount;
+  late int moveCount;
+  late DateTime? start;
+  late DateTime? end;
 
   static Field copyField(Field field) {
-    Field newField = Field(
+    var newField = Field(
       Level(
         field.level.field.map((row) => [...row]).toList(),
         field.level.levelId,
@@ -110,8 +109,8 @@ class Field {
   }
 
   Coordinates? moveItem(Coordinates coordinates, Direction direction) {
-    int horizontal = coordinates.horizontal;
-    int vertical = coordinates.vertical;
+    var horizontal = coordinates.horizontal;
+    var vertical = coordinates.vertical;
 
     start ??= DateTime.now();
 
@@ -152,8 +151,8 @@ class Field {
 
   bool acceptBall(Coordinates coordItem, Coordinates coordItemNearly) {
     try {
-      Item? item = level.field[coordItem.horizontal][coordItem.vertical];
-      Item? itemNearly =
+      var item = level.field[coordItem.horizontal][coordItem.vertical];
+      var itemNearly =
           level.field[coordItemNearly.horizontal][coordItemNearly.vertical];
 
       if (itemNearly == null ||
@@ -182,34 +181,34 @@ class Field {
   }
 
   bool acceptHole(Coordinates coordinates) {
-    bool isAccepted = false;
+    var isAccepted = false;
 
     isAccepted =
-        (acceptBall(
-              coordinates,
-              Coordinates(coordinates.horizontal, coordinates.vertical - 1),
-            ) ||
-            acceptBall(
-              coordinates,
-              Coordinates(coordinates.horizontal, coordinates.vertical + 1),
-            ) ||
-            acceptBall(
-              coordinates,
-              Coordinates(coordinates.horizontal + 1, coordinates.vertical),
-            ) ||
-            acceptBall(
-              coordinates,
-              Coordinates(coordinates.horizontal - 1, coordinates.vertical),
-            ));
+        acceptBall(
+          coordinates,
+          Coordinates(coordinates.horizontal, coordinates.vertical - 1),
+        ) ||
+        acceptBall(
+          coordinates,
+          Coordinates(coordinates.horizontal, coordinates.vertical + 1),
+        ) ||
+        acceptBall(
+          coordinates,
+          Coordinates(coordinates.horizontal + 1, coordinates.vertical),
+        ) ||
+        acceptBall(
+          coordinates,
+          Coordinates(coordinates.horizontal - 1, coordinates.vertical),
+        );
 
     return isAccepted;
   }
 
-  catchBall() {
+  void catchBall() {
     ballsCount--;
   }
 
-  checkWin() {
+  bool checkWin() {
     if (ballsCount == 0) {
       end ??= DateTime.now();
       return true;
@@ -217,14 +216,12 @@ class Field {
     return false;
   }
 
-  List<bool> canMove(Coordinates coordinates) {
-    return [
-      level.field[coordinates.horizontal][coordinates.vertical + 1] == null,
-      level.field[coordinates.horizontal][coordinates.vertical - 1] == null,
-      level.field[coordinates.horizontal + 1][coordinates.vertical] == null,
-      level.field[coordinates.horizontal - 1][coordinates.vertical] == null,
-    ];
-  }
+  List<bool> canMove(Coordinates coordinates) => [
+    level.field[coordinates.horizontal][coordinates.vertical + 1] == null,
+    level.field[coordinates.horizontal][coordinates.vertical - 1] == null,
+    level.field[coordinates.horizontal + 1][coordinates.vertical] == null,
+    level.field[coordinates.horizontal - 1][coordinates.vertical] == null,
+  ];
 
   bool isLastColorBall(Color color) {
     level.colorsBall.update(color, (value) => value -= 1);
@@ -233,8 +230,7 @@ class Field {
 }
 
 class Coordinates {
+  Coordinates(this.horizontal, this.vertical);
   int horizontal;
   int vertical;
-
-  Coordinates(this.horizontal, this.vertical);
 }

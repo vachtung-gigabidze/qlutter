@@ -1,10 +1,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:qlutter/game/game_core/game_core.dart';
-import 'package:qlutter/game/field_view/components/block_item.dart';
 import 'package:qlutter/app/ui/components/app_palette.dart';
+import 'package:qlutter/game/field_view/components/block_item.dart';
+import 'package:qlutter/game/game_core/game_core.dart';
 
 class FieldView extends StatefulWidget {
+  const FieldView({
+    required this.field,
+    required this.onChanged,
+    required this.onWin,
+    required this.onRefresh,
+    super.key,
+    this.parentSize,
+    this.backgroundColor = Colors.white,
+    this.isView = false,
+  });
   //final Level level;
   final Field field;
   final VoidCallback onRefresh;
@@ -13,17 +23,6 @@ class FieldView extends StatefulWidget {
   final Size? parentSize;
   final Color backgroundColor;
   final bool isView;
-
-  const FieldView({
-    super.key,
-    required this.field,
-    required this.onChanged,
-    required this.onWin,
-    this.parentSize,
-    this.backgroundColor = Colors.white,
-    required this.onRefresh,
-    this.isView = false,
-  });
 
   @override
   State<FieldView> createState() => FieldViewState();
@@ -52,57 +51,54 @@ class FieldViewState extends State<FieldView> {
     refresh = false;
     elementSize = 45;
 
-    maxViewSize = const Size(0, 0);
+    maxViewSize = Size.zero;
 
     fieldSize = Size(elementSize, elementSize);
   }
 
-  Widget _buildBall(Item item, double t, double r, Key? key) {
-    return AnimatedPositioned(
-      key: key,
-      top: (t * fieldSize.height),
-      left: (r * fieldSize.height),
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.bounceOut,
-      onEnd: () {
-        if ((field.acceptHole(Coordinates(t.toInt(), r.toInt())))) {
-          if (field.checkWin()) {
-            widget.onChanged(field.ballsCount, steps);
-            widget.onWin();
-          }
-          setState(() {});
-        }
-      },
-      child: InkWell(
-        child: BlockItem(
-          item: item,
-          elementSize: elementSize,
-          selected: false,
-          onTap: () {
-            if (item is Ball && !widget.isView) {
-              setState(() {
-                selectedItem = item;
-              });
+  Widget _buildBall(Item item, double t, double r, Key? key) =>
+      AnimatedPositioned(
+        key: key,
+        top: t * fieldSize.height,
+        left: r * fieldSize.height,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.bounceOut,
+        onEnd: () {
+          if (field.acceptHole(Coordinates(t.toInt(), r.toInt()))) {
+            if (field.checkWin()) {
+              widget.onChanged(field.ballsCount, steps);
+              widget.onWin();
             }
-          },
+            setState(() {});
+          }
+        },
+        child: InkWell(
+          child: BlockItem(
+            item: item,
+            elementSize: elementSize,
+            selected: false,
+            onTap: () {
+              if (item is Ball && !widget.isView) {
+                setState(() {
+                  selectedItem = item;
+                });
+              }
+            },
+          ),
         ),
-      ),
-    );
-  }
+      );
 
-  Widget _buildItem(Item item, double t, double r) {
-    return Positioned(
-      top: (t * fieldSize.height),
-      left: (r * fieldSize.height),
-      child: BlockItem(
-        item: item,
-        elementSize: elementSize,
-        selected: false,
-        onHover: null,
-        onTap: null,
-      ),
-    );
-  }
+  Widget _buildItem(Item item, double t, double r) => Positioned(
+    top: t * fieldSize.height,
+    left: r * fieldSize.height,
+    child: BlockItem(
+      item: item,
+      elementSize: elementSize,
+      selected: false,
+      onHover: null,
+      onTap: null,
+    ),
+  );
 
   void moveBall(Coordinates c, Direction d) {
     field.moveItem(c, d);
@@ -112,9 +108,7 @@ class FieldViewState extends State<FieldView> {
   }
 
   Widget _buildHover(Coordinates c) {
-    List<bool> directionMask = field.canMove(
-      Coordinates(c.horizontal, c.vertical),
-    );
+    var directionMask = field.canMove(Coordinates(c.horizontal, c.vertical));
     return Positioned(
       top: (c.horizontal - 1) * fieldSize.height,
       left: (c.vertical - 1) * fieldSize.height,
@@ -124,7 +118,7 @@ class FieldViewState extends State<FieldView> {
           hoverColor: Colors.transparent,
           splashColor: Colors.transparent,
           splashFactory: NoSplash.splashFactory,
-          onHover: (bool value) {},
+          onHover: (value) {},
           onTap: () {},
           child: SizedBox(
             height: elementSize * 3,
@@ -139,10 +133,9 @@ class FieldViewState extends State<FieldView> {
                             onTap: () => moveBall(c, Direction.right),
                             child: Icon(
                               Icons.arrow_forward_outlined,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary, //palette?.ink,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary, //palette?.ink,
                               size: elementSize,
                             ),
                           ),
@@ -154,10 +147,9 @@ class FieldViewState extends State<FieldView> {
                             onTap: () => moveBall(c, Direction.left),
                             child: Icon(
                               Icons.arrow_back_outlined,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary, // palette?.ink,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary, // palette?.ink,
                               size: elementSize,
                             ),
                           ),
@@ -169,10 +161,9 @@ class FieldViewState extends State<FieldView> {
                             onTap: () => moveBall(c, Direction.down),
                             child: Icon(
                               Icons.arrow_downward,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary, //palette?.ink,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary, //palette?.ink,
                               size: elementSize,
                             ),
                           ),
@@ -184,10 +175,9 @@ class FieldViewState extends State<FieldView> {
                             onTap: () => moveBall(c, Direction.up),
                             child: Icon(
                               Icons.arrow_upward,
-                              color:
-                                  Theme.of(
-                                    context,
-                                  ).colorScheme.primary, //palette?.ink,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary, //palette?.ink,
                               size: elementSize,
                             ),
                           ),
@@ -212,8 +202,8 @@ class FieldViewState extends State<FieldView> {
     Widget? hover;
 
     double t = 0, r = 0;
-    for (var row in fields) {
-      for (Item? i in row) {
+    for (final row in fields) {
+      for (final i in row) {
         if (i != null) {
           if (i is Ball) {
             balls.add(_buildBall(i, t, r, Key('Ball${i.id}')));
@@ -257,7 +247,7 @@ class FieldViewState extends State<FieldView> {
         height -= ((field.level.levelId == 0) ? 450 : 300);
       }
     }
-    double m = min<double>(
+    var m = min<double>(
       width / field.level.size.width,
       height / field.level.size.height,
     );

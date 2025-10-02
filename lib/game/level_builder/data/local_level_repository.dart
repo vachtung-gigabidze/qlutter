@@ -11,10 +11,9 @@ class LocalLevelRepository implements LevelRepository {
   Future<List<Level>> getLevels() async {
     try {
       final levelTxt = await rootBundle.loadString('assets/data/classic.txt');
-      final levelDTOs = await LevelDto.openLevels(levelTxt);
+      final levelDTO = await LevelDto.openLevels(levelTxt);
 
-      List<Level> levels =
-          levelDTOs.values.map((value) => value.toLevel()).toList();
+      var levels = levelDTO.values.map((value) => value.toLevel()).toList();
 
       return levels;
     } catch (e) {
@@ -23,12 +22,10 @@ class LocalLevelRepository implements LevelRepository {
   }
 
   @override
-  Future sendProcess({
+  Future<dynamic> sendProcess({
     int? levelId,
     int? steps,
     int? seconds,
     DateTime? dateTime,
-  }) {
-    return Future(() => null);
-  }
+  }) => Future(() => null);
 }
