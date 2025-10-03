@@ -8,17 +8,12 @@ class PlayGround extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ColoredBox(
-        color: Colors.white,
-        child: SizedBox(
-          height: 5 * sizeWall,
-          width: 5 * sizeWall,
-          child: Container(
-            color: const Color(0xFF50427D),
-            child: const WallWidget(),
-          ),
-        ),
+    return SizedBox(
+      height: 5 * sizeWall,
+      width: 5 * sizeWall,
+      child: Container(
+        color: const Color(0xFF50427D),
+        child: const WallWidget(),
       ),
     );
   }
@@ -32,31 +27,31 @@ class WallWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Stack(
     children: [
-      DrawWallWidget(wall: LeftTopInAngleCustomPainter(), x: 0, y: 1),
-      DrawWallWidget(wall: TopWallCustomPainter(), x: 1, y: 1),
-      DrawWallWidget(wall: TopWallCustomPainter(), x: 2, y: 1),
-      DrawWallWidget(wall: TopWallCustomPainter(), x: 3, y: 1),
+      DrawWallWidget(wall: LeftTopInAngleCustomPainter(), x: 0, y: 0),
+      DrawWallWidget(wall: TopWallCustomPainter(), x: 1, y: 0),
+      DrawWallWidget(wall: TopWallCustomPainter(), x: 2, y: 0),
+      DrawWallWidget(wall: TopWallCustomPainter(), x: 3, y: 0),
       DrawWallWidget(
         wall: LeftTopInAngleCustomPainter(),
         x: 4,
-        y: 1,
+        y: 0,
         flipX: true,
       ),
+      DrawWallWidget(wall: LeftWallCustomPainter(), x: 0, y: 1),
+      DrawWallWidget(wall: LeftWallCustomPainter(), x: 4, y: 1, flipX: true),
       DrawWallWidget(wall: LeftWallCustomPainter(), x: 0, y: 2),
       DrawWallWidget(wall: LeftWallCustomPainter(), x: 4, y: 2, flipX: true),
       DrawWallWidget(wall: LeftWallCustomPainter(), x: 0, y: 3),
       DrawWallWidget(wall: LeftWallCustomPainter(), x: 4, y: 3, flipX: true),
-      DrawWallWidget(wall: LeftWallCustomPainter(), x: 0, y: 4),
-      DrawWallWidget(wall: LeftWallCustomPainter(), x: 4, y: 4, flipX: true),
 
-      DrawWallWidget(wall: BottomInAngleCustomPainter(), x: 0, y: 5),
-      DrawWallWidget(wall: LeftWallCustomPainter(), x: 1, y: 5, rotate: 3),
-      DrawWallWidget(wall: LeftWallCustomPainter(), x: 2, y: 5, rotate: 3),
-      DrawWallWidget(wall: LeftWallCustomPainter(), x: 3, y: 5, rotate: 3),
+      DrawWallWidget(wall: BottomInAngleCustomPainter(), x: 0, y: 4),
+      DrawWallWidget(wall: LeftWallCustomPainter(), x: 1, y: 4, rotate: 3),
+      DrawWallWidget(wall: LeftWallCustomPainter(), x: 2, y: 4, rotate: 3),
+      DrawWallWidget(wall: LeftWallCustomPainter(), x: 3, y: 4, rotate: 3),
       DrawWallWidget(
         wall: BottomInAngleCustomPainter(),
         x: 4,
-        y: 5,
+        y: 4,
         flipX: true,
       ),
     ],

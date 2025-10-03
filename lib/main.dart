@@ -1,6 +1,11 @@
 // import 'package:qlutter/fox_render_box/example_app_runner.dart';
 
-import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart'
+    as material
+    show runApp, WidgetsFlutterBinding;
 //import 'package:qlutter/fox_render_box/example_app_runner.dart';
 
 import 'package:ui/ui.dart';
@@ -8,7 +13,24 @@ import 'package:ui/ui.dart';
 void main() {
   //const runner = ExampleAppRunner();
   //runner.run();
-  runApp(const PlayGround());
+  runZonedGuarded<void>(
+    () async {
+      //init
+      final binding = material.WidgetsFlutterBinding.ensureInitialized()
+        ..deferFirstFrame();
+
+      PlatformDispatcher.instance.onError = (error, stackTrace) {
+        print(error.toString());
+        return true;
+      };
+
+      //init deps //share pref , database  //Без запросов в сеть
+
+      material.runApp(const PlayGround());
+    },
+    zoneSpecification: ZoneSpecification(print: (self, parent, zone, line) {}),
+    (error, stack) {},
+  );
 }
 
 
