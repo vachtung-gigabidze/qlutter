@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class AppTextButton extends StatelessWidget {
   const AppTextButton({
-    super.key,
     required this.onPressed,
     required this.text,
-    this.backGroundColor = const Color(0xFF165932),
     required this.fontFamily,
+    super.key,
+    this.backGroundColor = const Color(0xFF165932),
   });
 
   final VoidCallback onPressed;
@@ -15,30 +15,28 @@ class AppTextButton extends StatelessWidget {
   final String fontFamily;
 
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      width: 232,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
-          ),
-          fixedSize: WidgetStateProperty.all<Size>(
-            const Size(double.maxFinite, 40),
-          ),
-          backgroundColor: WidgetStateProperty.all<Color>(backGroundColor),
+  Widget build(BuildContext context) => SizedBox(
+    height: 48,
+    width: 232,
+    child: ElevatedButton(
+      style: ButtonStyle(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
         ),
-        onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontFamily: fontFamily, //locator.get<Palette>().fontMain,
-            fontSize: 16,
-            color: const Color(0xFFFFFFFF),
-          ),
+        fixedSize: WidgetStateProperty.all<Size>(
+          const Size(double.maxFinite, 40),
+        ),
+        backgroundColor: WidgetStateProperty.all<Color>(backGroundColor),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontFamily: fontFamily, //locator.get<Palette>().fontMain,
+          fontSize: 16,
+          color: const Color(0xFFFFFFFF),
         ),
       ),
-    );
-  }
+    ),
+  );
 }

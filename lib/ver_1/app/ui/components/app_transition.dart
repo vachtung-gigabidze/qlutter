@@ -9,32 +9,29 @@ CustomTransitionPage<T> buildMyTransition<T>({
   Object? arguments,
   String? restorationId,
   LocalKey? key,
-}) {
-  return CustomTransitionPage<T>(
-    child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      return _MyReveal(animation: animation, color: color, child: child);
-    },
-    key: key,
-    name: name,
-    arguments: arguments,
-    restorationId: restorationId,
-    transitionDuration: const Duration(milliseconds: 700),
-  );
-}
+}) => CustomTransitionPage<T>(
+  child: child,
+  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+    return _MyReveal(animation: animation, color: color, child: child);
+  },
+  key: key,
+  name: name,
+  arguments: arguments,
+  restorationId: restorationId,
+  transitionDuration: const Duration(milliseconds: 700),
+);
 
 class _MyReveal extends StatefulWidget {
-  final Widget child;
-
-  final Animation<double> animation;
-
-  final Color color;
-
   const _MyReveal({
     required this.child,
     required this.animation,
     required this.color,
   });
+  final Widget child;
+
+  final Animation<double> animation;
+
+  final Color color;
 
   @override
   State<_MyReveal> createState() => _MyRevealState();
@@ -69,28 +66,26 @@ class _MyRevealState extends State<_MyReveal> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        SlideTransition(
-          position: _tween.animate(
-            CurvedAnimation(
-              parent: widget.animation,
-              curve: Curves.easeOutCubic,
-              reverseCurve: Curves.easeOutCubic,
-            ),
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      SlideTransition(
+        position: _tween.animate(
+          CurvedAnimation(
+            parent: widget.animation,
+            curve: Curves.easeOutCubic,
+            reverseCurve: Curves.easeOutCubic,
           ),
-          child: Container(color: widget.color),
         ),
-        AnimatedOpacity(
-          opacity: _finished ? 1 : 0,
-          duration: const Duration(milliseconds: 300),
-          child: widget.child,
-        ),
-      ],
-    );
-  }
+        child: Container(color: widget.color),
+      ),
+      AnimatedOpacity(
+        opacity: _finished ? 1 : 0,
+        duration: const Duration(milliseconds: 300),
+        child: widget.child,
+      ),
+    ],
+  );
 
   void _statusListener(AnimationStatus status) {
     _log.fine(() => 'status: $status');

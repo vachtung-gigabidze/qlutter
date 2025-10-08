@@ -1,11 +1,6 @@
 // import 'package:dio/dio.dart';
 
 class ErrorEntity {
-  final String message;
-  final String? errorMessage;
-  final dynamic error;
-  final StackTrace? stackTrace;
-
   ErrorEntity({
     required this.message,
     this.errorMessage,
@@ -31,8 +26,10 @@ class ErrorEntity {
     // }
     return entity;
   }
+  final String message;
+  final String? errorMessage;
+  final dynamic error;
+  final StackTrace? stackTrace;
 
-  String show() {
-    return "Error: $errorMessage, Message: $message";
-  }
+  String show() => "Error: $errorMessage, Message: $message";
 }

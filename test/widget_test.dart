@@ -18,7 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 // }
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Counter increments smoke test', (tester) async {
     WidgetsFlutterBinding.ensureInitialized();
 
     //await tester.pumpWidget(_wrap(FieldView()));

@@ -34,29 +34,23 @@ class Score {
   String toString() =>
       'Score(score: $score, duration: $duration, level: $level)';
 
-  Score copyWith({int? score, Duration? duration, int? level}) {
-    return Score(
-      score: score ?? this.score,
-      duration: duration ?? this.duration,
-      level: level ?? this.level,
-    );
-  }
+  Score copyWith({int? score, Duration? duration, int? level}) => Score(
+    score: score ?? this.score,
+    duration: duration ?? this.duration,
+    level: level ?? this.level,
+  );
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'score': score,
-      'duration': duration.inSeconds,
-      'level': level,
-    };
-  }
+  Map<String, dynamic> toMap() => <String, dynamic>{
+    'score': score,
+    'duration': duration.inSeconds,
+    'level': level,
+  };
 
-  factory Score.fromMap(Map<String, dynamic> map) {
-    return Score(
-      score: map['score'] as int,
-      duration: Duration(seconds: map['duration'] as int),
-      level: map['level'] as int,
-    );
-  }
+  factory Score.fromMap(Map<String, dynamic> map) => Score(
+    score: map['score'] as int,
+    duration: Duration(seconds: map['duration'] as int),
+    level: map['level'] as int,
+  );
 
   String toJson() => json.encode(toMap());
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qlutter/ver_1/game/level_builder/domain/entities/level_entity/level_entity.dart';
 import 'package:qlutter/ver_1/app/ui/components/app_palette.dart';
+import 'package:qlutter/ver_1/game/level_builder/domain/entities/level_entity/level_entity.dart';
 
 class Item {
   Item({required this.color});

@@ -35,7 +35,7 @@ class Palette {
     scaffoldBackgroundColor: backgroundMain,
     appBarTheme: ThemeData.light().appBarTheme.copyWith(
       iconTheme: const IconThemeData(color: Colors.black),
-      color: backgroundMain,
+      backgroundColor: backgroundMain,
       foregroundColor: Colors.black,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: backgroundMain,
@@ -62,7 +62,7 @@ class Palette {
     scaffoldBackgroundColor: Colors.grey[900],
     appBarTheme: ThemeData.dark().appBarTheme.copyWith(
       iconTheme: const IconThemeData(color: Colors.white70),
-      color: Colors.grey[900],
+      backgroundColor: Colors.grey[900],
       foregroundColor: Colors.white70,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.grey[900],

@@ -1,6 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:qlutter/ver_1/game/game_core/game_core.dart';
 import 'package:qlutter/ver_1/game/level_builder/level_builder.dart';
-import 'package:flutter/services.dart';
 
 part 'level_dto.g.dart';
 
