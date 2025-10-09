@@ -1,6 +1,6 @@
 // constants/tutorial_texts.dart
 class TutorialTexts {
-  static const String title = 'Как играть в Qook';
+  static const String title = 'Как играть в Qoox';
 
   static const List<Map<String, String>> instructions = [
     {

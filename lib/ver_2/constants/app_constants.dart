@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppConstants {
   // Тексты
-  static const String appName = 'QOOK';
+  static const String appName = 'QOOX';
   static const String appDescription = 'Закати все шары в лунки';
   static const String ballCountText = 'Шары: ';
   static const String levelText = 'Уровень ';

@@ -1,7 +1,9 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:qlutter/ver_2/game/level_manager.dart';
+import 'package:qlutter/ver_2/models/app_state.dart';
 import 'package:qlutter/ver_2/models/level.dart';
+import 'package:qlutter/ver_2/providers/app_state_provider.dart';
 
 // Импортируем все наши классы
 // import 'package:qlutter/ver_2/models/item.dart';
@@ -9,6 +11,7 @@ import 'package:qlutter/ver_2/models/level.dart';
 // import 'package:qlutter/ver_2/models/level.dart';
 // import 'package:qlutter/ver_2/game/field_engine.dart';
 import 'package:qlutter/ver_2/services/storage_service.dart';
+import 'package:qlutter/ver_2/widgets/app_state_container.dart';
 import 'package:qlutter/ver_2/widgets/field_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,17 +24,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:qlutter/ver_2/constants/app_constants.dart';
 import 'package:qlutter/ver_2/constants/tutorial_texts.dart';
 
-class QookApp extends StatelessWidget {
-  const QookApp({super.key});
+class QOOXApp extends StatelessWidget {
+  const QOOXApp({required this.initialState, super.key});
+  final AppState initialState;
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    title: AppConstants.appName,
-    theme: _buildTheme(),
-    darkTheme: _buildDarkTheme(),
-    themeMode: ThemeMode.system,
-    home: const GameWrapper(),
-    debugShowCheckedModeBanner: false,
+  Widget build(BuildContext context) => AppStateContainer(
+    initialState: initialState,
+    child: MaterialApp(
+      title: AppConstants.appName,
+      theme: _buildTheme(),
+      darkTheme: _buildDarkTheme(),
+      themeMode: ThemeMode.system,
+      home: const GameWrapper(),
+      debugShowCheckedModeBanner: false,
+    ),
   );
 
   ThemeData _buildTheme() => ThemeData(
@@ -69,38 +76,57 @@ class GameWrapper extends StatefulWidget {
 }
 
 class _GameWrapperState extends State<GameWrapper> {
-  int _currentLevel = 1;
-  final LevelManager _levelManager = LevelManager();
-  Set<int> _completedLevels = {};
+  Future<Level>? _levelFuture;
+  late int _currentLevel;
+  late Set<int> _completedLevels;
+  late int _totalLevels;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _loadProgress();
+    _initializeData();
   }
 
-  Future<void> _loadProgress() async {
+  Future<void> _initializeData() async {
+    // Получаем начальные данные асинхронно
     final currentLevel = await StorageService.getCurrentLevel();
     final completedLevels = await StorageService.getCompletedLevels();
 
     setState(() {
       _currentLevel = currentLevel;
       _completedLevels = completedLevels;
+      _isInitialized = true;
+    });
+
+    _loadCurrentLevel();
+  }
+
+  void _loadCurrentLevel() {
+    if (!_isInitialized) return;
+
+    final levelManager = AppStateProvider.of(context).levelManager;
+
+    setState(() {
+      _levelFuture = levelManager.loadLevel(_currentLevel);
     });
   }
 
   Future<void> _onLevelComplete() async {
-    // Помечаем уровень как пройденный
+    // Сохраняем в хранилище
     await StorageService.markLevelCompleted(_currentLevel);
 
     final nextLevel = _currentLevel + 1;
-
-    // Сохраняем текущий уровень
     await StorageService.setCurrentLevel(nextLevel);
+
+    // Обновляем состояние приложения
+    AppStateProvider.markLevelCompleted(context, _currentLevel);
+    AppStateProvider.updateCurrentLevel(context, nextLevel);
 
     // Обновляем локальное состояние
     setState(() {
       _completedLevels.add(_currentLevel);
+      _currentLevel = nextLevel;
     });
 
     // Показываем сообщение о победе
@@ -118,9 +144,7 @@ class _GameWrapperState extends State<GameWrapper> {
         const Duration(seconds: AppConstants.victoryDelaySeconds),
         () {
           if (mounted) {
-            setState(() {
-              _currentLevel = nextLevel;
-            });
+            _loadCurrentLevel();
           }
         },
       );
@@ -132,6 +156,7 @@ class _GameWrapperState extends State<GameWrapper> {
       setState(() {
         _currentLevel--;
       });
+      _loadCurrentLevel();
     }
   }
 
@@ -139,20 +164,24 @@ class _GameWrapperState extends State<GameWrapper> {
     final nextLevel = _currentLevel + 1;
 
     // Проверяем доступен ли следующий уровень
-    final isUnlocked = await StorageService.isLevelUnlocked(nextLevel);
-    final levelExists = nextLevel <= _levelManager.totalLevels;
+    final isUnlocked = _isLevelUnlocked(nextLevel);
+    final levelExists = nextLevel <= AppStateProvider.getTotalLevels(context);
 
     if (isUnlocked && levelExists) {
       setState(() {
         _currentLevel = nextLevel;
       });
       await StorageService.setCurrentLevel(nextLevel);
+      _loadCurrentLevel();
     } else if (!levelExists) {
       _showLastLevelMessage();
     } else {
       _showLevelLockedMessage();
     }
   }
+
+  bool _isLevelUnlocked(int level) =>
+      level == 1 || _completedLevels.contains(level - 1);
 
   void _showLevelLockedMessage() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -176,11 +205,14 @@ class _GameWrapperState extends State<GameWrapper> {
 
   Future<void> _resetProgress() async {
     await StorageService.clearProgress();
+    AppStateProvider.resetProgress(context);
 
     setState(() {
       _currentLevel = 1;
       _completedLevels.clear();
     });
+
+    _loadCurrentLevel();
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -193,9 +225,23 @@ class _GameWrapperState extends State<GameWrapper> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    body: FutureBuilder<Level>(
-      future: _levelManager.loadLevel(_currentLevel),
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return _buildLoadingScreen();
+    }
+
+    final appState = AppStateProvider.of(context);
+
+    if (appState.isLoading) {
+      return _buildLoadingScreen();
+    }
+
+    if (appState.error != null) {
+      return _buildErrorScreen(appState.error!);
+    }
+
+    return FutureBuilder<Level>(
+      future: _levelFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return _buildLoadingScreen();
@@ -209,29 +255,29 @@ class _GameWrapperState extends State<GameWrapper> {
         return GameScreen(
           level: level,
           levelNumber: _currentLevel,
-          totalLevels: _levelManager.totalLevels,
+          totalLevels: appState.totalLevels,
           onLevelComplete: _onLevelComplete,
           onResetProgress: _resetProgress,
           onPreviousLevel: _goToPreviousLevel,
           onNextLevel: _goToNextLevel,
         );
       },
-    ),
-  );
+    );
+  }
 
-  Widget _buildLoadingScreen() => const Scaffold(
+  Widget _buildLoadingScreen() => Scaffold(
     backgroundColor: AppConstants.primaryColor,
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(
+          const CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ),
-          SizedBox(height: AppConstants.defaultPadding),
+          const SizedBox(height: AppConstants.defaultPadding),
           Text(
-            'Загрузка уровня...',
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            _isInitialized ? 'Загрузка уровня...' : 'Инициализация...',
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
       ),
@@ -252,25 +298,19 @@ class _GameWrapperState extends State<GameWrapper> {
               color: AppConstants.errorColor,
             ),
             const SizedBox(height: AppConstants.defaultPadding),
-            Text(
+            const Text(
               'Ошибка загрузки уровня',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.error,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: AppConstants.smallPadding),
             Text(
               error,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              ),
+              style: const TextStyle(fontSize: 14),
             ),
             const SizedBox(height: AppConstants.defaultPadding),
             ElevatedButton(
-              onPressed: () => setState(() {}),
+              onPressed: _loadCurrentLevel,
               child: const Text('Попробовать снова'),
             ),
           ],
@@ -305,15 +345,23 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   bool _isNextLevelUnlocked = false;
+  bool _isInitialized = false;
 
   @override
   void initState() {
     super.initState();
-    _checkNextLevelUnlock();
+    // Откладываем проверку до следующего кадра
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkNextLevelUnlock();
+      setState(() {
+        _isInitialized = true;
+      });
+    });
   }
 
-  Future<void> _checkNextLevelUnlock() async {
-    final isUnlocked = await StorageService.isLevelUnlocked(
+  void _checkNextLevelUnlock() {
+    final isUnlocked = AppStateProvider.isLevelUnlocked(
+      context,
       widget.levelNumber + 1,
     );
     setState(() {
@@ -321,6 +369,58 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Перепроверяем разблокировку при изменении зависимостей
+    _checkNextLevelUnlock();
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('${AppConstants.levelText}${widget.levelNumber}'),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.help_outline),
+          onPressed: _showHowToPlay,
+          tooltip: AppConstants.howToPlayTitle,
+        ),
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: _showSettings,
+          tooltip: AppConstants.settingsTitle,
+        ),
+      ],
+    ),
+    body: Column(
+      children: [
+        // Навигация по уровням (показываем только после инициализации)
+        if (_isInitialized)
+          Padding(
+            padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            child: LevelNavigationWidget(
+              currentLevel: widget.levelNumber,
+              totalLevels: widget.totalLevels,
+              onPreviousLevel: widget.onPreviousLevel,
+              onNextLevel: widget.onNextLevel,
+              isNextLevelUnlocked: _isNextLevelUnlocked,
+            ),
+          )
+        else
+          const SizedBox(height: AppConstants.defaultPadding),
+
+        // Игровое поле
+        Expanded(
+          child: FieldWidget(
+            level: widget.level,
+            onLevelComplete: widget.onLevelComplete,
+          ),
+        ),
+      ],
+    ),
+  );
   void _showHowToPlay() {
     showDialog(
       context: context,
@@ -472,47 +572,4 @@ class _GameScreenState extends State<GameScreen> {
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text('${AppConstants.levelText}${widget.levelNumber}'),
-      centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.help_outline),
-          onPressed: _showHowToPlay,
-          tooltip: AppConstants.howToPlayTitle,
-        ),
-        IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: _showSettings,
-          tooltip: AppConstants.settingsTitle,
-        ),
-      ],
-    ),
-    body: Column(
-      children: [
-        // Навигация по уровням
-        Padding(
-          padding: const EdgeInsets.all(AppConstants.defaultPadding),
-          child: LevelNavigationWidget(
-            currentLevel: widget.levelNumber,
-            totalLevels: widget.totalLevels,
-            onPreviousLevel: widget.onPreviousLevel,
-            onNextLevel: widget.onNextLevel,
-            isNextLevelUnlocked: _isNextLevelUnlocked,
-          ),
-        ),
-
-        // Игровое поле
-        Expanded(
-          child: FieldWidget(
-            level: widget.level,
-            onLevelComplete: widget.onLevelComplete,
-          ),
-        ),
-      ],
-    ),
-  );
 }
