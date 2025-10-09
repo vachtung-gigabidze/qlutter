@@ -92,9 +92,9 @@ class _FieldWidgetState extends State<FieldWidget> {
               canRedo: _engine.canRedo && !_isAnimating,
               canReset: _engine.canReset && !_isAnimating,
               historySize: _engine.historySize,
-              onUndo: _isAnimating ? null : _undo,
-              onRedo: _isAnimating ? null : _redo,
-              onReset: _isAnimating ? null : _resetToBeginning,
+              onUndo: _isAnimating ? () {} : _undo,
+              onRedo: _isAnimating ? () {} : _redo,
+              onReset: _isAnimating ? () {} : _resetToBeginning,
             ),
             const SizedBox(height: AppConstants.smallPadding),
 
