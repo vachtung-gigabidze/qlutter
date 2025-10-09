@@ -1,40 +1,43 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:qlutter/ver_2/game/level_manager.dart';
+import 'package:qlutter/ver_2/models/level.dart';
 
 // Импортируем все наши классы
 // import 'package:qlutter/ver_2/models/item.dart';
 // import 'package:qlutter/ver_2/models/coordinates.dart';
 // import 'package:qlutter/ver_2/models/level.dart';
 // import 'package:qlutter/ver_2/game/field_engine.dart';
-import 'package:qlutter/ver_2/screens/game_screen.dart';
-import 'package:qlutter/ver_2/screens/level_select_screen.dart';
 import 'package:qlutter/ver_2/services/storage_service.dart';
+import 'package:qlutter/ver_2/widgets/field_widget.dart';
+import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:qlutter/ver_2/widgets/field_widget.dart';
+
+// main.dart
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:qlutter/ver_2/constants/app_constants.dart';
+import 'package:qlutter/ver_2/constants/tutorial_texts.dart';
 
 class QookApp extends StatelessWidget {
   const QookApp({super.key});
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    title: 'Qook',
+    title: AppConstants.appName,
     theme: _buildTheme(),
     darkTheme: _buildDarkTheme(),
     themeMode: ThemeMode.system,
-    home: const SplashScreen(),
-    routes: {
-      '/level_select': (context) => const LevelSelectScreen(),
-      '/game': (context) => const GameScreen(levelNumber: 1),
-    },
+    home: const GameWrapper(),
     debugShowCheckedModeBanner: false,
   );
 
   ThemeData _buildTheme() => ThemeData(
-    primarySwatch: Colors.blue,
-    primaryColor: Colors.blue.shade800,
+    primaryColor: AppConstants.primaryColor,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      seedColor: AppConstants.primaryColor,
       brightness: Brightness.light,
     ),
     useMaterial3: true,
@@ -42,160 +45,33 @@ class QookApp extends StatelessWidget {
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       elevation: 2,
-      shadowColor: Colors.black26,
-    ),
-    cardTheme: CardThemeData(
-      elevation: 4,
-      shadowColor: Colors.black26,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    ),
-    buttonTheme: ButtonThemeData(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor: AppConstants.surfaceColor,
     ),
   );
 
   ThemeData _buildDarkTheme() => ThemeData(
-    primarySwatch: Colors.blue,
-    primaryColor: Colors.blue.shade300,
+    primaryColor: AppConstants.primaryColor,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      seedColor: AppConstants.primaryColor,
       brightness: Brightness.dark,
     ),
     useMaterial3: true,
     fontFamily: 'Roboto',
     appBarTheme: const AppBarTheme(centerTitle: true, elevation: 2),
-    cardTheme: CardThemeData(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    ),
   );
 }
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class GameWrapper extends StatefulWidget {
+  const GameWrapper({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  State<GameWrapper> createState() => _GameWrapperState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
-
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-
-    _controller.forward();
-
-    // Загружаем начальные данные и переходим к главному экрану
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    // Имитация загрузки начальных данных
-    await Future.delayed(const Duration(milliseconds: 2000));
-
-    // Переходим к выбору уровней
-    if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainMenuScreen()),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: Theme.of(context).colorScheme.primary,
-    body: Center(
-      child: ScaleTransition(
-        scale: _animation,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Логотип игры
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.sports_baseball,
-                size: 60,
-                color: Colors.blue,
-              ),
-            ),
-            const SizedBox(height: 30),
-            // Название игры
-            Text(
-              'QOOK',
-              style: TextStyle(
-                fontSize: 42,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                letterSpacing: 4,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Логическая игра',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white.withOpacity(0.9),
-              ),
-            ),
-            const SizedBox(height: 50),
-            // Индикатор загрузки
-            SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Colors.white.withOpacity(0.8),
-                ),
-                strokeWidth: 3,
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
-class MainMenuScreen extends StatefulWidget {
-  const MainMenuScreen({super.key});
-
-  @override
-  State<MainMenuScreen> createState() => _MainMenuScreenState();
-}
-
-class _MainMenuScreenState extends State<MainMenuScreen> {
+class _GameWrapperState extends State<GameWrapper> {
   int _currentLevel = 1;
-  int _maxLevel = 1;
+  final LevelManager _levelManager = LevelManager();
+  Set<int> _completedLevels = {};
 
   @override
   void initState() {
@@ -205,248 +81,271 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
   Future<void> _loadProgress() async {
     final currentLevel = await StorageService.getCurrentLevel();
-    final maxLevel = await StorageService.getMaxLevel();
+    final completedLevels = await StorageService.getCompletedLevels();
 
     setState(() {
       _currentLevel = currentLevel;
-      _maxLevel = maxLevel;
+      _completedLevels = completedLevels;
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final isSmallScreen = MediaQuery.of(context).size.shortestSide < 600;
+  Future<void> _onLevelComplete() async {
+    // Помечаем уровень как пройденный
+    await StorageService.markLevelCompleted(_currentLevel);
 
-    return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Theme.of(context).colorScheme.primary,
-              Theme.of(context).colorScheme.primary.withOpacity(0.8),
-              Theme.of(context).colorScheme.surface,
-            ],
-          ),
+    final nextLevel = _currentLevel + 1;
+
+    // Сохраняем текущий уровень
+    await StorageService.setCurrentLevel(nextLevel);
+
+    // Обновляем локальное состояние
+    setState(() {
+      _completedLevels.add(_currentLevel);
+    });
+
+    // Показываем сообщение о победе
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppConstants.victoryMessage),
+          backgroundColor: AppConstants.successColor,
+          duration: Duration(seconds: AppConstants.victoryDelaySeconds),
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Заголовок
-                _buildHeader(isSmallScreen),
+      );
 
-                const Spacer(),
+      // Через 3 секунды переходим на следующий уровень
+      Future.delayed(
+        const Duration(seconds: AppConstants.victoryDelaySeconds),
+        () {
+          if (mounted) {
+            setState(() {
+              _currentLevel = nextLevel;
+            });
+          }
+        },
+      );
+    }
+  }
 
-                // Основные кнопки меню
-                _buildMenuButtons(isSmallScreen),
+  void _goToPreviousLevel() {
+    if (_currentLevel > 1) {
+      setState(() {
+        _currentLevel--;
+      });
+    }
+  }
 
-                const Spacer(flex: 2),
+  Future<void> _goToNextLevel() async {
+    final nextLevel = _currentLevel + 1;
 
-                // Прогресс
-                _buildProgressSection(),
+    // Проверяем доступен ли следующий уровень
+    final isUnlocked = await StorageService.isLevelUnlocked(nextLevel);
+    final levelExists = nextLevel <= _levelManager.totalLevels;
 
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        ),
+    if (isUnlocked && levelExists) {
+      setState(() {
+        _currentLevel = nextLevel;
+      });
+      await StorageService.setCurrentLevel(nextLevel);
+    } else if (!levelExists) {
+      _showLastLevelMessage();
+    } else {
+      _showLevelLockedMessage();
+    }
+  }
+
+  void _showLevelLockedMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(AppConstants.completeCurrentLevel),
+        backgroundColor: AppConstants.warningColor,
+        duration: Duration(seconds: 2),
       ),
     );
   }
 
-  Widget _buildHeader(bool isSmallScreen) => Column(
-    children: [
-      Container(
-        width: isSmallScreen ? 80 : 100,
-        height: isSmallScreen ? 80 : 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Icon(
-          Icons.sports_baseball,
-          size: isSmallScreen ? 40 : 50,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+  void _showLastLevelMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Это последний уровень!'),
+        backgroundColor: AppConstants.infoColor,
+        duration: Duration(seconds: 2),
       ),
-      const SizedBox(height: 20),
-      Text(
-        'QOOK',
-        style: TextStyle(
-          fontSize: isSmallScreen ? 36 : 48,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          letterSpacing: 3,
+    );
+  }
+
+  Future<void> _resetProgress() async {
+    await StorageService.clearProgress();
+
+    setState(() {
+      _currentLevel = 1;
+      _completedLevels.clear();
+    });
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppConstants.resetSuccess),
+          backgroundColor: AppConstants.successColor,
         ),
-      ),
-      const SizedBox(height: 8),
-      Text(
-        'Закати все шары в лунки',
-        style: TextStyle(
-          fontSize: isSmallScreen ? 14 : 16,
-          color: Colors.white.withOpacity(0.9),
-        ),
-        textAlign: TextAlign.center,
-      ),
-    ],
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    body: FutureBuilder<Level>(
+      future: _levelManager.loadLevel(_currentLevel),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return _buildLoadingScreen();
+        }
+
+        if (snapshot.hasError) {
+          return _buildErrorScreen(snapshot.error.toString());
+        }
+
+        final level = snapshot.data!;
+        return GameScreen(
+          level: level,
+          levelNumber: _currentLevel,
+          totalLevels: _levelManager.totalLevels,
+          onLevelComplete: _onLevelComplete,
+          onResetProgress: _resetProgress,
+          onPreviousLevel: _goToPreviousLevel,
+          onNextLevel: _goToNextLevel,
+        );
+      },
+    ),
   );
 
-  Widget _buildMenuButtons(bool isSmallScreen) {
-    final buttonStyle = ElevatedButton.styleFrom(
-      padding: EdgeInsets.symmetric(
-        horizontal: isSmallScreen ? 20 : 30,
-        vertical: isSmallScreen ? 15 : 20,
-      ),
-      textStyle: TextStyle(
-        fontSize: isSmallScreen ? 16 : 18,
-        fontWeight: FontWeight.w600,
-      ),
-    );
-
-    return Column(
-      children: [
-        // Кнопка продолжения
-        if (_currentLevel > 1) ...[
-          ElevatedButton.icon(
-            style: buttonStyle.copyWith(
-              backgroundColor: WidgetStateProperty.all(Colors.green),
-            ),
-            onPressed: () => _startGame(_currentLevel),
-            icon: const Icon(Icons.play_arrow),
-            label: const Text('ПРОДОЛЖИТЬ ИГРУ'),
-          ),
-          const SizedBox(height: 16),
-        ],
-
-        // Кнопка новой игры
-        ElevatedButton.icon(
-          style: buttonStyle,
-          onPressed: _openLevelSelect,
-          icon: const Icon(Icons.games),
-          label: const Text('ВЫБОР УРОВНЯ'),
-        ),
-        const SizedBox(height: 16),
-
-        // Кнопка правил
-        ElevatedButton.icon(
-          style: buttonStyle.copyWith(
-            backgroundColor: WidgetStateProperty.all(Colors.orange),
-          ),
-          onPressed: _showHowToPlay,
-          icon: const Icon(Icons.help_outline),
-          label: const Text('КАК ИГРАТЬ'),
-        ),
-        const SizedBox(height: 16),
-
-        // Кнопка настроек
-        ElevatedButton.icon(
-          style: buttonStyle.copyWith(
-            backgroundColor: WidgetStateProperty.all(Colors.grey),
-          ),
-          onPressed: _showSettings,
-          icon: const Icon(Icons.settings),
-          label: const Text('НАСТРОЙКИ'),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgressSection() => Card(
-    elevation: 4,
-    child: Padding(
-      padding: const EdgeInsets.all(16),
+  Widget _buildLoadingScreen() => const Scaffold(
+    backgroundColor: AppConstants.primaryColor,
+    body: Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'ВАШ ПРОГРЕСС',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ),
-          const SizedBox(height: 8),
-          LinearProgressIndicator(
-            value: _maxLevel / LevelManager().totalLevels,
-            backgroundColor: Colors.grey.shade300,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              Theme.of(context).colorScheme.primary,
-            ),
-          ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.defaultPadding),
           Text(
-            'Уровень $_maxLevel из ${LevelManager().totalLevels}',
-            style: const TextStyle(fontSize: 14),
+            'Загрузка уровня...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
       ),
     ),
   );
 
-  void _startGame(int levelNumber) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => GameScreen(levelNumber: levelNumber),
+  Widget _buildErrorScreen(String error) => Scaffold(
+    appBar: AppBar(title: const Text('Ошибка')),
+    body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppConstants.defaultPadding),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 64,
+              color: AppConstants.errorColor,
+            ),
+            const SizedBox(height: AppConstants.defaultPadding),
+            Text(
+              'Ошибка загрузки уровня',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            const SizedBox(height: AppConstants.smallPadding),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+            const SizedBox(height: AppConstants.defaultPadding),
+            ElevatedButton(
+              onPressed: () => setState(() {}),
+              child: const Text('Попробовать снова'),
+            ),
+          ],
+        ),
       ),
-    );
+    ),
+  );
+}
+
+class GameScreen extends StatefulWidget {
+  const GameScreen({
+    required this.level,
+    required this.levelNumber,
+    required this.totalLevels,
+    required this.onLevelComplete,
+    required this.onResetProgress,
+    required this.onPreviousLevel,
+    required this.onNextLevel,
+    super.key,
+  });
+  final Level level;
+  final int levelNumber;
+  final int totalLevels;
+  final VoidCallback onLevelComplete;
+  final VoidCallback onResetProgress;
+  final VoidCallback onPreviousLevel;
+  final VoidCallback onNextLevel;
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  bool _isNextLevelUnlocked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkNextLevelUnlock();
   }
 
-  void _openLevelSelect() {
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute(builder: (context) => const LevelSelectScreen()));
+  Future<void> _checkNextLevelUnlock() async {
+    final isUnlocked = await StorageService.isLevelUnlocked(
+      widget.levelNumber + 1,
+    );
+    setState(() {
+      _isNextLevelUnlocked = isUnlocked;
+    });
   }
 
   void _showHowToPlay() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Как играть в Qook'),
+        title: const Text(TutorialTexts.title),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _buildInstructionStep(
-                '1',
-                'Цель игры',
-                'Закатите все цветные шары в лунки соответствующего цвета.',
-              ),
-              _buildInstructionStep(
-                '2',
-                'Движение шаров',
-                'Шары движутся по прямой до первого препятствия (блока или другого шара).',
-              ),
-              _buildInstructionStep(
-                '3',
-                'Управление',
-                'Свайпайте в нужном направлении или используйте кнопки на десктопе.',
-              ),
-              _buildInstructionStep(
-                '4',
-                'Стратегия',
-                'Планируйте ходы заранее - некоторые шары могут блокировать путь другим.',
-              ),
-              const SizedBox(height: 16),
+              for (final instruction in TutorialTexts.instructions)
+                _buildInstructionStep(
+                  instruction['number']!,
+                  instruction['title']!,
+                  instruction['description']!,
+                ),
+              const SizedBox(height: AppConstants.defaultPadding),
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(AppConstants.smallPadding),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color: AppConstants.infoColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  '💡 Подсказка: Используйте кнопку "Отмена", чтобы вернуться на ход назад!',
+                  TutorialTexts.tip,
                   style: TextStyle(fontSize: 14),
                 ),
               ),
@@ -468,15 +367,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     String title,
     String description,
   ) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 8),
+    padding: const EdgeInsets.symmetric(vertical: AppConstants.smallPadding),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 24,
           height: 24,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+          decoration: const BoxDecoration(
+            color: AppConstants.primaryColor,
             shape: BoxShape.circle,
           ),
           child: Center(
@@ -515,13 +414,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Настройки'),
+        title: const Text(AppConstants.settingsTitle),
         content: const Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Здесь будут настройки игры...'),
-            SizedBox(height: 16),
+            Text('Настройки игры:'),
+            SizedBox(height: AppConstants.smallPadding),
             Text('• Звуки и музыка'),
             Text('• Виброотклик'),
             Text('• Сложность'),
@@ -534,10 +433,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             child: const Text('ЗАКРЫТЬ'),
           ),
           TextButton(
-            onPressed: _resetProgress,
+            onPressed: () {
+              Navigator.of(context).pop();
+              _showResetConfirmation();
+            },
             child: const Text(
-              'СБРОСИТЬ ПРОГРЕСС',
-              style: TextStyle(color: Colors.red),
+              AppConstants.resetProgress,
+              style: TextStyle(color: AppConstants.errorColor),
             ),
           ),
         ],
@@ -545,46 +447,72 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     );
   }
 
-  void _resetProgress() {
+  void _showResetConfirmation() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Сброс прогресса'),
-        content: const Text(
-          'Вы уверены, что хотите сбросить весь прогресс? Это действие нельзя отменить.',
-        ),
+        title: const Text(AppConstants.resetProgress),
+        content: const Text(AppConstants.resetConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('ОТМЕНА'),
           ),
           TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop(); // Закрываем диалог подтверждения
-              Navigator.of(context).pop(); // Закрываем диалог настроек
-
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.clear();
-
-              setState(() {
-                _currentLevel = 1;
-                _maxLevel = 1;
-              });
-
-              // Показываем сообщение об успехе
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Прогресс успешно сброшен!'),
-                    backgroundColor: Colors.green,
-                  ),
-                );
-              }
+            onPressed: () {
+              Navigator.of(context).pop();
+              widget.onResetProgress();
             },
-            child: const Text('СБРОСИТЬ', style: TextStyle(color: Colors.red)),
+            child: const Text(
+              'СБРОСИТЬ',
+              style: TextStyle(color: AppConstants.errorColor),
+            ),
           ),
         ],
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text('${AppConstants.levelText}${widget.levelNumber}'),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.help_outline),
+          onPressed: _showHowToPlay,
+          tooltip: AppConstants.howToPlayTitle,
+        ),
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: _showSettings,
+          tooltip: AppConstants.settingsTitle,
+        ),
+      ],
+    ),
+    body: Column(
+      children: [
+        // Навигация по уровням
+        Padding(
+          padding: const EdgeInsets.all(AppConstants.defaultPadding),
+          child: LevelNavigationWidget(
+            currentLevel: widget.levelNumber,
+            totalLevels: widget.totalLevels,
+            onPreviousLevel: widget.onPreviousLevel,
+            onNextLevel: widget.onNextLevel,
+            isNextLevelUnlocked: _isNextLevelUnlocked,
+          ),
+        ),
+
+        // Игровое поле
+        Expanded(
+          child: FieldWidget(
+            level: widget.level,
+            onLevelComplete: widget.onLevelComplete,
+          ),
+        ),
+      ],
+    ),
+  );
 }
