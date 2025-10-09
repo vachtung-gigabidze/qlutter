@@ -1,7 +1,9 @@
+import 'package:qlutter/ver_2/constants/app_constants.dart';
 import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
 import 'package:qlutter/ver_2/models/level_stats.dart';
+import 'package:qlutter/ver_2/models/move_history.dart';
 
 // Класс для хранения результата хода
 class TurnResult {
@@ -21,10 +23,14 @@ class FieldEngine {
   FieldEngine(this._level)
     : _ballsCount = _level.ballsCount,
       _initialBallsCount = _level.ballsCount,
-      _stats = LevelStats.start();
+      _stats = LevelStats.start() {
+    // Сохраняем начальное состояние
+    _saveInitialState();
+  }
   Level _level;
   int _ballsCount;
-  final List<Level> _undoStack = [];
+  final List<MoveHistory> _undoStack = [];
+  final List<MoveHistory> _redoStack = []; // Стек для возврата отмененных ходов
   LevelStats _stats;
   int _initialBallsCount;
 
@@ -32,9 +38,22 @@ class FieldEngine {
   int get ballsCount => _ballsCount;
   bool get isLevelComplete => _ballsCount == 0;
   bool get canUndo => _undoStack.isNotEmpty;
+  bool get canRedo => _redoStack.isNotEmpty; // Можно вернуть отмененный ход
+  bool get canReset => _undoStack.isNotEmpty; // Можно сбросить к началу
   LevelStats get stats =>
       _stats.copyWith(time: DateTime.now().difference(_stats.levelStartTime));
   int get initialBallsCount => _initialBallsCount;
+  int get historySize => _undoStack.length; // Размер истории
+
+  void _saveInitialState() {
+    final initialHistory = MoveHistory(
+      levelState: _createLevelCopy(_level),
+      ballsCount: _ballsCount,
+      stats: _stats.copyWith(),
+      description: 'Начальное состояние',
+    );
+    _undoStack.add(initialHistory);
+  }
 
   TurnResult makeTurn(Coordinates coordinates, Direction direction) {
     if (direction == Direction.nowhere) {
@@ -54,7 +73,10 @@ class FieldEngine {
       );
     }
 
-    _saveState();
+    // Очищаем стек возврата при новом ходе
+    _redoStack.clear();
+
+    _saveState('Ход: ($coordinates) -> $direction');
 
     final newCoordinates = _moveItem(coordinates, direction);
     if (newCoordinates == null) {
@@ -80,6 +102,105 @@ class FieldEngine {
       levelComplete: levelComplete,
     );
   }
+
+  void _saveState(String description) {
+    final history = MoveHistory(
+      levelState: _createLevelCopy(_level),
+      ballsCount: _ballsCount,
+      stats: _stats.copyWith(),
+      description: description,
+    );
+
+    _undoStack.add(history);
+
+    // Ограничиваем размер истории
+    if (_undoStack.length > AppConstants.maxHistorySize) {
+      _undoStack.removeAt(0); // Удаляем самый старый ход
+    }
+  }
+
+  Level _createLevelCopy(Level original) {
+    final copiedField = original.field.map(List<Item?>.from).toList();
+    return Level(copiedField);
+  }
+
+  bool undo() {
+    if (_undoStack.length < 2) return false; // Нужно как минимум 2 состояния
+
+    // Сохраняем текущее состояние в стек возврата
+    final currentState = MoveHistory(
+      levelState: _createLevelCopy(_level),
+      ballsCount: _ballsCount,
+      stats: _stats.copyWith(),
+      description: 'Текущее состояние перед отменой',
+    );
+    _redoStack.add(currentState);
+
+    // Восстанавливаем предыдущее состояние
+    _undoStack.removeLast(); // Удаляем текущее состояние
+    final previousState = _undoStack.last;
+
+    _restoreState(previousState);
+
+    return true;
+  }
+
+  bool redo() {
+    if (_redoStack.isEmpty) return false;
+
+    // Сохраняем текущее состояние
+    _saveState('Состояние перед возвратом');
+
+    // Восстанавливаем состояние из стека возврата
+    final nextState = _redoStack.removeLast();
+    _restoreState(nextState);
+
+    // Добавляем восстановленное состояние в историю
+    _undoStack.add(
+      MoveHistory(
+        levelState: _createLevelCopy(_level),
+        ballsCount: _ballsCount,
+        stats: _stats.copyWith(),
+        description: 'Возврат хода',
+      ),
+    );
+
+    return true;
+  }
+
+  void _restoreState(MoveHistory history) {
+    _level = _createLevelCopy(history.levelState);
+    _ballsCount = history.ballsCount;
+    _stats = history.stats.copyWith();
+  }
+
+  bool resetToBeginning() {
+    if (_undoStack.isEmpty) return false;
+
+    // Сохраняем текущее состояние в стек возврата
+    final currentState = MoveHistory(
+      levelState: _createLevelCopy(_level),
+      ballsCount: _ballsCount,
+      stats: _stats.copyWith(),
+      description: 'Состояние перед сбросом',
+    );
+    _redoStack.add(currentState);
+
+    // Восстанавливаем начальное состояние
+    final initialState = _undoStack.first;
+    _restoreState(initialState);
+
+    // Очищаем историю кроме начального состояния
+    _undoStack.clear();
+    _undoStack.add(initialState);
+
+    return true;
+  }
+
+  // Получить историю ходов (для отладки)
+  List<String> getMoveHistory() => _undoStack
+      .map((history) => history.description ?? 'Без описания')
+      .toList();
 
   bool _acceptHole(Coordinates coords, Direction direction) {
     var isAccepted = false;
@@ -287,33 +408,35 @@ class FieldEngine {
     return count;
   }
 
-  bool undo() {
-    if (_undoStack.isEmpty) return false;
+  // bool undo() {
+  //   if (_undoStack.isEmpty) return false;
 
-    final previousState = _undoStack.removeLast();
-    _level = previousState;
-    _ballsCount = _countBalls();
+  //   final previousState = _undoStack.removeLast();
+  //   _level = previousState;
+  //   _ballsCount = _countBalls();
 
-    // При отмене уменьшаем счетчик шагов
-    _stats = _stats.copyWith(steps: _stats.steps - 1);
+  //   // При отмене уменьшаем счетчик шагов
+  //   _stats = _stats.copyWith(steps: _stats.steps - 1);
 
-    return true;
-  }
+  //   return true;
+  // }
 
-  void _saveState() {
-    final copiedField = _level.field.map(List<Item?>.from).toList();
-    _undoStack.add(Level(copiedField));
+  // void _saveState() {
+  //   final copiedField = _level.field.map(List<Item?>.from).toList();
+  //   _undoStack.add(Level(copiedField));
 
-    if (_undoStack.length > 10) {
-      _undoStack.removeAt(0);
-    }
-  }
+  //   if (_undoStack.length > 10) {
+  //     _undoStack.removeAt(0);
+  //   }
+  // }
 
   void resetLevel(Level newLevel) {
     _level = newLevel;
     _ballsCount = newLevel.ballsCount;
     _initialBallsCount = newLevel.ballsCount;
     _undoStack.clear();
+    _redoStack.clear();
     _stats = LevelStats.start();
+    _saveInitialState();
   }
 }

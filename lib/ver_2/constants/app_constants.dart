@@ -27,6 +27,12 @@ class AppConstants {
   static const String levelLockedTooltip = 'Уровень заблокирован';
   static const String completeCurrentLevel = 'Сначала пройдите текущий уровень';
 
+  // Система отмены
+  static const String undoAllTooltip = 'Отменить все ходы';
+  static const String redoTooltip = 'Вернуть ход';
+  static const String undoTooltip = 'Отменить ход';
+  static const String resetLevelTooltip = 'Сбросить уровень';
+
   // Цвета
   static const primaryColor = Color(0xFF2196F3);
   static const secondaryColor = Color(0xFF4CAF50);
@@ -74,4 +80,7 @@ class AppConstants {
   // Размеры и отступы для навигации
   static const double navButtonSize = 48;
   static const double navIconSize = 32;
+
+  // Максимальная глубина истории
+  static const int maxHistorySize = 50;
 }

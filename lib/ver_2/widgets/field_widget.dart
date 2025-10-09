@@ -8,6 +8,7 @@ import 'package:qlutter/ver_2/game/field_engine.dart';
 import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
+import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 
 class FieldWidget extends StatefulWidget {
@@ -81,6 +82,19 @@ class _FieldWidgetState extends State<FieldWidget> {
               currentBallsCount: _engine.ballsCount,
             ),
             const SizedBox(height: AppConstants.smallPadding),
+
+            // Управление историей
+            HistoryControlWidget(
+              canUndo: _engine.canUndo,
+              canRedo: _engine.canRedo,
+              canReset: _engine.canReset,
+              historySize: _engine.historySize,
+              onUndo: _undo,
+              onRedo: _redo,
+              onReset: _resetToBeginning,
+            ),
+            const SizedBox(height: AppConstants.smallPadding),
+
             // Игровое поле
             Expanded(
               child: Center(
@@ -155,14 +169,11 @@ class _FieldWidgetState extends State<FieldWidget> {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        // Кнопка отмены
+        // Простая кнопка сброса уровня
         IconButton(
-          icon: Icon(
-            Icons.undo,
-            color: _engine.canUndo ? AppConstants.primaryColor : Colors.grey,
-            size: AppConstants.iconSize,
-          ),
-          onPressed: _engine.canUndo ? _undo : null,
+          icon: const Icon(Icons.refresh, size: AppConstants.iconSize),
+          onPressed: _resetLevel,
+          tooltip: 'Быстрый сброс уровня',
         ),
 
         // Счетчик шаров
@@ -171,10 +182,21 @@ class _FieldWidgetState extends State<FieldWidget> {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
 
-        // Кнопка сброса уровня
-        IconButton(
-          icon: const Icon(Icons.refresh, size: AppConstants.iconSize),
-          onPressed: _resetLevel,
+        // Индикатор истории
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+          decoration: BoxDecoration(
+            color: AppConstants.primaryColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            'Ходы: ${_engine.historySize - 1}',
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppConstants.primaryColor,
+            ),
+          ),
         ),
       ],
     ),
@@ -413,6 +435,18 @@ class _FieldWidgetState extends State<FieldWidget> {
 
   void _undo() {
     if (_engine.undo()) {
+      setState(() {});
+    }
+  }
+
+  void _redo() {
+    if (_engine.redo()) {
+      setState(() {});
+    }
+  }
+
+  void _resetToBeginning() {
+    if (_engine.resetToBeginning()) {
       setState(() {});
     }
   }
