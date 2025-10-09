@@ -89,6 +89,12 @@ class FieldEngine {
 
     // Сначала выполняем закатывание и обновляем счетчики
     final holeAccepted = _acceptHole(newCoordinates, direction);
+    if (holeAccepted) {
+      // Увеличиваем счетчик для этого цвета
+      final updatedBalls = Map<ItemColor, int>.from(_stats.ballsCaptured);
+      updatedBalls[item.color] = (updatedBalls[item.color] ?? 0) + 1;
+      _stats = _stats.copyWith(ballsCaptured: updatedBalls);
+    }
 
     // Затем проверяем завершение уровня
     final levelComplete = isLevelComplete;
@@ -204,43 +210,43 @@ class FieldEngine {
 
   bool _acceptHole(Coordinates coords, Direction direction) {
     var isAccepted = false;
-    ItemColor? capturedColor;
+    // ItemColor? capturedColor;
 
     switch (direction) {
       case Direction.right:
         isAccepted = _acceptRight(coords);
-        if (isAccepted) capturedColor = _getBallColor(coords);
+        // if (isAccepted) capturedColor = _getBallColor(coords);
         break;
       case Direction.left:
         isAccepted = _acceptLeft(coords);
-        if (isAccepted) capturedColor = _getBallColor(coords);
+        // if (isAccepted) capturedColor = _getBallColor(coords);
         break;
       case Direction.up:
         isAccepted = _acceptUp(coords);
-        if (isAccepted) capturedColor = _getBallColor(coords);
+        // if (isAccepted) capturedColor = _getBallColor(coords);
         break;
       case Direction.down:
         isAccepted = _acceptDown(coords);
-        if (isAccepted) capturedColor = _getBallColor(coords);
+        // if (isAccepted) capturedColor = _getBallColor(coords);
         break;
       case Direction.nowhere:
         return false;
     }
 
-    if (isAccepted && capturedColor != null) {
-      // Увеличиваем счетчик для этого цвета
-      final updatedBalls = Map<ItemColor, int>.from(_stats.ballsCaptured);
-      updatedBalls[capturedColor] = (updatedBalls[capturedColor] ?? 0) + 1;
-      _stats = _stats.copyWith(ballsCaptured: updatedBalls);
-    }
+    // if (isAccepted && capturedColor != null) {
+    //   // Увеличиваем счетчик для этого цвета
+    //   final updatedBalls = Map<ItemColor, int>.from(_stats.ballsCaptured);
+    //   updatedBalls[capturedColor] = (updatedBalls[capturedColor] ?? 0) + 1;
+    //   _stats = _stats.copyWith(ballsCaptured: updatedBalls);
+    // }
 
     return isAccepted;
   }
 
-  ItemColor? _getBallColor(Coordinates coords) {
-    final item = _level.field[coords.y][coords.x];
-    return item is Ball ? item.color : null;
-  }
+  // ItemColor? _getBallColor(Coordinates coords) {
+  //   final item = _level.field[coords.y][coords.x];
+  //   return item is Ball ? item.color : null;
+  // }
 
   bool _acceptRight(Coordinates coords) {
     final x = coords.x;

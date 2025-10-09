@@ -29,11 +29,8 @@ class LevelStatsWidget extends StatelessWidget {
         // Основная статистика
         _buildMainStats(),
         const SizedBox(height: 8),
-        // Прогресс по шарам
-        _buildBallsProgress(),
-        const SizedBox(height: 8),
-        // Детали по цветам шаров
-        _buildBallsDetails(),
+        // Визуальная статистика шаров
+        _buildBallsVisualStats(),
       ],
     ),
   );
@@ -51,7 +48,7 @@ class LevelStatsWidget extends StatelessWidget {
       ),
       _buildStatItem(
         Icons.sports_baseball,
-        '${AppConstants.ballsText}${stats.totalBallsCaptured}/$initialBallsCount',
+        '${stats.totalBallsCaptured}/$initialBallsCount',
       ),
     ],
   );
@@ -68,74 +65,105 @@ class LevelStatsWidget extends StatelessWidget {
     ],
   );
 
-  Widget _buildBallsProgress() {
-    final progress = initialBallsCount > 0
-        ? stats.totalBallsCaptured / initialBallsCount
-        : 0.0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Прогресс: ${stats.totalBallsCaptured}/$initialBallsCount',
-          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-        ),
-        const SizedBox(height: 4),
-        LinearProgressIndicator(
-          value: progress,
-          backgroundColor: Colors.grey.shade300,
-          valueColor: AlwaysStoppedAnimation<Color>(
-            progress == 1.0
-                ? AppConstants.successColor
-                : AppConstants.primaryColor,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBallsDetails() {
-    final capturedBalls = stats.ballsCaptured.entries
-        .where((e) => e.value > 0)
-        .toList();
-
-    if (capturedBalls.isEmpty) {
-      return const Text(
-        'Шары еще не закатаны',
-        style: TextStyle(fontSize: 11, color: Colors.grey),
-      );
-    }
-
-    return Wrap(
-      spacing: 8,
-      runSpacing: 4,
-      children: capturedBalls
-          .map((entry) => _buildBallColorItem(entry.key, entry.value))
-          .toList(),
-    );
-  }
-
-  Widget _buildBallColorItem(ItemColor color, int count) => Row(
-    mainAxisSize: MainAxisSize.min,
+  Widget _buildBallsVisualStats() => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Container(
-        width: 12,
-        height: 12,
-        decoration: BoxDecoration(
-          color: _getColorForItemColor(color),
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.black.withOpacity(0.3)),
-        ),
+      // Заголовок
+      const Row(
+        children: [
+          Icon(
+            Icons.sports_baseball,
+            size: 16,
+            color: AppConstants.primaryColor,
+          ),
+          SizedBox(width: 4),
+          Text(
+            AppConstants.ballsProgressText,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
-      const SizedBox(width: 4),
+      const SizedBox(height: 6),
+
+      // Визуальное отображение шаров
+      _buildBallsIcons(),
+
+      // Текстовый прогресс
+      const SizedBox(height: 4),
       Text(
-        '$count',
-        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+        '${stats.totalBallsCaptured}/$initialBallsCount',
+        style: const TextStyle(fontSize: 11, color: Colors.grey),
       ),
     ],
   );
 
-  Color _getColorForItemColor(ItemColor color) {
+  Widget _buildBallsIcons() {
+    // Создаем список всех шаров на уровне
+    final ballColors = <ItemColor?>[];
+
+    // Сначала добавляем закатанные шары
+    for (final entry in stats.ballsCaptured.entries) {
+      for (var i = 0; i < entry.value; i++) {
+        ballColors.add(entry.key);
+      }
+    }
+
+    // Затем добавляем незакатанные шары (серые)
+    final remainingBalls = initialBallsCount - stats.totalBallsCaptured;
+    for (var i = 0; i < remainingBalls; i++) {
+      ballColors.add(null); // null означает незакатанный шар
+    }
+
+    return Wrap(
+      spacing: AppConstants.ballIconSpacing,
+      runSpacing: AppConstants.ballIconSpacing,
+      children: ballColors.map(_buildBallIcon).toList(),
+    );
+  }
+
+  Widget _buildBallIcon(ItemColor? color) => Container(
+    width: AppConstants.ballIconSize,
+    height: AppConstants.ballIconSize,
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: _getBallColor(color),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          blurRadius: 2,
+          offset: const Offset(1, 1),
+        ),
+      ],
+    ),
+    child: color != null ? _buildColoredBallContent() : _buildGrayBallContent(),
+  );
+
+  Widget _buildColoredBallContent() => Container(
+    margin: const EdgeInsets.all(3),
+    decoration: const BoxDecoration(
+      shape: BoxShape.circle,
+      gradient: RadialGradient(
+        center: Alignment.center,
+        radius: 0.7,
+        colors: [Colors.white, Colors.transparent],
+        stops: [0.3, 1.0],
+      ),
+    ),
+  );
+
+  Widget _buildGrayBallContent() => Container(
+    margin: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      color: Colors.grey.shade400,
+    ),
+  );
+
+  Color _getBallColor(ItemColor? color) {
+    if (color == null) {
+      return Colors.grey.shade300; // Незакатанный шар
+    }
+
     switch (color) {
       case ItemColor.green:
         return AppConstants.ballGreen;

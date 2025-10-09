@@ -234,7 +234,8 @@ class _FieldWidgetState extends State<FieldWidget> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-              _elementSize * AppConstants.elementBorderRadius,
+              _elementSize *
+                  ((item is Ball) ? 0.5 : AppConstants.elementBorderRadius),
             ),
             color: _getColorForItem(item),
             boxShadow: _getElementShadow(item),

@@ -83,4 +83,9 @@ class AppConstants {
 
   // Максимальная глубина истории
   static const int maxHistorySize = 50;
+
+  // Статистика шаров
+  static const String ballsProgressText = 'Шары';
+  static const double ballIconSize = 20;
+  static const double ballIconSpacing = 4;
 }
