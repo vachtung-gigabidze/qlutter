@@ -5,9 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qlutter/ver_2/constants/app_constants.dart';
 import 'package:qlutter/ver_2/game/field_engine.dart';
+import 'package:qlutter/ver_2/models/animated_ball.dart';
 import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
+import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
 import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 
@@ -25,6 +27,7 @@ class _FieldWidgetState extends State<FieldWidget> {
   Coordinates? _startDragCoords;
   double _elementSize = AppConstants.elementMinSizeDesktop;
   Timer? _timer;
+  bool _isAnimating = false;
 
   @override
   void initState() {
@@ -41,8 +44,8 @@ class _FieldWidgetState extends State<FieldWidget> {
 
   void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        setState(() {}); // Обновляем время каждую секунду
+      if (mounted && !_isAnimating) {
+        setState(() {});
       }
     });
   }
@@ -54,7 +57,7 @@ class _FieldWidgetState extends State<FieldWidget> {
       _timer?.cancel();
       _engine.resetLevel(widget.level);
       _startTimer();
-      setState(() {}); // Принудительное обновление
+      setState(() {});
     }
   }
 
@@ -83,15 +86,15 @@ class _FieldWidgetState extends State<FieldWidget> {
             ),
             const SizedBox(height: AppConstants.smallPadding),
 
-            // Управление историей
+            // Управление историей (блокируем во время анимации)
             HistoryControlWidget(
-              canUndo: _engine.canUndo,
-              canRedo: _engine.canRedo,
-              canReset: _engine.canReset,
+              canUndo: _engine.canUndo && !_isAnimating,
+              canRedo: _engine.canRedo && !_isAnimating,
+              canReset: _engine.canReset && !_isAnimating,
               historySize: _engine.historySize,
-              onUndo: _undo,
-              onRedo: _redo,
-              onReset: _resetToBeginning,
+              onUndo: _isAnimating ? null : _undo,
+              onRedo: _isAnimating ? null : _redo,
+              onReset: _isAnimating ? null : _resetToBeginning,
             ),
             const SizedBox(height: AppConstants.smallPadding),
 
@@ -115,10 +118,16 @@ class _FieldWidgetState extends State<FieldWidget> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: GestureDetector(
-                      onPanStart: _onDragStart,
-                      onPanEnd: _onDragEnd,
-                      child: _buildFieldGrid(),
+                    child: Stack(
+                      children: [
+                        // Статичное игровое поле
+                        _buildFieldGrid(),
+
+                        // Анимированные шары поверх статичного поля
+                        if (_engine.isAnimating &&
+                            _engine.currentAnimatedBall != null)
+                          _buildAnimatedBall(_engine.currentAnimatedBall!),
+                      ],
                     ),
                   ),
                 ),
@@ -128,6 +137,80 @@ class _FieldWidgetState extends State<FieldWidget> {
         );
       },
     );
+  }
+
+  Widget _buildAnimatedBall(AnimatedBall animatedBall) => Positioned(
+    left: animatedBall.currentPosition.x * _elementSize,
+    top: animatedBall.currentPosition.y * _elementSize,
+    child: AnimatedBallWidget(
+      animatedBall: animatedBall,
+      elementSize: _elementSize,
+      onAnimationComplete: _onAnimationComplete,
+    ),
+  );
+  void _onAnimationComplete() {
+    _engine.completeAnimation();
+    setState(() {
+      _isAnimating = false;
+    });
+
+    // Проверяем завершение уровня после анимации
+    if (_engine.isLevelComplete) {
+      widget.onLevelComplete?.call();
+    }
+  }
+
+  void _makeMove(Coordinates coords, Direction direction) {
+    if (_isAnimating) return;
+
+    final result = _engine.makeTurn(coords, direction);
+
+    if (result.moved) {
+      // Запускаем анимацию
+      if (_engine.isAnimating) {
+        setState(() {
+          _isAnimating = true;
+        });
+        _engine.prepareMoveAnimation();
+      } else {
+        setState(() {});
+
+        if (result.levelComplete) {
+          widget.onLevelComplete?.call();
+        }
+      }
+    }
+  }
+
+  void _undo() {
+    if (_isAnimating) return;
+
+    if (_engine.undo()) {
+      setState(() {});
+    }
+  }
+
+  void _redo() {
+    if (_isAnimating) return;
+
+    if (_engine.redo()) {
+      setState(() {});
+    }
+  }
+
+  void _resetToBeginning() {
+    if (_isAnimating) return;
+
+    if (_engine.resetToBeginning()) {
+      setState(() {});
+    }
+  }
+
+  void _resetLevel() {
+    if (_isAnimating) return;
+
+    _engine.resetLevel(widget.level);
+    setState(() {});
   }
 
   double _calculateOptimalElementSize(
@@ -227,6 +310,27 @@ class _FieldWidgetState extends State<FieldWidget> {
       _elementSize * AppConstants.elementPaddingRatio,
     );
 
+    // Не показываем статичный шар если он анимируется
+    final isBallAnimating =
+        _engine.isAnimating &&
+        _engine.currentAnimatedBall != null &&
+        _engine.currentAnimatedBall!.currentPosition.x == x &&
+        _engine.currentAnimatedBall!.currentPosition.y == y;
+
+    if (isBallAnimating && item is Ball) {
+      return Container(
+        padding: padding,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              _elementSize * AppConstants.elementBorderRadius,
+            ),
+            color: Colors.transparent,
+          ),
+        ),
+      );
+    }
+
     return GestureDetector(
       onTap: () => _onElementTap(x, y),
       child: Container(
@@ -234,8 +338,7 @@ class _FieldWidgetState extends State<FieldWidget> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-              _elementSize *
-                  ((item is Ball) ? 0.5 : AppConstants.elementBorderRadius),
+              _elementSize * AppConstants.elementBorderRadius,
             ),
             color: _getColorForItem(item),
             boxShadow: _getElementShadow(item),
@@ -365,19 +468,6 @@ class _FieldWidgetState extends State<FieldWidget> {
     }
   }
 
-  void _makeMove(Coordinates coords, Direction direction) {
-    final result = _engine.makeTurn(coords, direction);
-
-    if (result.moved) {
-      setState(() {});
-
-      // Проверяем победу только если уровень завершен
-      if (result.levelComplete) {
-        widget.onLevelComplete?.call();
-      }
-    }
-  }
-
   // В методе _onDragEnd
   void _onDragEnd(DragEndDetails details) {
     if (_startDragCoords == null) return;
@@ -432,28 +522,5 @@ class _FieldWidgetState extends State<FieldWidget> {
     } else {
       return velocity.dy > 0 ? Direction.down : Direction.up;
     }
-  }
-
-  void _undo() {
-    if (_engine.undo()) {
-      setState(() {});
-    }
-  }
-
-  void _redo() {
-    if (_engine.redo()) {
-      setState(() {});
-    }
-  }
-
-  void _resetToBeginning() {
-    if (_engine.resetToBeginning()) {
-      setState(() {});
-    }
-  }
-
-  void _resetLevel() {
-    _engine.resetLevel(widget.level);
-    setState(() {});
   }
 }

@@ -1,4 +1,5 @@
 import 'package:qlutter/ver_2/constants/app_constants.dart';
+import 'package:qlutter/ver_2/models/animated_ball.dart';
 import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
@@ -24,36 +25,33 @@ class FieldEngine {
     : _ballsCount = _level.ballsCount,
       _initialBallsCount = _level.ballsCount,
       _stats = LevelStats.start() {
-    // Сохраняем начальное состояние
     _saveInitialState();
   }
   Level _level;
   int _ballsCount;
   final List<MoveHistory> _undoStack = [];
-  final List<MoveHistory> _redoStack = []; // Стек для возврата отмененных ходов
+  final List<MoveHistory> _redoStack = [];
   LevelStats _stats;
   int _initialBallsCount;
+
+  // Для анимаций
+  AnimatedBall? _currentAnimatedBall;
+  Coordinates? _lastMoveStart;
+  Coordinates? _lastMoveEnd;
 
   Level get level => _level;
   int get ballsCount => _ballsCount;
   bool get isLevelComplete => _ballsCount == 0;
   bool get canUndo => _undoStack.isNotEmpty;
-  bool get canRedo => _redoStack.isNotEmpty; // Можно вернуть отмененный ход
-  bool get canReset => _undoStack.isNotEmpty; // Можно сбросить к началу
-  LevelStats get stats =>
-      _stats.copyWith(time: DateTime.now().difference(_stats.levelStartTime));
+  bool get canRedo => _redoStack.isNotEmpty;
+  bool get canReset => _undoStack.isNotEmpty;
+  LevelStats get stats => _stats;
   int get initialBallsCount => _initialBallsCount;
-  int get historySize => _undoStack.length; // Размер истории
+  int get historySize => _undoStack.length;
 
-  void _saveInitialState() {
-    final initialHistory = MoveHistory(
-      levelState: _createLevelCopy(_level),
-      ballsCount: _ballsCount,
-      stats: _stats.copyWith(),
-      description: 'Начальное состояние',
-    );
-    _undoStack.add(initialHistory);
-  }
+  // Геттеры для анимаций
+  AnimatedBall? get currentAnimatedBall => _currentAnimatedBall;
+  bool get isAnimating => _currentAnimatedBall != null;
 
   TurnResult makeTurn(Coordinates coordinates, Direction direction) {
     if (direction == Direction.nowhere) {
@@ -87,16 +85,22 @@ class FieldEngine {
       );
     }
 
-    // Сначала выполняем закатывание и обновляем счетчики
+    // Сохраняем информацию для анимации
+    _lastMoveStart = coordinates;
+    _lastMoveEnd = newCoordinates;
+
     final holeAccepted = _acceptHole(newCoordinates, direction);
     if (holeAccepted) {
-      // Увеличиваем счетчик для этого цвета
+      // Подготавливаем анимацию захвата
+      prepareCaptureAnimation(newCoordinates, item.color);
+
+      _catchBall();
+
+      // Обновляем статистику закатанных шаров
       final updatedBalls = Map<ItemColor, int>.from(_stats.ballsCaptured);
       updatedBalls[item.color] = (updatedBalls[item.color] ?? 0) + 1;
       _stats = _stats.copyWith(ballsCaptured: updatedBalls);
     }
-
-    // Затем проверяем завершение уровня
     final levelComplete = isLevelComplete;
 
     // Обновляем статистику шагов
@@ -107,6 +111,70 @@ class FieldEngine {
       holeAccepted: holeAccepted,
       levelComplete: levelComplete,
     );
+  }
+
+  // Метод для подготовки анимации перемещения
+  void prepareMoveAnimation() {
+    if (_lastMoveStart != null && _lastMoveEnd != null) {
+      final item = _level.field[_lastMoveEnd!.y][_lastMoveEnd!.x];
+      if (item is Ball) {
+        _currentAnimatedBall = AnimatedBall(
+          ball: item,
+          currentPosition: _lastMoveStart!,
+          targetPosition: _lastMoveEnd!,
+          isMoving: true,
+        );
+      }
+    }
+  }
+
+  // Метод для подготовки анимации захвата
+  void prepareCaptureAnimation(Coordinates capturePosition, ItemColor color) {
+    final ball = Ball(color);
+    _currentAnimatedBall = AnimatedBall(
+      ball: ball,
+      currentPosition: capturePosition,
+      isCaptured: true,
+    );
+  }
+
+  // Метод для завершения анимации
+  void completeAnimation() {
+    _currentAnimatedBall = null;
+    _lastMoveStart = null;
+    _lastMoveEnd = null;
+  }
+
+  // Обновленные методы перемещения
+  Coordinates _moveRight(Coordinates coords) {
+    var x = coords.x;
+    var y = coords.y;
+    final field = _level.field;
+    final startX = x;
+
+    while (x + 1 < _level.width && field[y][x + 1] == null) {
+      field[y][x + 1] = field[y][x];
+      field[y][x] = null;
+      x++;
+    }
+
+    // Если шар переместился, сохраняем для анимации
+    if (x != startX) {
+      _lastMoveStart = Coordinates(startX, y);
+      _lastMoveEnd = Coordinates(x, y);
+    }
+
+    return Coordinates(x, y);
+  }
+
+  void _saveInitialState() {
+    final initialHistory = MoveHistory(
+      levelState: _createLevelCopy(_level),
+      ballsCount: _ballsCount,
+      stats: _stats.copyWith(),
+      description: 'Начальное состояние',
+    );
+    _undoStack.add(initialHistory);
   }
 
   void _saveState(String description) {
@@ -346,20 +414,6 @@ class FieldEngine {
       case Direction.nowhere:
         return null;
     }
-  }
-
-  Coordinates _moveRight(Coordinates coords) {
-    var x = coords.x;
-    var y = coords.y;
-    final field = _level.field;
-
-    while (x + 1 < _level.width && field[y][x + 1] == null) {
-      field[y][x + 1] = field[y][x];
-      field[y][x] = null;
-      x++;
-    }
-
-    return Coordinates(x, y);
   }
 
   Coordinates _moveLeft(Coordinates coords) {

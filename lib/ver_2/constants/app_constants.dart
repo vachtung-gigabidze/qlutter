@@ -88,4 +88,10 @@ class AppConstants {
   static const String ballsProgressText = 'Шары';
   static const double ballIconSize = 20;
   static const double ballIconSpacing = 4;
+
+  // Анимации
+  static const Duration ballMoveDuration = Duration(milliseconds: 300);
+  static const Curve ballMoveCurve = Curves.easeOut;
+  static const Duration ballCaptureDuration = Duration(milliseconds: 200);
+  static const Curve ballCaptureCurve = Curves.easeIn;
 }
