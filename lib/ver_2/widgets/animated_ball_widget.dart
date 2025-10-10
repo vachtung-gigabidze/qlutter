@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlutter/ver_2/constants/app_constants.dart';
 import 'package:qlutter/ver_2/models/animated_ball.dart';
+import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 
 class AnimatedBallWidget extends StatefulWidget {
@@ -25,6 +26,7 @@ class _AnimatedBallWidgetState extends State<AnimatedBallWidget>
   late Animation<Offset> _positionAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<double> _opacityAnimation;
+  late Animation<double> _squashAnimation; // Анимация сплющивания
 
   @override
   void initState() {
@@ -69,8 +71,9 @@ class _AnimatedBallWidgetState extends State<AnimatedBallWidget>
         ),
       );
       _positionAnimation = const AlwaysStoppedAnimation(Offset.zero);
+      _squashAnimation = const AlwaysStoppedAnimation(1);
     } else if (ball.isMoving && ball.targetPosition != null) {
-      // Анимация перемещения
+      // Анимация перемещения с деформацией
       final dx = (ball.targetPosition!.x - ball.currentPosition.x).toDouble();
       final dy = (ball.targetPosition!.y - ball.currentPosition.y).toDouble();
 
@@ -81,6 +84,13 @@ class _AnimatedBallWidgetState extends State<AnimatedBallWidget>
               curve: AppConstants.ballMoveCurve,
             ),
           );
+
+      // Анимация сплющивания/растягивания
+      _squashAnimation = Tween<double>(
+        begin: 1,
+        end: _calculateSquashFactor(ball.moveDirection),
+      ).animate(CurvedAnimation(parent: _controller, curve: _getSquashCurve()));
+
       _scaleAnimation = const AlwaysStoppedAnimation(1);
       _opacityAnimation = const AlwaysStoppedAnimation(1);
     } else {
@@ -88,7 +98,31 @@ class _AnimatedBallWidgetState extends State<AnimatedBallWidget>
       _positionAnimation = const AlwaysStoppedAnimation(Offset.zero);
       _scaleAnimation = const AlwaysStoppedAnimation(1);
       _opacityAnimation = const AlwaysStoppedAnimation(1);
+      _squashAnimation = const AlwaysStoppedAnimation(1);
     }
+  }
+
+  double _calculateSquashFactor(Direction? direction) {
+    switch (direction) {
+      case Direction.left:
+      case Direction.right:
+        return 0.7; // Сплющивание по горизонтали
+      case Direction.up:
+      case Direction.down:
+        return 1.3; // Растягивание по вертикали
+      case Direction.nowhere:
+      default:
+        return 1; // Нормальная форма
+    }
+  }
+
+  Curve _getSquashCurve() {
+    // Создаем сложную кривую для реалистичной деформации
+    return CurvedAnimation(
+      parent: _controller,
+      curve: const Interval(0, 0.5, curve: Curves.easeInOut),
+      reverseCurve: const Interval(0.5, 1, curve: Curves.easeInOut),
+    ).curve;
   }
 
   void _startAnimation() {
@@ -115,11 +149,43 @@ class _AnimatedBallWidgetState extends State<AnimatedBallWidget>
         scale: _scaleAnimation.value,
         child: Opacity(
           opacity: _opacityAnimation.value,
-          child: _buildBallContent(),
+          child: _buildDeformedBall(),
         ),
       ),
     ),
   );
+
+  Widget _buildDeformedBall() {
+    final direction = widget.animatedBall.moveDirection;
+    final squashValue = _squashAnimation.value;
+
+    var scaleX = 1.0;
+    var scaleY = 1.0;
+
+    // Применяем деформацию в зависимости от направления
+    switch (direction) {
+      case Direction.left:
+      case Direction.right:
+        scaleX = squashValue; // Сплющивание по X
+        scaleY = 2.0 - squashValue; // Растягивание по Y (компенсация)
+        break;
+      case Direction.up:
+      case Direction.down:
+        scaleX = 2.0 - squashValue; // Растягивание по X (компенсация)
+        scaleY = squashValue; // Сплющивание по Y
+        break;
+      case Direction.nowhere:
+      default:
+        scaleX = 1.0;
+        scaleY = 1.0;
+    }
+
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.diagonal3Values(scaleX, scaleY, 1),
+      child: _buildBallContent(),
+    );
+  }
 
   Widget _buildBallContent() => Container(
     width: widget.elementSize,

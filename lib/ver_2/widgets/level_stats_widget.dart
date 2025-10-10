@@ -22,17 +22,18 @@ class LevelStatsWidget extends StatelessWidget {
       border: Border.all(color: AppConstants.statsBorderColor),
       borderRadius: BorderRadius.circular(8),
     ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
+    child:
+        // Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: [
         // Основная статистика
         _buildMainStats(),
-        const SizedBox(height: 8),
-        // Визуальная статистика шаров
-        _buildBallsVisualStats(),
-      ],
-    ),
+    //   const SizedBox(height: 8),
+    //   // Визуальная статистика шаров
+    //   _buildBallsVisualStats(),
+    // ],
+    // ),
   );
 
   Widget _buildMainStats() => Row(
@@ -46,10 +47,11 @@ class LevelStatsWidget extends StatelessWidget {
         Icons.timer,
         '${AppConstants.timeText}${stats.formattedTime}',
       ),
-      _buildStatItem(
-        Icons.sports_baseball,
-        '${stats.totalBallsCaptured}/$initialBallsCount',
-      ),
+      _buildBallsVisualStats(),
+      // _buildStatItem(
+      //   Icons.sports_baseball,
+      //   '${stats.totalBallsCaptured}/$initialBallsCount',
+      // ),
     ],
   );
 
@@ -69,31 +71,31 @@ class LevelStatsWidget extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       // Заголовок
-      const Row(
-        children: [
-          Icon(
-            Icons.sports_baseball,
-            size: 16,
-            color: AppConstants.primaryColor,
-          ),
-          SizedBox(width: 4),
-          Text(
-            AppConstants.ballsProgressText,
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
-      const SizedBox(height: 6),
+      // const Row(
+      //   children: [
+      //     // Icon(
+      //     //   Icons.sports_baseball,
+      //     //   size: 16,
+      //     //   color: AppConstants.primaryColor,
+      //     // ),
+      //     // SizedBox(width: 4),
+      //     Text(
+      //       AppConstants.ballsProgressText,
+      //       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+      //     ),
+      //   ],
+      // ),
+      // const SizedBox(height: 6),
 
       // Визуальное отображение шаров
       _buildBallsIcons(),
 
       // Текстовый прогресс
-      const SizedBox(height: 4),
-      Text(
-        '${stats.totalBallsCaptured}/$initialBallsCount',
-        style: const TextStyle(fontSize: 11, color: Colors.grey),
-      ),
+      // const SizedBox(height: 4),
+      // Text(
+      //   '${stats.totalBallsCaptured}/$initialBallsCount',
+      //   style: const TextStyle(fontSize: 11, color: Colors.grey),
+      // ),
     ],
   );
 

@@ -9,7 +9,8 @@ import 'package:qlutter/ver_2/models/animated_ball.dart';
 import 'package:qlutter/ver_2/models/coordinates.dart';
 import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
-import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
+import 'package:qlutter/ver_2/widgets/advanced_animated_ball_widget.dart';
+// import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
 import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 
@@ -142,7 +143,7 @@ class _FieldWidgetState extends State<FieldWidget> {
   Widget _buildAnimatedBall(AnimatedBall animatedBall) => Positioned(
     left: animatedBall.currentPosition.x * _elementSize,
     top: animatedBall.currentPosition.y * _elementSize,
-    child: AnimatedBallWidget(
+    child: AdvancedAnimatedBallWidget(
       animatedBall: animatedBall,
       elementSize: _elementSize,
       onAnimationComplete: _onAnimationComplete,
@@ -314,8 +315,9 @@ class _FieldWidgetState extends State<FieldWidget> {
     final isBallAnimating =
         _engine.isAnimating &&
         _engine.currentAnimatedBall != null &&
-        _engine.currentAnimatedBall!.currentPosition.x == x &&
-        _engine.currentAnimatedBall!.currentPosition.y == y;
+        _engine.currentAnimatedBall!.targetPosition != null &&
+        _engine.currentAnimatedBall!.targetPosition!.x == x &&
+        _engine.currentAnimatedBall!.targetPosition!.y == y;
 
     if (isBallAnimating && item is Ball) {
       return Container(
@@ -338,7 +340,8 @@ class _FieldWidgetState extends State<FieldWidget> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-              _elementSize * AppConstants.elementBorderRadius,
+              _elementSize *
+                  ((item is Ball) ? 0.5 : AppConstants.elementBorderRadius),
             ),
             color: _getColorForItem(item),
             boxShadow: _getElementShadow(item),

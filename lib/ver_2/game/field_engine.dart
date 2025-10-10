@@ -39,13 +39,18 @@ class FieldEngine {
   Coordinates? _lastMoveStart;
   Coordinates? _lastMoveEnd;
 
+  bool _pendingLevelComplete = false; // Флаг отложенной победы
+  Direction _lastMoveDirection = Direction.nowhere;
+
   Level get level => _level;
   int get ballsCount => _ballsCount;
   bool get isLevelComplete => _ballsCount == 0;
   bool get canUndo => _undoStack.isNotEmpty;
   bool get canRedo => _redoStack.isNotEmpty;
   bool get canReset => _undoStack.isNotEmpty;
-  LevelStats get stats => _stats;
+  // LevelStats get stats => _stats;
+  LevelStats get stats =>
+      _stats.copyWith(time: DateTime.now().difference(_stats.levelStartTime));
   int get initialBallsCount => _initialBallsCount;
   int get historySize => _undoStack.length;
 
@@ -71,9 +76,7 @@ class FieldEngine {
       );
     }
 
-    // Очищаем стек возврата при новом ходе
     _redoStack.clear();
-
     _saveState('Ход: ($coordinates) -> $direction');
 
     final newCoordinates = _moveItem(coordinates, direction);
@@ -84,17 +87,17 @@ class FieldEngine {
         levelComplete: false,
       );
     }
-
-    // Сохраняем информацию для анимации
     _lastMoveStart = coordinates;
     _lastMoveEnd = newCoordinates;
+    _lastMoveDirection = direction; // Сохраняем направление
+    prepareMoveAnimation();
 
     final holeAccepted = _acceptHole(newCoordinates, direction);
     if (holeAccepted) {
       // Подготавливаем анимацию захвата
       prepareCaptureAnimation(newCoordinates, item.color);
 
-      _catchBall();
+      // _catchBall();
 
       // Обновляем статистику закатанных шаров
       final updatedBalls = Map<ItemColor, int>.from(_stats.ballsCaptured);
@@ -103,17 +106,19 @@ class FieldEngine {
     }
     final levelComplete = isLevelComplete;
 
-    // Обновляем статистику шагов
+    if (levelComplete) {
+      _pendingLevelComplete = true;
+    }
+
     _stats = _stats.copyWith(steps: _stats.steps + 1);
 
     return TurnResult(
       moved: true,
       holeAccepted: holeAccepted,
-      levelComplete: levelComplete,
+      levelComplete: false,
     );
   }
 
-  // Метод для подготовки анимации перемещения
   void prepareMoveAnimation() {
     if (_lastMoveStart != null && _lastMoveEnd != null) {
       final item = _level.field[_lastMoveEnd!.y][_lastMoveEnd!.x];
@@ -123,6 +128,8 @@ class FieldEngine {
           currentPosition: _lastMoveStart!,
           targetPosition: _lastMoveEnd!,
           isMoving: true,
+          moveDirection:
+              _lastMoveDirection, // Передаем направление для деформации
         );
       }
     }
