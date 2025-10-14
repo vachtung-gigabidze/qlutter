@@ -13,6 +13,7 @@ import 'package:qlutter/ver_2/widgets/advanced_animated_ball_widget.dart';
 // import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
 import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
+import 'package:ui/ui.dart';
 
 class FieldWidget extends StatefulWidget {
   const FieldWidget({required this.level, super.key, this.onLevelComplete});
@@ -122,6 +123,7 @@ class _FieldWidgetState extends State<FieldWidget> {
                     child: Stack(
                       children: [
                         // Статичное игровое поле
+                        _buildPlayGround(),
                         _buildFieldGrid(),
 
                         // Анимированные шары поверх статичного поля
@@ -305,6 +307,8 @@ class _FieldWidgetState extends State<FieldWidget> {
     ],
   );
 
+  Widget _buildPlayGround() => PlayGround(elementSize: _elementSize);
+
   Widget _buildFieldElement(int x, int y) {
     final item = _engine.level.field[y][x];
     final padding = EdgeInsets.all(
@@ -320,6 +324,19 @@ class _FieldWidgetState extends State<FieldWidget> {
         _engine.currentAnimatedBall!.targetPosition!.y == y;
 
     if (isBallAnimating && item is Ball) {
+      return Container(
+        padding: padding,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              _elementSize * AppConstants.elementBorderRadius,
+            ),
+            color: Colors.transparent,
+          ),
+        ),
+      );
+    }
+    if (item is Block) {
       return Container(
         padding: padding,
         child: Container(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TopWallCustomPainter extends CustomPainter {
+// TW - Верхняя стена
+class TWCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint0Fill = Paint()
@@ -42,8 +43,8 @@ class TopWallCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-// Left по умолчанию
-class WallCustomPainter extends CustomPainter {
+// LW - Левая стена (по умолчанию), Flip -> RW (Правая стена)
+class LWCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint0Fill = Paint()
@@ -59,7 +60,8 @@ class WallCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class TopLeftOutAngleCustomPainter extends CustomPainter {
+// TLOA - Верхний левый угол наружу, Flip -> TROA (Верхний правый угол наружу)
+class TLOACustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -145,7 +147,8 @@ class TopLeftOutAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class TopLeftInAngleCustomPainter extends CustomPainter {
+// TLIA - Верхний левый угол внутрь, Flip -> TRIA (Верхний правый угол внутрь)
+class TLIACustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -234,22 +237,55 @@ class TopLeftInAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class BottomWallCustomPainter extends CustomPainter {
+// BW - Нижняя стена
+class BWCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
-    paint0Fill.color = Color(0xffF8F4FF).withOpacity(1.0);
+    var paint0Fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xffF8F4FF).withOpacity(1);
     canvas.drawRect(
-      Rect.fromLTWH(0, size.height, size.width, size.height * 0.5000000),
+      Rect.fromLTWH(
+        0,
+        size.height * 0.5000000,
+        size.width,
+        size.height * 0.5000000,
+      ),
       paint0Fill,
+    );
+
+    var path_1 = Path()
+      ..moveTo(0, size.height * 0.5000000)
+      ..lineTo(size.width, size.height * 0.5000000)
+      ..lineTo(size.width, size.height * 0.3300000)
+      ..lineTo(0, size.height * 0.3300000)
+      ..close();
+
+    var paint1Fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xff8889B6).withOpacity(1);
+    canvas.drawPath(path_1, paint1Fill);
+
+    var paint2Fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xff060606).withOpacity(0.2);
+    canvas.drawRect(
+      Rect.fromLTWH(
+        0,
+        size.height * 0.3300000,
+        size.width,
+        size.height * 0.1500000,
+      ),
+      paint2Fill,
     );
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class BottomLeftInAngleCustomPainter extends CustomPainter {
+// BLIA - Нижний левый угол внутрь
+class BLIACustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -280,32 +316,32 @@ class BottomLeftInAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class BottomRightOutAngleCustomPainter extends CustomPainter {
+// BROA - Нижний правый угол наружу
+class BROACustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Path path_0 = Path();
-    path_0.moveTo(size.width * 0.5000000, size.height);
-    path_0.lineTo(size.width * 0.5000000, size.height * 0.6800000);
-    path_0.cubicTo(
-      size.width * 0.5000000,
-      size.height * 0.5805890,
-      size.width * 0.5805890,
-      size.height * 0.5000000,
-      size.width * 0.6800000,
-      size.height * 0.5000000,
-    );
-    path_0.lineTo(size.width, size.height * 0.5000000);
-    path_0.lineTo(size.width, size.height);
-    path_0.lineTo(size.width * 0.5000000, size.height);
-    path_0.close();
+    var path_0 = Path()
+      ..moveTo(size.width * 0.5000000, size.height)
+      ..lineTo(size.width * 0.5000000, size.height * 0.6800000)
+      ..cubicTo(
+        size.width * 0.5000000,
+        size.height * 0.5805890,
+        size.width * 0.5805890,
+        size.height * 0.5000000,
+        size.width * 0.6800000,
+        size.height * 0.5000000,
+      )
+      ..lineTo(size.width, size.height * 0.5000000)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width * 0.5000000, size.height)
+      ..close();
 
-    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
-    paint0Fill.color = Color(0xffF8F4FF).withOpacity(1.0);
+    var paint0Fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xffF8F4FF).withOpacity(1);
     canvas.drawPath(path_0, paint0Fill);
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
