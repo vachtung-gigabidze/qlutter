@@ -4,20 +4,30 @@ import 'package:ui/src/wall_painter.dart';
 const double sizeWall = 100;
 
 class PlayGround extends StatelessWidget {
-  const PlayGround({super.key, this.elementSize = sizeWall});
+  const PlayGround({
+    super.key,
+    this.elementSize = sizeWall,
+    this.middle,
+    required this.h,
+    required this.w,
+  });
 
   final double elementSize;
+  final Widget? middle;
+  final int h;
+  final int w;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 7 * elementSize,
-      width: 7 * elementSize,
+      height: h * elementSize,
+      width: w * elementSize,
       child: Container(
         color: const Color(0xFF50427D),
         child: DynamicWallWidget(
           board: GameBoard(GameBoard.defaultLayout),
           elementSize: elementSize,
+          middle: middle,
         ),
       ),
     );
@@ -26,13 +36,12 @@ class PlayGround extends StatelessWidget {
 
 class GameBoard {
   static const List<String> defaultLayout = [
-    'B LIT RIT B B B B',
-    'LIT LOT ROT T T RIT B',
-    'L N ROD LOD N ROT RIT',
-    'L ROD RID LID LOD ROD RID',
-    'L ROT T T LOT R B',
-    'LID LOD N N N R B',
-    'B LID D D D RID B',
+    'B LIT RIT B B B',
+    'LIT LOT ROT T RIT B',
+    'L N N N ROT RIT',
+    'L N N N ROD RID',
+    'LID LOD N N R B',
+    'B LID D D RID B',
 
     //   'topLeftIn, top,top,top, topRightIn',
     // 'left, none, none, none, right',
@@ -96,17 +105,17 @@ class GameBoard {
 }
 
 enum WallType {
-  N, // None
   L, // LeftWallCP
   R, // LeftWallCP + Flip
   T, // TopWallCP
-  D, // DownWallCP
   LIT, // TopLeftInAngleCP
   RIT, // TopLeftInAngleCP + Flip
-  LID, // DownLeftInAngleCP
-  RID, // DownLeftInAngleCP + Flip
   LOT, // TopLeftOutAngleCP
   ROT, // TopLeftOutAngleCP + Flip
+  D, // DownWallCP
+  N, // None
+  LID, // DownLeftInAngleCP
+  RID, // DownLeftInAngleCP + Flip
   LOD, // DownRightOutAngleCP + Flip
   ROD, // DownRightOutAngleCP
   B, // BlockCP
@@ -115,16 +124,18 @@ enum WallType {
 class DynamicWallWidget extends StatelessWidget {
   final GameBoard board;
   final double elementSize;
-
+  final Widget? middle;
   const DynamicWallWidget({
     required this.board,
     required this.elementSize,
     super.key,
+    this.middle,
   });
 
   @override
   Widget build(BuildContext context) {
-    final walls = <Widget>[];
+    final firstLayer = <Widget>[]; // Первый слой
+    final secondLayer = <Widget>[]; // Второй слой
 
     for (int row = 0; row < board.grid.length; row++) {
       for (int column = 0; column < board.grid[row].length; column++) {
@@ -134,21 +145,53 @@ class DynamicWallWidget extends StatelessWidget {
           final wallPainter = _getWallPainter(wallType);
 
           if (wallPainter != null) {
-            walls.add(
-              DrawWallWidget(
-                wall: wallPainter,
-                column: column,
-                row: row,
-                elementSize: elementSize,
-                flipX: _needsFlipX(wallType),
-              ),
+            final wallWidget = DrawWallWidget(
+              wall: wallPainter,
+              column: column,
+              row: row,
+              elementSize: elementSize,
+              flipX: _needsFlipX(wallType),
             );
+
+            // Распределяем по слоям
+            if (_isFirstLayer(wallType)) {
+              firstLayer.add(wallWidget);
+            } else {
+              secondLayer.add(wallWidget);
+            }
           }
         }
       }
     }
 
-    return Stack(children: walls);
+    return Stack(
+      children: [
+        IgnorePointer(child: Stack(children: firstLayer)), // Первый слой
+        if (middle != null) Positioned(left: -40, top: 53, child: middle!),
+        IgnorePointer(child: Stack(children: secondLayer)), // Второй слой
+      ],
+    );
+  }
+
+  // Проверяем принадлежность к первому слою
+  bool _isFirstLayer(WallType type) {
+    return type == WallType.L ||
+        type == WallType.R ||
+        type == WallType.T ||
+        type == WallType.LIT ||
+        type == WallType.RIT ||
+        type == WallType.LOT ||
+        type == WallType.B ||
+        type == WallType.ROT;
+  }
+
+  // Проверяем принадлежность ко второму слою
+  bool _isSecondLayer(WallType type) {
+    return type == WallType.D ||
+        type == WallType.LID ||
+        type == WallType.RID ||
+        type == WallType.LOD ||
+        type == WallType.ROD;
   }
 
   CustomPainter? _getWallPainter(WallType type) {

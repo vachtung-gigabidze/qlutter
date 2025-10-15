@@ -120,17 +120,21 @@ class _FieldWidgetState extends State<FieldWidget> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Stack(
-                      children: [
-                        // Статичное игровое поле
-                        _buildPlayGround(),
-                        _buildFieldGrid(),
-
-                        // Анимированные шары поверх статичного поля
-                        if (_engine.isAnimating &&
-                            _engine.currentAnimatedBall != null)
-                          _buildAnimatedBall(_engine.currentAnimatedBall!),
-                      ],
+                    child: PlayGround(
+                      elementSize: _elementSize,
+                      middle: Stack(
+                        children: [
+                          // Статичное игровое поле
+                          // _buildPlayGround(),
+                          _buildFieldGrid(),
+                          // Анимированные шары поверх статичного поля
+                          if (_engine.isAnimating &&
+                              _engine.currentAnimatedBall != null)
+                            _buildAnimatedBall(_engine.currentAnimatedBall!),
+                        ],
+                      ),
+                      h: _engine.level.height,
+                      w: _engine.level.width,
                     ),
                   ),
                 ),
@@ -307,7 +311,7 @@ class _FieldWidgetState extends State<FieldWidget> {
     ],
   );
 
-  Widget _buildPlayGround() => PlayGround(elementSize: _elementSize);
+  // Widget _buildPlayGround() => PlayGround(elementSize: _elementSize);
 
   Widget _buildFieldElement(int x, int y) {
     final item = _engine.level.field[y][x];
