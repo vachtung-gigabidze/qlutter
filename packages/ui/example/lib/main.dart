@@ -20,10 +20,28 @@ void main() {
                       children: [
                         CustomPaint(
                           size: Size(50, (50 * 1).toDouble()),
-                          painter: TopWallCustomPainter(),
+                          painter: TopWallCP(),
+                        ),
+                        Text("TopWallCP", style: TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        CustomPaint(
+                          size: Size(50, (50 * 1).toDouble()),
+                          painter: LeftWallCP(),
+                        ),
+                        Text("LeftWallCP", style: TextStyle(fontSize: 12)),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        CustomPaint(
+                          size: Size(50, (50 * 1).toDouble()),
+                          painter: TopLeftOutAngleCP(),
                         ),
                         Text(
-                          "TopWallCustomPainter",
+                          "TopLeftOutAngleCP",
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
@@ -32,34 +50,10 @@ void main() {
                       children: [
                         CustomPaint(
                           size: Size(50, (50 * 1).toDouble()),
-                          painter: WallCustomPainter(),
+                          painter: TopLeftInAngleCP(),
                         ),
                         Text(
-                          "WallCustomPainter",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CustomPaint(
-                          size: Size(50, (50 * 1).toDouble()),
-                          painter: TopLeftOutAngleCustomPainter(),
-                        ),
-                        Text(
-                          "TopLeftOutAngleCustomPainter",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CustomPaint(
-                          size: Size(50, (50 * 1).toDouble()),
-                          painter: TopLeftInAngleCustomPainter(),
-                        ),
-                        Text(
-                          "TopLeftInAngleCustomPainter",
+                          "TopLeftInAngleCP",
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
@@ -69,10 +63,10 @@ void main() {
                       children: [
                         CustomPaint(
                           size: Size(50, (50 * 1).toDouble()),
-                          painter: BottomLeftInAngleCustomPainter(),
+                          painter: DownLeftInAngleCP(),
                         ),
                         Text(
-                          "BottomLeftInAngleCustomPainter",
+                          "DownLeftInAngleCP",
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
@@ -81,10 +75,10 @@ void main() {
                       children: [
                         CustomPaint(
                           size: Size(50, (50 * 1).toDouble()),
-                          painter: BottomRightOutAngleCustomPainter(),
+                          painter: DownRightOutAngleCP(),
                         ),
                         Text(
-                          "BottomRightOutAngleCustomPainter",
+                          "DownRightOutAngleCP",
                           style: TextStyle(fontSize: 12),
                         ),
                       ],
@@ -93,19 +87,16 @@ void main() {
                       children: [
                         CustomPaint(
                           size: Size(50, (50 * 1).toDouble()),
-                          painter: BottomWallCustomPainter(),
+                          painter: DownWallCP(),
                         ),
-                        Text(
-                          "BottomWallCustomPainter",
-                          style: TextStyle(fontSize: 12),
-                        ),
+                        Text("DownWallCP", style: TextStyle(fontSize: 12)),
                       ],
                     ),
                   ],
                 ),
               ),
 
-              SizedBox(height: 600, width: 600, child: const PlayGround()),
+              SizedBox(height: 700, width: 700, child: const PlayGround()),
             ],
           ),
         ),

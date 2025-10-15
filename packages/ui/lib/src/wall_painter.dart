@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class TopWallCustomPainter extends CustomPainter {
+class TopWallCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint0Fill = Paint()
       ..style = PaintingStyle.fill
-      ..color = const Color(0xffF8F4FF).withOpacity(1);
+      ..color = const Color(0xffF8F4FF);
     canvas.drawRect(
       Rect.fromLTWH(0, 0, size.width, size.height * 0.5000000),
       paint0Fill,
@@ -43,14 +43,14 @@ class TopWallCustomPainter extends CustomPainter {
 }
 
 // Left по умолчанию
-class WallCustomPainter extends CustomPainter {
+class LeftWallCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint0Fill = Paint()
       ..style = PaintingStyle.fill
-      ..color = const Color(0xffF8F4FF).withOpacity(1);
+      ..color = const Color(0xffF8F4FF);
     canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width * 0.5000000, size.height),
+      Rect.fromLTWH(0, 0, size.width * 0.500000, size.height),
       paint0Fill,
     );
   }
@@ -59,7 +59,7 @@ class WallCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class TopLeftOutAngleCustomPainter extends CustomPainter {
+class TopLeftOutAngleCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -145,7 +145,7 @@ class TopLeftOutAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class TopLeftInAngleCustomPainter extends CustomPainter {
+class TopLeftInAngleCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -234,13 +234,19 @@ class TopLeftInAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class BottomWallCustomPainter extends CustomPainter {
+class DownWallCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
-    paint0Fill.color = Color(0xffF8F4FF).withOpacity(1.0);
+    var paint0Fill = Paint()
+      ..style = PaintingStyle.fill
+      ..color = const Color(0xffF8F4FF);
     canvas.drawRect(
-      Rect.fromLTWH(0, size.height, size.width, size.height * 0.5000000),
+      Rect.fromLTWH(
+        0,
+        size.height * 0.5000000,
+        size.width,
+        size.height * 0.5000000,
+      ),
       paint0Fill,
     );
   }
@@ -249,7 +255,7 @@ class BottomWallCustomPainter extends CustomPainter {
   bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
-class BottomLeftInAngleCustomPainter extends CustomPainter {
+class DownLeftInAngleCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var path_0 = Path()
@@ -280,7 +286,7 @@ class BottomLeftInAngleCustomPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-class BottomRightOutAngleCustomPainter extends CustomPainter {
+class DownRightOutAngleCP extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Path path_0 = Path();
@@ -302,6 +308,20 @@ class BottomRightOutAngleCustomPainter extends CustomPainter {
     Paint paint0Fill = Paint()..style = PaintingStyle.fill;
     paint0Fill.color = Color(0xffF8F4FF).withOpacity(1.0);
     canvas.drawPath(path_0, paint0Fill);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class BlockCP extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color = Color(0xffF8F4FF);
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), paint0Fill);
   }
 
   @override
