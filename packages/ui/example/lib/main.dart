@@ -97,9 +97,9 @@ void main() {
               ),
 
               SizedBox(
-                height: 700,
-                width: 700,
-                child: const PlayGround(h: 7, w: 7),
+                height: 900,
+                width: 900,
+                child: const PlayGround(h: 9, w: 9, elementSize: 50),
               ),
             ],
           ),

@@ -463,8 +463,8 @@ class _FieldWidgetState extends State<FieldWidget> {
           children: [
             _buildDirectionButton('⬆️ Вверх', Direction.up, x, y),
             _buildDirectionButton('⬇️ Вниз', Direction.down, x, y),
-            _buildDirectionButton('⬅️ Влево', Direction.left, x, y),
-            _buildDirectionButton('➡️ Вправо', Direction.right, x, y),
+            _buildDirectionButton('< Влево', Direction.left, x, y),
+            _buildDirectionButton('> Вправо', Direction.right, x, y),
           ],
         ),
         actions: [
