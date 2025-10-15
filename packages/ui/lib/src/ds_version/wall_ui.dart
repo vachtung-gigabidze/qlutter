@@ -167,7 +167,12 @@ class DynamicWallWidget extends StatelessWidget {
     return Stack(
       children: [
         IgnorePointer(child: Stack(children: firstLayer)), // Первый слой
-        if (middle != null) Positioned(left: -40, top: 53, child: middle!),
+        if (middle != null)
+          Positioned(
+            left: elementSize * -0.49,
+            top: elementSize * 0.65,
+            child: middle!,
+          ),
         IgnorePointer(child: Stack(children: secondLayer)), // Второй слой
       ],
     );
