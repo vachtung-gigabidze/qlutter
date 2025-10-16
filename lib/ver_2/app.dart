@@ -1,6 +1,8 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:qlutter/ver_2/game/level_manager.dart';
+// import 'package:qlutter/ver_2/game/level_manager.dart';
+import 'package:qlutter/ver_2/constants/app_constants.dart';
+import 'package:qlutter/ver_2/constants/tutorial_texts.dart';
 import 'package:qlutter/ver_2/models/app_state.dart';
 import 'package:qlutter/ver_2/models/level.dart';
 import 'package:qlutter/ver_2/providers/app_state_provider.dart';
@@ -14,15 +16,12 @@ import 'package:qlutter/ver_2/services/storage_service.dart';
 import 'package:qlutter/ver_2/widgets/app_state_container.dart';
 import 'package:qlutter/ver_2/widgets/field_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:qlutter/ver_2/widgets/field_widget.dart';
 
 // main.dart
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'package:qlutter/ver_2/constants/app_constants.dart';
-import 'package:qlutter/ver_2/constants/tutorial_texts.dart';
+// import 'package:flutter/material.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class QOOXApp extends StatelessWidget {
   const QOOXApp({required this.initialState, super.key});

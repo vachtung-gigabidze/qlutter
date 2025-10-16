@@ -147,7 +147,7 @@ class LevelStatsWidget extends StatelessWidget {
       gradient: RadialGradient(
         center: Alignment.center,
         radius: 0.7,
-        colors: [Colors.white, Colors.transparent],
+        colors: [Color(0xffF8F4FF), Colors.transparent],
         stops: [0.3, 1.0],
       ),
     ),

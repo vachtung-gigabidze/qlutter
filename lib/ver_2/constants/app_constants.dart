@@ -36,8 +36,8 @@ class AppConstants {
   // Цвета
   static const primaryColor = Color(0xFF2196F3);
   static const secondaryColor = Color(0xFF4CAF50);
-  static const backgroundColor = Color(0xFFF5F5F5);
-  static const surfaceColor = Color(0xFFFFFFFF);
+  static const backgroundColor = Color(0xffF8F4FF);
+  static const surfaceColor = Color(0xffF8F4FF);
   static const errorColor = Color(0xFFF44336);
   static const successColor = Color(0xFF4CAF50);
   static const warningColor = Color(0xFFFF9800);
@@ -53,8 +53,8 @@ class AppConstants {
   static const blockGray = Color(0xFF607D8B);
 
   // Цвета для статистики
-  static const statsBackgroundColor = Color(0xFFF8F9FA);
-  static const statsBorderColor = Color(0xFFE9ECEF);
+  static const statsBackgroundColor = Color(0xffF8F4FF);
+  static const statsBorderColor = Color(0xffF8F4FF);
 
   // Размеры
   static const double defaultPadding = 16;
