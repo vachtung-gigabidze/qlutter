@@ -16,8 +16,14 @@ import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 import 'package:ui/ui.dart';
 
 class FieldWidget extends StatefulWidget {
-  const FieldWidget({required this.level, super.key, this.onLevelComplete});
+  const FieldWidget({
+    required this.level,
+    required this.levelNumber,
+    super.key,
+    this.onLevelComplete,
+  });
   final Level level;
+  final int levelNumber;
   final VoidCallback? onLevelComplete;
 
   @override
@@ -103,39 +109,41 @@ class _FieldWidgetState extends State<FieldWidget> {
             // Игровое поле
             Expanded(
               child: Center(
-                child: Container(
-                  width: fieldWidth,
-                  height: fieldHeight,
-                  decoration: BoxDecoration(
-                    color: AppConstants.backgroundColor,
-                    border: Border.all(color: Colors.grey.shade300, width: 2),
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(2, 2),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: PlayGround(
-                      elementSize: _elementSize,
-                      middle: Stack(
-                        children: [
-                          // Статичное игровое поле
-                          // _buildPlayGround(),
-                          _buildFieldGrid(),
-                          // Анимированные шары поверх статичного поля
-                          if (_engine.isAnimating &&
-                              _engine.currentAnimatedBall != null)
-                            _buildAnimatedBall(_engine.currentAnimatedBall!),
-                        ],
-                      ),
-                      h: _engine.level.height,
-                      w: _engine.level.width,
+                child: SizedBox(
+                  width: fieldWidth + _elementSize,
+                  height: fieldHeight + _elementSize,
+                  // decoration: BoxDecoration(
+                  //   color: AppConstants.backgroundColor,
+                  //   border: Border.all(color: Colors.grey.shade300, width: 2),
+                  //   borderRadius: BorderRadius.circular(12),
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color: Colors.black.withOpacity(0.1),
+                  //       blurRadius: 8,
+                  //       offset: const Offset(2, 2),
+                  //     ),
+                  //   ],
+                  // ),
+                  // child: ClipRRect(
+                  //   borderRadius: BorderRadius.circular(12),
+                  //   child:
+                  // ),
+                  child: PlayGround(
+                    elementSize: _elementSize,
+                    levelId: widget.levelNumber - 1,
+                    middle: Stack(
+                      children: [
+                        // Статичное игровое поле
+                        // _buildPlayGround(),
+                        _buildFieldGrid(),
+                        // Анимированные шары поверх статичного поля
+                        if (_engine.isAnimating &&
+                            _engine.currentAnimatedBall != null)
+                          _buildAnimatedBall(_engine.currentAnimatedBall!),
+                      ],
                     ),
+                    h: _engine.level.height + 1,
+                    w: _engine.level.width + 1,
                   ),
                 ),
               ),
@@ -315,9 +323,9 @@ class _FieldWidgetState extends State<FieldWidget> {
 
   Widget _buildFieldElement(int x, int y) {
     final item = _engine.level.field[y][x];
-    final padding = EdgeInsets.all(
-      _elementSize * AppConstants.elementPaddingRatio,
-    );
+    // final padding = EdgeInsets.all(
+    //   _elementSize * AppConstants.elementPaddingRatio,
+    // );
 
     // Не показываем статичный шар если он анимируется
     final isBallAnimating =
@@ -329,7 +337,7 @@ class _FieldWidgetState extends State<FieldWidget> {
 
     if (isBallAnimating && item is Ball) {
       return Container(
-        padding: padding,
+        // padding: padding,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
@@ -342,7 +350,7 @@ class _FieldWidgetState extends State<FieldWidget> {
     }
     if (item is Block) {
       return Container(
-        padding: padding,
+        // padding: padding,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
@@ -357,7 +365,7 @@ class _FieldWidgetState extends State<FieldWidget> {
     return GestureDetector(
       onTap: () => _onElementTap(x, y),
       child: Container(
-        padding: padding,
+        // padding: padding,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(

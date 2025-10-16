@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ui/src/level_maps.dart';
 import 'package:ui/src/wall_painter.dart';
 
 const double sizeWall = 100;
@@ -10,55 +11,70 @@ class PlayGround extends StatelessWidget {
     this.middle,
     required this.h,
     required this.w,
+    required this.levelId,
   });
 
   final double elementSize;
   final Widget? middle;
   final int h;
   final int w;
+  final int levelId;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: h * elementSize,
       width: w * elementSize,
-      child: Container(
-        color: const Color(0xFF50427D),
-        child: DynamicWallWidget(
-          board: GameBoard(GameBoard.defaultLayout),
-          elementSize: elementSize,
-          middle: middle,
-        ),
+      child: Stack(
+        //color: const Color(0xFF50427D),
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+              left: elementSize / 2,
+              top: elementSize / 2,
+            ),
+            child: Container(
+              height: (h - 1) * elementSize,
+              width: (w - 1) * elementSize,
+              color: const Color(0xFF50427D),
+            ),
+          ),
+          DynamicWallWidget(
+            board: GameBoard(LevelMaps.levels[levelId]),
+            elementSize: elementSize,
+            middle: middle,
+          ),
+        ],
       ),
     );
   }
 }
 
 class GameBoard {
-  static const List<String> defaultLayout = [
-    // 'B LIT RIT B B B',
-    // 'LIT LOT ROT T RIT B',
-    // 'L N N N ROT RIT',
-    // 'L N N N ROD RID',
-    // 'LID LOD N N R B',
-    // 'B LID D D RID B',
-    'B B B B LIT T T T RIT B',
-    'B B B LIT LOT N N N R B',
-    'B B LIT LOT N N N N ROT RIT',
-    'B LIT LOT N N N N N ROD RID',
-    'LIT LOT N N N N N N R B',
-    'L N N N N N N N R B',
-    'L N N N N N N N R B',
-    'L N N N N N N N R B',
-    'LID LOD ROD D D LOD ROD D RID B',
-    'B LID RID B B LID RID B B B',
+  // [
+  //   // 'B LIT RIT B B B',
+  //   // 'LIT LOT ROT T RIT B',
+  //   // 'L N N N ROT RIT',
+  //   // 'L N N N ROD RID',
+  //   // 'LID LOD N N R B',
+  //   // 'B LID D D RID B',
+  //   'B B B B LIT T T T RIT B',
+  //   'B B B LIT LOT N N N R B',
+  //   'B B LIT LOT N N N N ROT RIT',
+  //   'B LIT LOT N N N N N ROD RID',
+  //   'LIT LOT N N N N N N R B',
+  //   'L N N N N N N N R B',
+  //   'L N N N N N N N R B',
+  //   'L N N N N N N N R B',
+  //   'LID LOD ROD D D LOD ROD D RID B',
+  //   'B LID RID B B LID RID B B B',
 
-    //   'topLeftIn, top,top,top, topRightIn',
-    // 'left, none, none, none, right',
-    // 'left, none, none, none, right',
-    // 'left, none, none, none, right',
-    // 'bottomLeftIn,bottom,bottom,bottom,bottomRightIn',
-  ];
+  //   //   'topLeftIn, top,top,top, topRightIn',
+  //   // 'left, none, none, none, right',
+  //   // 'left, none, none, none, right',
+  //   // 'left, none, none, none, right',
+  //   // 'bottomLeftIn,bottom,bottom,bottom,bottomRightIn',
+  // ];
 
   final List<List<WallType>> grid;
 
@@ -179,7 +195,7 @@ class DynamicWallWidget extends StatelessWidget {
         IgnorePointer(child: Stack(children: firstLayer)), // Первый слой
         if (middle != null)
           Positioned(
-            left: elementSize * -0.49,
+            left: elementSize + elementSize * -0.49,
             top: elementSize * 0.65,
             child: middle!,
           ),

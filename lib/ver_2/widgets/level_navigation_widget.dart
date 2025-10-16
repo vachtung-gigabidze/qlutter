@@ -9,6 +9,7 @@ class LevelNavigationWidget extends StatelessWidget {
     required this.onPreviousLevel,
     required this.onNextLevel,
     required this.isNextLevelUnlocked,
+    required this.fieldGame,
     super.key,
   });
   final int currentLevel;
@@ -16,10 +17,12 @@ class LevelNavigationWidget extends StatelessWidget {
   final VoidCallback onPreviousLevel;
   final VoidCallback onNextLevel;
   final bool isNextLevelUnlocked;
+  final Widget fieldGame;
 
   @override
   Widget build(BuildContext context) => Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       // Кнопка предыдущего уровня
       _buildNavButton(
@@ -29,13 +32,15 @@ class LevelNavigationWidget extends StatelessWidget {
         onPressed: onPreviousLevel,
       ),
 
+      SizedBox(height: 600, width: 600, child: fieldGame),
+      // Expanded(child: fieldGame),
       // Информация о текущем уровне
-      _buildLevelInfo(),
+      //_buildLevelInfo(),
 
       // Кнопка следующего уровня
       _buildNavButton(
         icon: isNextLevelUnlocked ? Icons.arrow_forward_ios : Icons.lock,
-        isEnabled: isNextLevelUnlocked && currentLevel < totalLevels,
+        isEnabled: true, //isNextLevelUnlocked && currentLevel < totalLevels,
         tooltip: isNextLevelUnlocked
             ? AppConstants.nextLevelTooltip
             : AppConstants.levelLockedTooltip,
@@ -63,7 +68,7 @@ class LevelNavigationWidget extends StatelessWidget {
       style: IconButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: isEnabled
-            ? AppConstants.primaryColor.withOpacity(0.1)
+            ? const Color.fromARGB(255, 237, 239, 241).withOpacity(0.1)
             : Colors.grey.shade100,
       ),
     ),

@@ -21,7 +21,9 @@ class StorageService {
 
   static Future<Set<int>> getCompletedLevels() async {
     final prefs = await _prefs;
-    final completedString = prefs.getString(_completedLevelsKey) ?? '';
+    //TODO: Верную в зад после теста
+    const completedString =
+        '1,2,3,4,5,6,7,8,9'; // = prefs.getString(_completedLevelsKey) ?? '';
     if (completedString.isEmpty) return <int>{};
     return completedString.split(',').map(int.parse).toSet();
   }

@@ -378,22 +378,22 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text('${AppConstants.levelText}${widget.levelNumber}'),
-      centerTitle: true,
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.help_outline),
-          onPressed: _showHowToPlay,
-          tooltip: AppConstants.howToPlayTitle,
-        ),
-        IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: _showSettings,
-          tooltip: AppConstants.settingsTitle,
-        ),
-      ],
-    ),
+    // appBar: AppBar(
+    //   title: Text('${AppConstants.levelText}${widget.levelNumber}'),
+    //   centerTitle: true,
+    //   actions: [
+    //     IconButton(
+    //       icon: const Icon(Icons.help_outline),
+    //       onPressed: _showHowToPlay,
+    //       tooltip: AppConstants.howToPlayTitle,
+    //     ),
+    //     IconButton(
+    //       icon: const Icon(Icons.settings),
+    //       onPressed: _showSettings,
+    //       tooltip: AppConstants.settingsTitle,
+    //     ),
+    //   ],
+    // ),
     body: Column(
       children: [
         // Навигация по уровням (показываем только после инициализации)
@@ -406,18 +406,24 @@ class _GameScreenState extends State<GameScreen> {
               onPreviousLevel: widget.onPreviousLevel,
               onNextLevel: widget.onNextLevel,
               isNextLevelUnlocked: _isNextLevelUnlocked,
+              fieldGame: FieldWidget(
+                level: widget.level,
+                levelNumber: widget.levelNumber,
+                onLevelComplete: widget.onLevelComplete,
+              ),
             ),
           )
         else
           const SizedBox(height: AppConstants.defaultPadding),
 
         // Игровое поле
-        Expanded(
-          child: FieldWidget(
-            level: widget.level,
-            onLevelComplete: widget.onLevelComplete,
-          ),
-        ),
+        // Expanded(
+        //   child: FieldWidget(
+        //     level: widget.level,
+        //     levelNumber: widget.levelNumber,
+        //     onLevelComplete: widget.onLevelComplete,
+        //   ),
+        // ),
       ],
     ),
   );
