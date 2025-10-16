@@ -111,6 +111,10 @@ class GameBoard {
             return WallType.ROD;
           case 'B':
             return WallType.B;
+          case 'LB':
+            return WallType.LB;
+          case 'RB':
+            return WallType.RB;
           case 'N':
           default:
             return WallType.N;
@@ -145,6 +149,8 @@ enum WallType {
   LOD, // DownRightOutAngleCP + Flip
   ROD, // DownRightOutAngleCP
   B, // BlockCP
+  LB, //Left Bridge
+  RB, //Right Bridge
 }
 
 class DynamicWallWidget extends StatelessWidget {
@@ -222,6 +228,8 @@ class DynamicWallWidget extends StatelessWidget {
         type == WallType.LID ||
         type == WallType.RID ||
         type == WallType.LOD ||
+        type == WallType.RB ||
+        type == WallType.LB ||
         type == WallType.ROD;
   }
 
@@ -253,6 +261,10 @@ class DynamicWallWidget extends StatelessWidget {
         return DownRightOutAngleCP();
       case WallType.B:
         return BlockCP();
+      case WallType.LB:
+        return LeftBridgeCP();
+      case WallType.RB:
+        return LeftBridgeCP();
       case WallType.N:
       default:
         return null;
@@ -264,6 +276,7 @@ class DynamicWallWidget extends StatelessWidget {
         type == WallType.RIT ||
         type == WallType.RID ||
         type == WallType.ROT ||
+        type == WallType.RB ||
         type == WallType.LOD;
   }
 }

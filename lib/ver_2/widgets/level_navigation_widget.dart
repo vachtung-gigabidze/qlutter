@@ -32,7 +32,11 @@ class LevelNavigationWidget extends StatelessWidget {
         onPressed: onPreviousLevel,
       ),
 
-      SizedBox(height: 600, width: 600, child: fieldGame),
+      SizedBox(
+        height: MediaQuery.of(context).size.height - 200,
+        width: MediaQuery.of(context).size.width - 200,
+        child: fieldGame,
+      ),
       // Expanded(child: fieldGame),
       // Информация о текущем уровне
       //_buildLevelInfo(),
