@@ -193,7 +193,7 @@ class DynamicWallWidget extends StatelessWidget {
             }
             //Разделить на слои Первый и Второй
             if (wallType == WallType.RB || wallType == WallType.LB) {
-              firstLayer.add(wallWidget);
+              secondLayer.add(wallWidget);
               final wallShadowWidget = DrawWallWidget(
                 wall: LeftBridgesShadow(),
                 column: column,
@@ -201,7 +201,7 @@ class DynamicWallWidget extends StatelessWidget {
                 elementSize: elementSize,
                 flipX: _needsFlipX(wallType),
               );
-              secondLayer.add(wallShadowWidget);
+              firstLayer.add(wallShadowWidget);
             }
           }
         }
@@ -210,7 +210,8 @@ class DynamicWallWidget extends StatelessWidget {
 
     return Stack(
       children: [
-        IgnorePointer(child: Stack(children: firstLayer)), // Первый слой
+        IgnorePointer(child: Stack(children: firstLayer)),
+        // Первый слой
         if (middle != null)
           Positioned(
             left: elementSize + elementSize * -0.49,
@@ -222,7 +223,7 @@ class DynamicWallWidget extends StatelessWidget {
     );
   }
 
-  // Проверяем принадлежность к первому слою
+  // Проверяем принадлежность к первому слою Будет сзади
   bool _isFirstLayer(WallType type) {
     return type == WallType.T ||
         type == WallType.LIT ||
@@ -232,7 +233,7 @@ class DynamicWallWidget extends StatelessWidget {
         type == WallType.ROT;
   }
 
-  // Проверяем принадлежность ко второму слою
+  // Проверяем принадлежность ко второму слою Будет впереди
   bool _isSecondLayer(WallType type) {
     return type == WallType.L ||
         type == WallType.R ||
