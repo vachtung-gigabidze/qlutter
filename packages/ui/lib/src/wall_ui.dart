@@ -224,9 +224,7 @@ class DynamicWallWidget extends StatelessWidget {
 
   // Проверяем принадлежность к первому слою
   bool _isFirstLayer(WallType type) {
-    return type == WallType.L ||
-        type == WallType.R ||
-        type == WallType.T ||
+    return type == WallType.T ||
         type == WallType.LIT ||
         type == WallType.RIT ||
         type == WallType.LOT ||
@@ -236,7 +234,9 @@ class DynamicWallWidget extends StatelessWidget {
 
   // Проверяем принадлежность ко второму слою
   bool _isSecondLayer(WallType type) {
-    return type == WallType.D ||
+    return type == WallType.L ||
+        type == WallType.R ||
+        type == WallType.D ||
         type == WallType.LID ||
         type == WallType.RID ||
         type == WallType.LOD ||

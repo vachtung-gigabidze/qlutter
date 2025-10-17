@@ -405,6 +405,7 @@ class _GameScreenState extends State<GameScreen> {
               onPreviousLevel: widget.onPreviousLevel,
               onNextLevel: widget.onNextLevel,
               isNextLevelUnlocked: _isNextLevelUnlocked,
+              // Игровое поле
               fieldGame: FieldWidget(
                 level: widget.level,
                 levelNumber: widget.levelNumber,
@@ -414,15 +415,6 @@ class _GameScreenState extends State<GameScreen> {
           )
         else
           const SizedBox(height: AppConstants.defaultPadding),
-
-        // Игровое поле
-        // Expanded(
-        //   child: FieldWidget(
-        //     level: widget.level,
-        //     levelNumber: widget.levelNumber,
-        //     onLevelComplete: widget.onLevelComplete,
-        //   ),
-        // ),
       ],
     ),
   );
