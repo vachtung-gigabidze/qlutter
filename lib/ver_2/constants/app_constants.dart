@@ -34,7 +34,7 @@ class AppConstants {
   static const String resetLevelTooltip = 'Сбросить уровень';
 
   // Цвета
-  static const primaryColor = Color(0xFF2196F3);
+  static const primaryColor = Color(0xFF50427D);
   static const secondaryColor = Color(0xFF4CAF50);
   static const backgroundColor = Color(0xffF8F4FF);
   static const surfaceColor = Color(0xffF8F4FF);

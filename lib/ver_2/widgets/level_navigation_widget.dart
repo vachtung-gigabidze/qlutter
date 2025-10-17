@@ -34,7 +34,7 @@ class LevelNavigationWidget extends StatelessWidget {
 
       SizedBox(
         height: MediaQuery.of(context).size.height - 200,
-        width: MediaQuery.of(context).size.width - 200,
+        width: MediaQuery.of(context).size.width - 130,
         child: fieldGame,
       ),
       // Expanded(child: fieldGame),

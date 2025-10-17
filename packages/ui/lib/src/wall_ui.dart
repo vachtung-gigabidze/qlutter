@@ -191,6 +191,18 @@ class DynamicWallWidget extends StatelessWidget {
             } else {
               secondLayer.add(wallWidget);
             }
+            //Разделить на слои Первый и Второй
+            if (wallType == WallType.RB || wallType == WallType.LB) {
+              firstLayer.add(wallWidget);
+              final wallShadowWidget = DrawWallWidget(
+                wall: LeftBridgesShadow(),
+                column: column,
+                row: row,
+                elementSize: elementSize,
+                flipX: _needsFlipX(wallType),
+              );
+              secondLayer.add(wallShadowWidget);
+            }
           }
         }
       }
@@ -228,8 +240,6 @@ class DynamicWallWidget extends StatelessWidget {
         type == WallType.LID ||
         type == WallType.RID ||
         type == WallType.LOD ||
-        type == WallType.RB ||
-        type == WallType.LB ||
         type == WallType.ROD;
   }
 
@@ -262,9 +272,9 @@ class DynamicWallWidget extends StatelessWidget {
       case WallType.B:
         return BlockCP();
       case WallType.LB:
-        return LeftBridgeCP();
+        return LeftBridgeWOTShadowCP();
       case WallType.RB:
-        return LeftBridgeCP();
+        return LeftBridgeWOTShadowCP();
       case WallType.N:
       default:
         return null;

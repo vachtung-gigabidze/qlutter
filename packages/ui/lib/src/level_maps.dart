@@ -97,7 +97,7 @@ class LevelMaps {
     ],
     [
       // 8
-      "B B B B B B B B B B B B B",
+      "B B B B B B LIT RIT B B B B B",
       "B LIT T T T T LOT ROT T T T RIT B",
       "B L 0 0 0 5 0 0 0 0 0 R B",
       "LIT LOT 0 0 0 0 0 0 0 0 ROD RID B",

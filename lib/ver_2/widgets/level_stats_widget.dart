@@ -131,13 +131,14 @@ class LevelStatsWidget extends StatelessWidget {
       color: _getBallColor(color),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.1),
           blurRadius: 2,
           offset: const Offset(1, 1),
         ),
       ],
     ),
-    child: color != null ? _buildColoredBallContent() : _buildGrayBallContent(),
+    child:
+        null, //color != null ? _buildColoredBallContent() : _buildGrayBallContent(),
   );
 
   Widget _buildColoredBallContent() => Container(
