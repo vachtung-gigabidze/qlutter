@@ -96,20 +96,55 @@ void main() {
                 ),
               ),
 
-              SizedBox(
-                height: 800,
-                width: 800,
-                child: const PlayGround(
-                  h: 10,
-                  w: 10,
-                  elementSize: 50,
-                  levelId: 4,
-                ),
-              ),
+              SizedBox(height: 800, width: 800, child: HomePage()),
             ],
           ),
         ),
       ),
     ),
   );
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Wall System')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PlayGround(
+                      h: 10,
+                      w: 10,
+                      elementSize: 50,
+                      levelId: 4,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Просмотр поля'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MapEditor()),
+                );
+              },
+              child: const Text('Редактор карт'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
