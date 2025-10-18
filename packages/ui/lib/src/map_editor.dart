@@ -213,12 +213,16 @@ class _MapEditorState extends State<MapEditor> {
 
   Widget _buildToolPreview(WallType type) {
     final painter = _getPainterForType(type);
+    final needsFlip = _needsFlipX(type);
     if (painter == null) return const Icon(Icons.clear, size: 20);
 
     return SizedBox(
       width: 30,
       height: 30,
-      child: CustomPaint(painter: painter),
+      child: Transform.flip(
+        flipX: needsFlip,
+        child: CustomPaint(painter: painter),
+      ),
     );
   }
 
@@ -260,6 +264,14 @@ class _MapEditorState extends State<MapEditor> {
     }
   }
 
+  bool _needsFlipX(WallType type) {
+    return type == WallType.R ||
+        type == WallType.RIT ||
+        type == WallType.RID ||
+        type == WallType.ROT ||
+        type == WallType.LOD;
+  }
+
   Widget _buildModeSwitch() {
     return Container(
       padding: const EdgeInsets.all(8),
@@ -285,6 +297,7 @@ class _MapEditorState extends State<MapEditor> {
 
   Widget _buildEditorGrid() {
     const cellSize = 40.0;
+    bool isDrawing = false;
 
     return Container(
       decoration: BoxDecoration(
@@ -293,19 +306,48 @@ class _MapEditorState extends State<MapEditor> {
       child: SizedBox(
         width: gridSize * cellSize,
         height: gridSize * cellSize,
-        child: Stack(
-          children: [
-            // Сетка
-            _buildGridLines(cellSize),
+        child: Listener(
+          onPointerDown: (event) {
+            isDrawing = true;
+            _handlePointerEvent(event, cellSize);
+          },
+          onPointerMove: (event) {
+            if (isDrawing) {
+              _handlePointerEvent(event, cellSize);
+            }
+          },
+          onPointerUp: (event) {
+            isDrawing = false;
+          },
+          child: Stack(
+            children: [
+              // Сетка
+              _buildGridLines(cellSize),
 
-            // Элементы стен
-            for (int row = 0; row < gridSize; row++)
-              for (int column = 0; column < gridSize; column++)
-                _buildGridCell(row, column, cellSize),
-          ],
+              // Элементы стен
+              for (int row = 0; row < gridSize; row++)
+                for (int column = 0; column < gridSize; column++)
+                  _buildGridCell(row, column, cellSize),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _handlePointerEvent(PointerEvent event, double cellSize) {
+    final column = (event.localPosition.dx / cellSize).floor();
+    final row = (event.localPosition.dy / cellSize).floor();
+
+    if (row >= 0 && row < gridSize && column >= 0 && column < gridSize) {
+      setState(() {
+        if (isErasing) {
+          grid[row][column] = WallType.N;
+        } else {
+          grid[row][column] = selectedTool;
+        }
+      });
+    }
   }
 
   Widget _buildGridLines(double cellSize) {
@@ -319,7 +361,7 @@ class _MapEditorState extends State<MapEditor> {
   Widget _buildGridCell(int row, int column, double cellSize) {
     final wallType = grid[row][column];
     final painter = _getPainterForType(wallType);
-
+    final needsFlip = _needsFlipX(wallType);
     return Positioned(
       left: column * cellSize,
       top: row * cellSize,
@@ -340,7 +382,12 @@ class _MapEditorState extends State<MapEditor> {
         child: Container(
           width: cellSize,
           height: cellSize,
-          child: painter != null ? CustomPaint(painter: painter) : null,
+          child: painter != null
+              ? Transform.flip(
+                  flipX: needsFlip,
+                  child: CustomPaint(painter: painter),
+                )
+              : null,
         ),
       ),
     );
