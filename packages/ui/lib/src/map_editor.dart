@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'wall_ui.dart';
 import 'wall_painter.dart';
 
@@ -10,10 +11,29 @@ class MapEditor extends StatefulWidget {
 }
 
 class _MapEditorState extends State<MapEditor> {
-  final int gridSize = 13;
+  int gridSize = 13; // Начальный размер
   List<List<WallType>> grid = [];
   WallType selectedTool = WallType.L;
   bool isErasing = false;
+
+  final TextEditingController _sizeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeGrid();
+    _sizeController.text = gridSize.toString();
+  }
+
+  @override
+  void dispose() {
+    _sizeController.dispose();
+    super.dispose();
+  }
+
+  void _initializeGrid() {
+    grid = List.generate(gridSize, (_) => List.filled(gridSize, WallType.N));
+  }
 
   // Панель инструментов
   final List<MapEntry<String, WallType>> tools = [
@@ -33,16 +53,6 @@ class _MapEditorState extends State<MapEditor> {
     const MapEntry('N', WallType.N),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeGrid();
-  }
-
-  void _initializeGrid() {
-    grid = List.generate(gridSize, (_) => List.filled(gridSize, WallType.N));
-  }
-
   void _onCellTapped(int row, int column) {
     setState(() {
       if (isErasing) {
@@ -61,30 +71,6 @@ class _MapEditorState extends State<MapEditor> {
     setState(() {
       _initializeGrid();
     });
-  }
-
-  void _exportMap() {
-    final buffer = StringBuffer();
-    for (int row = 0; row < gridSize; row++) {
-      final rowSymbols = grid[row].map(_wallTypeToSymbol).toList();
-      buffer.writeln(
-        "'${rowSymbols.join(' ')}'${row < gridSize - 1 ? ',' : ''}",
-      );
-    }
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Экспорт карты'),
-        content: SelectableText(buffer.toString()),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   String _wallTypeToSymbol(WallType type) {
@@ -134,14 +120,24 @@ class _MapEditorState extends State<MapEditor> {
         backgroundColor: const Color(0xFF50427D),
         actions: [
           IconButton(
+            icon: const Icon(Icons.aspect_ratio),
+            onPressed: _changeGridSize,
+            tooltip: 'Размер карты',
+          ),
+          IconButton(
+            icon: const Icon(Icons.upload),
+            onPressed: _importMap,
+            tooltip: 'Импорт',
+          ),
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: _exportMap,
+            tooltip: 'Экспорт',
+          ),
+          IconButton(
             icon: const Icon(Icons.cleaning_services),
             onPressed: _clearGrid,
             tooltip: 'Очистить',
-          ),
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _exportMap,
-            tooltip: 'Экспорт',
           ),
         ],
       ),
@@ -277,19 +273,27 @@ class _MapEditorState extends State<MapEditor> {
       padding: const EdgeInsets.all(8),
       color: Colors.grey[100],
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text('Режим рисования'),
-          const SizedBox(width: 16),
-          Switch(
-            value: !isErasing,
-            onChanged: (value) {
-              setState(() {
-                isErasing = !value;
-              });
-            },
+          Row(
+            children: [
+              const Text('Режим рисования'),
+              const SizedBox(width: 16),
+              Switch(
+                value: !isErasing,
+                onChanged: (value) {
+                  setState(() {
+                    isErasing = !value;
+                  });
+                },
+              ),
+              const Text('Ластик'),
+            ],
           ),
-          const Text('Ластик'),
+          Text(
+            'Размер: $gridSize×$gridSize',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
         ],
       ),
     );
@@ -325,8 +329,8 @@ class _MapEditorState extends State<MapEditor> {
               _buildGridLines(cellSize),
 
               // Элементы стен
-              for (int row = 0; row < gridSize; row++)
-                for (int column = 0; column < gridSize; column++)
+              for (int row = 0; row < grid.length; row++)
+                for (int column = 0; column < grid[row].length; column++)
                   _buildGridCell(row, column, cellSize),
             ],
           ),
@@ -391,6 +395,308 @@ class _MapEditorState extends State<MapEditor> {
         ),
       ),
     );
+  }
+
+  void _importMap() {
+    final textController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Импорт карты'),
+        content: SizedBox(
+          width: 500,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Вставьте код карты:'),
+              const SizedBox(height: 16),
+              Expanded(
+                child: TextField(
+                  controller: textController,
+                  maxLines: 10,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Вставьте сюда код из экспорта...",
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () {
+              _parseImportedMap(textController.text);
+              Navigator.pop(context);
+            },
+            child: const Text('Импорт'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _parseImportedMap(String importedText) {
+    try {
+      // Очищаем текст от лишних символов
+      final cleanedText = importedText
+          .replaceAll('[', '')
+          .replaceAll(']', '')
+          .replaceAll("'", '')
+          .trim();
+
+      // Разбиваем на строки
+      final lines = cleanedText
+          .split('\n')
+          .where((line) => line.trim().isNotEmpty)
+          .toList();
+
+      final importedSize = lines.length;
+      if (importedSize < 5 || importedSize > 20) {
+        _showError(
+          'Неверный размер карты: $importedSize. Допустимо от 5 до 20.',
+        );
+        return;
+      }
+
+      final newGrid = <List<WallType>>[];
+
+      for (final line in lines) {
+        final trimmedLine = line.trim();
+        // Убираем запятые в конце строк
+        final cleanLine = trimmedLine.endsWith(',')
+            ? trimmedLine.substring(0, trimmedLine.length - 1)
+            : trimmedLine;
+
+        final symbols = cleanLine
+            .split(' ')
+            .where((symbol) => symbol.isNotEmpty)
+            .toList();
+
+        if (symbols.length != importedSize) {
+          _showError(
+            'Неверное количество элементов в строке: ${symbols.length}. Ожидается $importedSize.',
+          );
+          return;
+        }
+
+        final row = symbols.map(_symbolToWallType).toList();
+        newGrid.add(row);
+      }
+
+      setState(() {
+        gridSize = importedSize;
+        grid = newGrid;
+        _sizeController.text = importedSize.toString();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Карта $importedSize×$importedSize успешно импортирована!',
+          ),
+        ),
+      );
+    } catch (e) {
+      _showError('Ошибка при импорте: $e');
+    }
+  }
+
+  void _exportMap() {
+    final buffer = StringBuffer();
+    buffer.writeln('[');
+
+    for (int row = 0; row < gridSize; row++) {
+      final rowSymbols = grid[row].map(_wallTypeToSymbol).toList();
+      final rowString = "'${rowSymbols.join(' ')}'";
+
+      if (row < gridSize - 1) {
+        buffer.writeln('  $rowString,');
+      } else {
+        buffer.writeln('  $rowString');
+      }
+    }
+
+    buffer.write(']');
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Экспорт карты $gridSize×$gridSize'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Размер: $gridSize×$gridSize'),
+              const SizedBox(height: 8),
+              SelectableText(
+                buffer.toString(),
+                style: const TextStyle(fontFamily: 'monospace'),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.content_copy),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: buffer.toString()));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Скопировано в буфер обмена!'),
+                        ),
+                      );
+                    },
+                    tooltip: 'Копировать',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  WallType _symbolToWallType(String symbol) {
+    switch (symbol) {
+      case 'L':
+        return WallType.L;
+      case 'R':
+        return WallType.R;
+      case 'T':
+        return WallType.T;
+      case 'D':
+        return WallType.D;
+      case 'LIT':
+        return WallType.LIT;
+      case 'RIT':
+        return WallType.RIT;
+      case 'LID':
+        return WallType.LID;
+      case 'RID':
+        return WallType.RID;
+      case 'LOT':
+        return WallType.LOT;
+      case 'ROT':
+        return WallType.ROT;
+      case 'LOD':
+        return WallType.LOD;
+      case 'ROD':
+        return WallType.ROD;
+      case 'B':
+        return WallType.B;
+      case 'N':
+        return WallType.N;
+      default:
+        return WallType.N;
+    }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  void _changeGridSize() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Размер карты'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Введите размер карты (5-20):'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _sizeController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '13',
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: Wrap(
+                spacing: 8,
+                children: [5, 8, 10, 13, 15, 20].map((size) {
+                  return ElevatedButton(
+                    onPressed: () {
+                      _sizeController.text = size.toString();
+                    },
+                    child: Text('$size'),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Отмена'),
+          ),
+          TextButton(
+            onPressed: () {
+              final newSize = int.tryParse(_sizeController.text);
+              if (newSize != null && newSize >= 5 && newSize <= 20) {
+                _resizeGrid(newSize);
+                Navigator.pop(context);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Размер должен быть от 5 до 20'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            },
+            child: const Text('Применить'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _resizeGrid(int newSize) {
+    setState(() {
+      final oldGrid = grid;
+      gridSize = newSize;
+
+      // Создаем новую сетку
+      final newGrid = List.generate(newSize, (row) {
+        if (row < oldGrid.length) {
+          // Копируем существующие строки
+          return List.generate(newSize, (col) {
+            if (col < oldGrid[row].length) {
+              return oldGrid[row][col]; // Сохраняем существующие данные
+            } else {
+              return WallType.N; // Заполняем новые клетки пустотами
+            }
+          });
+        } else {
+          // Создаем новые строки
+          return List.filled(newSize, WallType.N);
+        }
+      });
+
+      grid = newGrid;
+    });
   }
 }
 
