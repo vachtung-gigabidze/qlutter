@@ -1,4 +1,27 @@
 class LevelMaps {
+  static int get totalLevels => levels.length;
+
+  static String getLevelName(int index) {
+    return 'Уровень ${index + 1}';
+  }
+
+  static String sizeInfo(int level) {
+    final grid = LevelMaps.levels[level];
+    int width = grid.isNotEmpty ? grid[0].split(' ').length : 0;
+    int height = grid.length;
+    return '$width×$height';
+  }
+
+  static int width(int level) {
+    final grid = LevelMaps.levels[level];
+    return grid.isNotEmpty ? grid[0].split(' ').length : 0;
+  }
+
+  static int height(int level) {
+    final grid = LevelMaps.levels[level];
+    return grid.length;
+  }
+
   static const List<List<String>> levels = [
     [
       'B B B B B B B',
@@ -215,20 +238,20 @@ class LevelMaps {
       "B B B B B B B B B B B B B B",
       "B B B B B B B B B B B B B B",
     ],
+
     [
-      // пятнадцать
       'B B B B B B B B B B B B B B',
       'B LIT T RIT LIT T T T T T T T RIT B',
       'B L ROD RID LID D LOD N N N N N R B',
       'B L R LIT T T LOT N ROD D LOD N R B',
       'B L R L N N N N ROT RIT L N R B',
       'B L ROT LOT ROD D LOD N N ROT LOT N R B',
-      'LIT LOT N N R LIT LOT N N N N N R B',
-      'LID LOD N N ROT LOT N N N B N N R B',
-      'B L N N N N N N B B ROD LOD R B',
-      'B L N N B N N N N ROD RID L R B',
-      'B L N N B B N N N B RIT L R B',
-      'B L N N N B N N N B ROT LOT R B',
+      'LIT LOT N N R LIT LOT N ROD LOD N N R B',
+      'LID LOD N N ROT LOT N ROD RID L N N R B',
+      'B L N ROD LOD N N ROT T LOT ROD LOD R B',
+      'B L N R LID LOD N N ROD D RID L R B',
+      'B L N ROT RIT L N N R LIT RIT L R B',
+      'B L N N ROT LOT N N ROT LOT ROT LOT R B',
       'B LID D LOD ROD D D D D D D D RID B',
       'B B B LID RID B B B B B B B B B',
     ],

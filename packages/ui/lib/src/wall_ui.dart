@@ -77,8 +77,13 @@ class GameBoard {
   // ];
 
   final List<List<WallType>> grid;
+  final int width;
+  final int height;
 
-  GameBoard(List<String> textLayout) : grid = _parseTextLayout(textLayout);
+  GameBoard(List<String> textLayout)
+    : grid = _parseTextLayout(textLayout),
+      width = textLayout.isNotEmpty ? textLayout[0].split(' ').length : 0,
+      height = textLayout.length;
 
   static List<List<WallType>> _parseTextLayout(List<String> textLayout) {
     return textLayout.map((row) {
@@ -124,10 +129,13 @@ class GameBoard {
   }
 
   WallType getWallType(int column, int row) {
-    if (row < 0 ||
-        row >= grid.length ||
-        column < 0 ||
-        column >= grid[0].length) {
+    // if (row < 0 ||
+    //     row >= grid.length ||
+    //     column < 0 ||
+    //     column >= grid[0].length) {
+    //   return WallType.N;
+    // }
+    if (row < 0 || row >= height || column < 0 || column >= width) {
       return WallType.N;
     }
     return grid[row][column];

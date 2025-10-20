@@ -7,6 +7,7 @@ import 'package:ui/ui.dart';
 void main() {
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ColoredBox(
         color: Color(0xffF8F4FF),
         child: Center(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ui/src/level_maps.dart';
 import 'wall_ui.dart';
 import 'wall_painter.dart';
 
@@ -11,28 +12,32 @@ class MapEditor extends StatefulWidget {
 }
 
 class _MapEditorState extends State<MapEditor> {
-  int gridSize = 13; // Начальный размер
+  int gridWidth = 13;
+  int gridHeight = 13;
   List<List<WallType>> grid = [];
   WallType selectedTool = WallType.L;
   bool isErasing = false;
 
-  final TextEditingController _sizeController = TextEditingController();
+  final TextEditingController _widthController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _initializeGrid();
-    _sizeController.text = gridSize.toString();
+    _widthController.text = gridWidth.toString();
+    _heightController.text = gridHeight.toString();
   }
 
   @override
   void dispose() {
-    _sizeController.dispose();
+    _widthController.dispose();
+    _heightController.dispose();
     super.dispose();
   }
 
   void _initializeGrid() {
-    grid = List.generate(gridSize, (_) => List.filled(gridSize, WallType.N));
+    grid = List.generate(gridHeight, (_) => List.filled(gridWidth, WallType.N));
   }
 
   // Панель инструментов
@@ -49,6 +54,8 @@ class _MapEditorState extends State<MapEditor> {
     const MapEntry('ROT', WallType.ROT),
     const MapEntry('LOD', WallType.LOD),
     const MapEntry('ROD', WallType.ROD),
+    const MapEntry('RB', WallType.RB),
+    const MapEntry('LB', WallType.LB),
     const MapEntry('B', WallType.B),
     const MapEntry('N', WallType.N),
   ];
@@ -104,11 +111,9 @@ class _MapEditorState extends State<MapEditor> {
       case WallType.N:
         return 'N';
       case WallType.LB:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return 'LB';
       case WallType.RB:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return 'RB';
     }
   }
 
@@ -116,28 +121,43 @@ class _MapEditorState extends State<MapEditor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Редактор карт'),
+        title: const Text(
+          'Редактор карт',
+          style: TextStyle(color: Colors.white),
+        ),
+
         backgroundColor: const Color(0xFF50427D),
+
         actions: [
+          IconButton(
+            icon: const Icon(Icons.collections),
+            onPressed: _loadPresetMap,
+            tooltip: 'Готовые карты',
+            color: Colors.white70,
+          ),
           IconButton(
             icon: const Icon(Icons.aspect_ratio),
             onPressed: _changeGridSize,
             tooltip: 'Размер карты',
+            color: Colors.white70,
           ),
           IconButton(
             icon: const Icon(Icons.upload),
             onPressed: _importMap,
             tooltip: 'Импорт',
+            color: Colors.white70,
           ),
           IconButton(
             icon: const Icon(Icons.download),
             onPressed: _exportMap,
             tooltip: 'Экспорт',
+            color: Colors.white70,
           ),
           IconButton(
             icon: const Icon(Icons.cleaning_services),
             onPressed: _clearGrid,
             tooltip: 'Очистить',
+            color: Colors.white70,
           ),
         ],
       ),
@@ -265,6 +285,7 @@ class _MapEditorState extends State<MapEditor> {
         type == WallType.RIT ||
         type == WallType.RID ||
         type == WallType.ROT ||
+        type == WallType.RB ||
         type == WallType.LOD;
   }
 
@@ -277,7 +298,7 @@ class _MapEditorState extends State<MapEditor> {
         children: [
           Row(
             children: [
-              const Text('Режим рисования'),
+              const Text('Ластик'),
               const SizedBox(width: 16),
               Switch(
                 value: !isErasing,
@@ -287,11 +308,11 @@ class _MapEditorState extends State<MapEditor> {
                   });
                 },
               ),
-              const Text('Ластик'),
+              const Text('Режим рисования'),
             ],
           ),
           Text(
-            'Размер: $gridSize×$gridSize',
+            'Размер: $gridWidth×$gridHeight',
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ],
@@ -301,27 +322,20 @@ class _MapEditorState extends State<MapEditor> {
 
   Widget _buildEditorGrid() {
     const cellSize = 40.0;
-    bool isDrawing = false;
 
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.white24, width: 2),
       ),
       child: SizedBox(
-        width: gridSize * cellSize,
-        height: gridSize * cellSize,
+        width: gridWidth * cellSize,
+        height: gridHeight * cellSize,
         child: Listener(
           onPointerDown: (event) {
-            isDrawing = true;
             _handlePointerEvent(event, cellSize);
           },
           onPointerMove: (event) {
-            if (isDrawing) {
-              _handlePointerEvent(event, cellSize);
-            }
-          },
-          onPointerUp: (event) {
-            isDrawing = false;
+            _handlePointerEvent(event, cellSize);
           },
           child: Stack(
             children: [
@@ -329,8 +343,8 @@ class _MapEditorState extends State<MapEditor> {
               _buildGridLines(cellSize),
 
               // Элементы стен
-              for (int row = 0; row < grid.length; row++)
-                for (int column = 0; column < grid[row].length; column++)
+              for (int row = 0; row < gridHeight; row++)
+                for (int column = 0; column < gridWidth; column++)
                   _buildGridCell(row, column, cellSize),
             ],
           ),
@@ -343,7 +357,7 @@ class _MapEditorState extends State<MapEditor> {
     final column = (event.localPosition.dx / cellSize).floor();
     final row = (event.localPosition.dy / cellSize).floor();
 
-    if (row >= 0 && row < gridSize && column >= 0 && column < gridSize) {
+    if (row >= 0 && row < gridHeight && column >= 0 && column < gridWidth) {
       setState(() {
         if (isErasing) {
           grid[row][column] = WallType.N;
@@ -357,7 +371,11 @@ class _MapEditorState extends State<MapEditor> {
   Widget _buildGridLines(double cellSize) {
     return Positioned.fill(
       child: CustomPaint(
-        painter: _GridPainter(gridSize: gridSize, cellSize: cellSize),
+        painter: _GridPainter(
+          gridWidth: gridWidth,
+          gridHeight: gridHeight,
+          cellSize: cellSize,
+        ),
       ),
     );
   }
@@ -377,13 +395,13 @@ class _MapEditorState extends State<MapEditor> {
           final cellColumn = (localPosition.dx / cellSize).floor();
 
           if (cellRow >= 0 &&
-              cellRow < gridSize &&
+              cellRow < gridHeight &&
               cellColumn >= 0 &&
-              cellColumn < gridSize) {
+              cellColumn < gridWidth) {
             _onCellDragged(cellRow, cellColumn);
           }
         },
-        child: Container(
+        child: SizedBox(
           width: cellSize,
           height: cellSize,
           child: painter != null
@@ -456,10 +474,23 @@ class _MapEditorState extends State<MapEditor> {
           .where((line) => line.trim().isNotEmpty)
           .toList();
 
-      final importedSize = lines.length;
-      if (importedSize < 5 || importedSize > 20) {
+      final importedHeight = lines.length;
+      if (importedHeight < 5 || importedHeight > 20) {
         _showError(
-          'Неверный размер карты: $importedSize. Допустимо от 5 до 20.',
+          'Неверный размер карты: $importedHeight. Допустимо от 5 до 20.',
+        );
+        return;
+      }
+      // Определяем ширину по первой строке
+      final firstLineSymbols = lines[0]
+          .trim()
+          .split(' ')
+          .where((symbol) => symbol.isNotEmpty)
+          .toList();
+      final importedWidth = firstLineSymbols.length;
+      if (importedWidth < 5 || importedWidth > 20) {
+        _showError(
+          'Неверная ширина карты: $importedWidth. Допустимо от 5 до 20.',
         );
         return;
       }
@@ -478,9 +509,9 @@ class _MapEditorState extends State<MapEditor> {
             .where((symbol) => symbol.isNotEmpty)
             .toList();
 
-        if (symbols.length != importedSize) {
+        if (symbols.length != importedWidth) {
           _showError(
-            'Неверное количество элементов в строке: ${symbols.length}. Ожидается $importedSize.',
+            'Неверное количество элементов в строке: ${symbols.length}. Ожидается $importedWidth.',
           );
           return;
         }
@@ -490,15 +521,17 @@ class _MapEditorState extends State<MapEditor> {
       }
 
       setState(() {
-        gridSize = importedSize;
+        gridWidth = importedWidth;
+        gridHeight = importedHeight;
         grid = newGrid;
-        _sizeController.text = importedSize.toString();
+        _widthController.text = importedWidth.toString();
+        _heightController.text = importedHeight.toString();
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'Карта $importedSize×$importedSize успешно импортирована!',
+            'Карта $importedWidth×$importedHeight успешно импортирована!',
           ),
         ),
       );
@@ -511,11 +544,11 @@ class _MapEditorState extends State<MapEditor> {
     final buffer = StringBuffer();
     buffer.writeln('[');
 
-    for (int row = 0; row < gridSize; row++) {
+    for (int row = 0; row < gridHeight; row++) {
       final rowSymbols = grid[row].map(_wallTypeToSymbol).toList();
       final rowString = "'${rowSymbols.join(' ')}'";
 
-      if (row < gridSize - 1) {
+      if (row < gridHeight - 1) {
         buffer.writeln('  $rowString,');
       } else {
         buffer.writeln('  $rowString');
@@ -527,13 +560,13 @@ class _MapEditorState extends State<MapEditor> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Экспорт карты $gridSize×$gridSize'),
+        title: Text('Экспорт карты $gridWidth×$gridHeight'),
         content: SizedBox(
           width: 400,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Размер: $gridSize×$gridSize'),
+              Text('Размер: $gridWidth×$gridHeight'),
               const SizedBox(height: 8),
               SelectableText(
                 buffer.toString(),
@@ -621,27 +654,45 @@ class _MapEditorState extends State<MapEditor> {
           children: [
             const Text('Введите размер карты (5-20):'),
             const SizedBox(height: 16),
-            TextField(
-              controller: _sizeController,
-              keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '13',
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _widthController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Ширина',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextField(
+                    controller: _heightController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Высота',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               child: Wrap(
                 spacing: 8,
-                children: [5, 8, 10, 13, 15, 20].map((size) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      _sizeController.text = size.toString();
-                    },
-                    child: Text('$size'),
-                  );
-                }).toList(),
+                runSpacing: 8,
+                children: [
+                  _buildSizeButton('13×13', 13, 13),
+                  _buildSizeButton('8×12', 8, 12),
+                  _buildSizeButton('12×8', 12, 8),
+                  _buildSizeButton('10×15', 10, 15),
+                  _buildSizeButton('5×7', 5, 7),
+                  _buildSizeButton('20×20', 20, 20),
+                ],
               ),
             ),
           ],
@@ -653,14 +704,21 @@ class _MapEditorState extends State<MapEditor> {
           ),
           TextButton(
             onPressed: () {
-              final newSize = int.tryParse(_sizeController.text);
-              if (newSize != null && newSize >= 5 && newSize <= 20) {
-                _resizeGrid(newSize);
+              final newWidth = int.tryParse(_widthController.text);
+              final newHeight = int.tryParse(_heightController.text);
+
+              if (newWidth != null &&
+                  newHeight != null &&
+                  newWidth >= 5 &&
+                  newWidth <= 20 &&
+                  newHeight >= 5 &&
+                  newHeight <= 20) {
+                _resizeGrid(newWidth, newHeight);
                 Navigator.pop(context);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Размер должен быть от 5 до 20'),
+                    content: Text('Размеры должны быть от 5 до 20'),
                     backgroundColor: Colors.red,
                   ),
                 );
@@ -673,16 +731,27 @@ class _MapEditorState extends State<MapEditor> {
     );
   }
 
-  void _resizeGrid(int newSize) {
+  Widget _buildSizeButton(String label, int width, int height) {
+    return ElevatedButton(
+      onPressed: () {
+        _widthController.text = width.toString();
+        _heightController.text = height.toString();
+      },
+      child: Text(label),
+    );
+  }
+
+  void _resizeGrid(int newWidth, int newHeight) {
     setState(() {
       final oldGrid = grid;
-      gridSize = newSize;
+      gridWidth = newWidth;
+      gridHeight = newHeight;
 
       // Создаем новую сетку
-      final newGrid = List.generate(newSize, (row) {
+      final newGrid = List.generate(newHeight, (row) {
         if (row < oldGrid.length) {
           // Копируем существующие строки
-          return List.generate(newSize, (col) {
+          return List.generate(newWidth, (col) {
             if (col < oldGrid[row].length) {
               return oldGrid[row][col]; // Сохраняем существующие данные
             } else {
@@ -691,21 +760,122 @@ class _MapEditorState extends State<MapEditor> {
           });
         } else {
           // Создаем новые строки
-          return List.filled(newSize, WallType.N);
+          return List.filled(newWidth, WallType.N);
         }
       });
 
       grid = newGrid;
     });
   }
+
+  void _loadPresetMap() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Загрузить готовую карту'),
+        content: SizedBox(
+          width: 400,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Выберите готовую карту:'),
+              const SizedBox(height: 16),
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: LevelMaps.totalLevels,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      child: ListTile(
+                        leading: Text('${index + 1}'),
+                        title: Text(LevelMaps.getLevelName(index)),
+                        subtitle: Text(
+                          '${LevelMaps.levels[index].length}×${LevelMaps.levels[index].length}',
+                        ),
+                        onTap: () {
+                          _loadLevel(index);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Отмена'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _loadLevel(int levelIndex) {
+    try {
+      if (levelIndex < 0 || levelIndex >= LevelMaps.totalLevels) {
+        _showError('Неверный индекс уровня: $levelIndex');
+        return;
+      }
+
+      final levelData = LevelMaps.levels[levelIndex];
+      final levelHeight = LevelMaps.height(levelIndex);
+      final levelWidth = LevelMaps.width(levelIndex);
+
+      final newGrid = <List<WallType>>[];
+
+      for (final line in levelData) {
+        final symbols = line
+            .split(' ')
+            .where((symbol) => symbol.isNotEmpty)
+            .toList();
+
+        // if (symbols.length < levelSize) {
+        //   _showError(
+        //     'Неверный формат уровня: строка содержит ${symbols.length} элементов вместо $levelSize',
+        //   );
+        //   return;
+        // }
+
+        final row = symbols.map(_symbolToWallType).toList();
+        newGrid.add(row);
+      }
+
+      setState(() {
+        gridWidth = levelWidth;
+        gridHeight = levelHeight;
+        grid = newGrid;
+        _widthController.text = levelWidth.toString();
+        _heightController.text = levelHeight.toString();
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Загружена карта: $levelIndex ($levelWidth×$levelHeight)',
+          ),
+        ),
+      );
+    } catch (e) {
+      _showError('Ошибка при загрузке уровня: $e');
+    }
+  }
 }
 
 // Painter для сетки
 class _GridPainter extends CustomPainter {
-  final int gridSize;
+  final int gridWidth;
+  final int gridHeight;
   final double cellSize;
 
-  const _GridPainter({required this.gridSize, required this.cellSize});
+  const _GridPainter({
+    required this.gridWidth,
+    required this.gridHeight,
+    required this.cellSize,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -715,13 +885,13 @@ class _GridPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     // Вертикальные линии
-    for (int i = 0; i <= gridSize; i++) {
+    for (int i = 0; i <= gridWidth; i++) {
       final x = i * cellSize;
       canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
     }
 
     // Горизонтальные линии
-    for (int i = 0; i <= gridSize; i++) {
+    for (int i = 0; i <= gridHeight; i++) {
       final y = i * cellSize;
       canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
     }
