@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 class LevelMaps {
   static int get totalLevels => levels.length;
 
@@ -14,7 +16,12 @@ class LevelMaps {
 
   static int width(int level) {
     final grid = LevelMaps.levels[level];
-    return grid.isNotEmpty ? grid[0].split(' ').length : 0;
+    return grid.isNotEmpty
+        ? grid.fold<int>(
+            grid[0].length,
+            (min, r) => math.min(r.split(' ').length, min),
+          )
+        : 0;
   }
 
   static int height(int level) {
@@ -42,7 +49,7 @@ class LevelMaps {
       'B B B B B B B',
     ],
     [
-      'B B B B B B B B B B B',
+      'B B B B B B B B B B',
       'B B B B B LIT T T RIT B',
       'B B B B LIT LOT N N R B',
       'B B B LIT LOT N N N ROT RIT ',
@@ -55,7 +62,7 @@ class LevelMaps {
     ],
     [
       "B B B B LIT RIT B B B B",
-      "B LIT T T LOT ROT T RIT B B B",
+      "B LIT T T LOT ROT T RIT B B",
       "B L N N N N N R B B",
       "B L N N N N N R B B",
       "LIT LOT N N N N N R B B",
@@ -244,10 +251,10 @@ class LevelMaps {
       'B LIT T RIT LIT T T T T T T T RIT B',
       'B L ROD RID LID D LOD N N N N N R B',
       'B L R LIT T T LOT N ROD D LOD N R B',
-      'B L R L N N N N ROT RIT L N R B',
-      'B L ROT LOT ROD D LOD N N ROT LOT N R B',
-      'LIT LOT N N R LIT LOT N ROD LOD N N R B',
-      'LID LOD N N ROT LOT N ROD RID L N N R B',
+      'B L R L ROD D LOD N ROT RIT L N R B',
+      'B L ROT LOT R LIT LOT N N ROT LOT N R B',
+      'LIT LOT N N ROT LOT N N ROD LOD N N R B',
+      'LID LOD N N N N N ROD RID L N N R B',
       'B L N ROD LOD N N ROT T LOT ROD LOD R B',
       'B L N R LID LOD N N ROD D RID L R B',
       'B L N ROT RIT L N N R LIT RIT L R B',
