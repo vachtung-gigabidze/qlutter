@@ -16,4 +16,4 @@ jobs:
       - uses: bluefireteam/flutter-gh-pages@v9   
         with:
           webRenderer: canvaskit
-          baseHref: /qlutter/
+          baseHref: ./
