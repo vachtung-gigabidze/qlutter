@@ -1,6 +1,5 @@
-package ru.ziidik.qlutter
+package com.example.qlutter
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity : FlutterActivity()

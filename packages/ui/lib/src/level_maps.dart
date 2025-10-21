@@ -1,0 +1,274 @@
+import 'dart:math' as math;
+
+class LevelMaps {
+  static int get totalLevels => levels.length;
+
+  static String getLevelName(int index) {
+    return 'Уровень ${index + 1}';
+  }
+
+  static String sizeInfo(int level) {
+    final grid = LevelMaps.levels[level];
+    int width = grid.isNotEmpty ? grid[0].split(' ').length : 0;
+    int height = grid.length;
+    return '$width×$height';
+  }
+
+  static int width(int level) {
+    final grid = LevelMaps.levels[level];
+    return grid.isNotEmpty
+        ? grid.fold<int>(
+            grid[0].length,
+            (min, r) => math.min(r.split(' ').length, min),
+          )
+        : 0;
+  }
+
+  static int height(int level) {
+    final grid = LevelMaps.levels[level];
+    return grid.length;
+  }
+
+  static const List<List<String>> levels = [
+    [
+      'B B B B B B B',
+      'B LIT T T T RIT B',
+      'B LID D D LOD R B',
+      'B B B B L R B',
+      'B B B B L R B',
+      'B B B B LID RID B',
+      'B B B B B B B',
+    ],
+    [
+      'B B LIT RIT B B B',
+      'B LIT LOT ROT T RIT B',
+      'B L N N N ROT RIT',
+      'B L N N N ROD RID',
+      'B LID LOD N N R B',
+      'B B LID D D RID B',
+      'B B B B B B B',
+    ],
+    [
+      'B B B B B B B B B B',
+      'B B B B B LIT T T RIT B',
+      'B B B B LIT LOT N N R B',
+      'B B B LIT LOT N N N ROT RIT ',
+      'B B LIT LOT N N N N ROD RID',
+      'B LIT LOT N N N N N R B',
+      'B L N N N N N N R B',
+      'B L N N N N N N R B',
+      'B LID LOD ROD D LOD ROD D RID B',
+      'B B LID RID B LID RID B B B',
+    ],
+    [
+      "B B B B LIT RIT B B B B",
+      "B LIT T T LOT ROT T RIT B B",
+      "B L N N N N N R B B",
+      "B L N N N N N R B B",
+      "LIT LOT N N N N N R B B",
+      "LID LOD N N N N N ROT RIT B",
+      "B L N N N N N N R B",
+      "B L N N N N N N R B",
+      "B L N ROD LOD N ROD D RID B",
+      "B LID D RID LID D RID B B B",
+      "B B B B B B B B B B",
+    ],
+    [
+      "B B B B B LIT RIT B B B",
+      "B B LIT T T LOT ROT RIT B B",
+      "B LIT LOT N N N N ROT RIT B",
+      "B L N N N N N N R B",
+      "B L N N N N N N ROT RIT",
+      "B L N N N N N N ROD RID",
+      "B L N N N N N N R B",
+      "B LID LOD N N N N ROD RID B",
+      "B B LID D LOD ROD D RID B B",
+      "B B B B LID RID B B B B",
+    ],
+    [
+      //5
+      "B B B B B B B B B B B",
+      "B B B LIT T RIT B B B",
+      "B B B L N R B B B",
+      "B LIT T LOT N ROT T T RIT",
+      "LIT LOT N N N N N ROD RID",
+      "LID LOD N N N N N R B",
+      "B L N N N N N R B",
+      "LIT LOT N N N N N R B",
+      "LID LOD N N N N N R B",
+      "B LID D LOD N ROD D RID B",
+      "B B B L N R B B B",
+      "B B B LID D RID B B B",
+      "B B B B B B B B B B B",
+    ],
+    // 6
+    [
+      "B B B LIT RIT B B B B",
+      "B B B L ROT RIT B B B",
+      "B B B L N R B B B",
+      "LIT T T LOT N ROT T RIT B",
+      "LID LOD N N N N N ROT RIT",
+      "B LID D LOD N ROD D D RID",
+      "B B B L N R B B B",
+      "B B B LID LOD R B B B",
+      "B B B B LID RID B B B",
+      "B B B B B B B B B B",
+    ], // 7
+    [
+      "B B B B B B LIT RIT B B B B B B",
+      "B LIT T T T T LOT ROT T T T T RIT B",
+      "B L N N N N N N N N N N R B",
+      "B L N N N N N N N N N N ROT RIT",
+      "LIT LOT N N N N N N N N N N ROD RID",
+      "LID LOD N N ROD D LOD ROD D LOD N N R B",
+      "B L N N R B LID RID B L N N R B",
+      "B LID D D RID B B B B LID D D RID B",
+      "B B B B B B B B B B B B B B",
+    ],
+    [
+      // 8
+      "B B B B B B LIT RIT B B B B B",
+      "B LIT T T T T LOT ROT T T T RIT B",
+      "B L N N N 5 N N N N N R B",
+      "LIT LOT N N N N N N N N ROD RID B",
+      "LID LOD N N N N N N N N ROT RIT B",
+      "B L N ROD LOD N N N 4 N N R B",
+      "B L ROD LB LOT N N N N N N R B",
+      "B L ROT LOT N N N N N N N ROT RIT",
+      "B L N N N N 3 N N N N ROD RID",
+      "B L N ROD LOD N N N N N N R B",
+      "B L N ROT LOT N N N N N N R B",
+      "B LID D D D LOD ROD D D D D RID B",
+      "B B B B B LID RID B B B B B B",
+      "B B B B B B B B B B B B B",
+    ],
+    // 9
+    [
+      "B B B B B B B B B B B B B B B",
+      "B LIT T T T T T T T T T T RIT B",
+      "B L N N N N N N N N N N R B",
+      "B L N N N N N N N N N 44 R B",
+      "B L N N N 6 N N N N N N R B",
+      "B L N N N N N N N N N 44 R B",
+      "B L N N N N N N N N N N R B",
+      "B L N N N N N N N N N 44 R B",
+      "B L N 2 N N N N N N N 5 R B",
+      "B L N N N N N 6 N N N 44 R B",
+      "B L N N N N N N N N 2 ROD RID B",
+      "B L N N N N N N N N N ROT RIT B",
+      "B LID D D D D D D D D D D RID B",
+      "B B B B B B B B B B B B B B B",
+    ],
+    [
+      // ten
+      "B B B LIT RIT B B B B B B B B B B",
+      "B LIT T LOT ROT T T T T T T RIT B B",
+      "B L 2 N 6 N N N N N N ROT RIT B",
+      "B L ROD LOD ROD LOD ROD LOD N N N N R B",
+      "B L R L R L R L ROD LOD N N R B",
+      "B L R L R L R L R L N N R B",
+      "B L R L R L R L R L N N R B",
+      "B L ROT LOT R L R L R L N N R B",
+      "B L N N ROT LOT ROT LOT ROT LOT N N R B",
+      "B L N N N N N 44 N N N N R B",
+      "B L N 4 N N N N N N N N R B",
+      "B L N N N N N N N N N N R B",
+      "B LID D D D D D D LOD ROD D D RID B",
+      "B B B B B B B B LID RID B B B B",
+    ],
+    [
+      // ELEVEN
+      "B B B B B B B B B B B B B B",
+      "B LIT T T T T T T T T T T RIT B",
+      "B L N N N N N N N N N N R B",
+      "B L N N ROD D D D D LOD N N R B",
+      "B L N ROD LB T T T RIT L N N R B",
+      "B L N R L 44 44 44 R L N N R B",
+      "B L N R L 44 44 44 R L N N R B",
+      "B L N R L 44 44 ROD RID L N N R B",
+      "B L N R LID D D RID B L N N R B",
+      "B L N ROT T T T T T RB LOD N R B",
+      "B L N N N N N N N ROT LOT N R B",
+      "B L N N N N 5 3 N N N N R B",
+      "B LID LOD ROD D D D D D D D D RID B",
+      "B B LID RID B B B B B B B B B B",
+    ],
+    [
+      //twelve
+      "B B B B B B B B LIT RIT B B B B",
+      "B LIT T T T T T T LOT ROT T T RIT B",
+      "B L N N N N N N N N N N ROT RIT",
+      "LIT LOT N N N N N N N N N N ROD RID",
+      "LID LOD N ROD LOD N ROD LOD N ROD LOD N R B",
+      "B L N ROT LOT 33 ROT LOT 33 ROT LOT N R B",
+      "B L N N 33 55 55 44 55 55 33 N R B",
+      "B L N N 33 44 44 55 44 44 33 N R B",
+      "B L N N 33 55 55 44 55 55 33 N R B",
+      "B L N N 33 33 33 33 33 33 33 N R B",
+      "B L N N N N N N N 2 N N R B",
+      "B L N N N N N N N N N N R B",
+      "B LID D D D D D D D D D D RID B",
+      "B B B B B B B B B B B B B B",
+    ],
+    [
+      // ТРИНАДЦАТЬ
+      "B B B B B B B B B B B B B B",
+      "B B LIT T T T T T T T T RIT B B",
+      "B LIT LOT N N N ROD LOD N N N ROT RIT B",
+      "B L N N N 44 R L N 55 N N R B",
+      "B L N N N N R L N N N N R B",
+      "B L ROD LOD 5 N R L N N ROD LOD R B",
+      "B L R L N N R L N N R L R B",
+      "B L R L N 5 R L N 4 R L R B",
+      "B L R LID D LOD R L ROD D RID L R B",
+      "B L R B B LID RID LID RID B B L R B",
+      "B L ROT T T T T T T T T LOT R B",
+      "B L N N N N N N N N N N R B",
+      "B LID D D D D D D D D D D RID B",
+      "B B B B B B B B B B B B B B",
+    ],
+    [
+      // чЕТЫРНАДЦАТЬ
+      "B B B B B B B B B B B B B B",
+      "B LIT T RIT LIT T T T T RIT LIT T RIT B",
+      "B L ROD RID L 6 N N N R LID LOD R B",
+      "B LID RID LIT LOT N N N N ROT RIT LID RID B",
+      "B LIT T LOT N N N N N N ROT T RIT B",
+      "B L 3 N N ROD D LOD N N N N R B",
+      "B L N N N R B LID LOD N N N R B",
+      "B L N N N ROT RIT LIT LOT N N N R B",
+      "LIT LOT N N N N ROT LOT 44 N N N R B",
+      "LID D D LOD N N N N N N ROD D RID B",
+      "B LIT RIT LID LOD N N N N ROD RID LIT RIT B",
+      "B L ROT RIT L N N N N R LIT LOT R B",
+      "B LID D RID LID D D D D RID LID D RID B",
+      "B B B B B B B B B B B B B B",
+      "B B B B B B B B B B B B B B",
+    ],
+
+    [
+      'B B B B B B B B B B B B B B',
+      'B LIT T RIT LIT T T T T T T T RIT B',
+      'B L ROD RID LID D LOD N N N N N R B',
+      'B L R LIT T T LOT N ROD D LOD N R B',
+      'B L R L ROD D LOD N ROT RIT L N R B',
+      'B L ROT LOT R LIT LOT N N ROT LOT N R B',
+      'LIT LOT N N ROT LOT N N ROD LOD N N R B',
+      'LID LOD N N N N N ROD RID L N N R B',
+      'B L N ROD LOD N N ROT T LOT ROD LOD R B',
+      'B L N R LID LOD N N ROD D RID L R B',
+      'B L N ROT RIT L N N R LIT RIT L R B',
+      'B L N N ROT LOT N N ROT LOT ROT LOT R B',
+      'B LID D LOD ROD D D D D D D D RID B',
+      'B B B LID RID B B B B B B B B B',
+    ],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ];
+}
