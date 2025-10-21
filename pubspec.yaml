@@ -16,15 +16,7 @@ dependencies:
     sdk: flutter
 
   shared_preferences: ^2.5.2
-  flutter_animated_dialog: ^2.0.1
-  url_launcher: ^6.3.1
-  go_router: ^14.8.1
-  logging: ^1.3.0
-  path_provider: ^2.1.5
-  animated_theme_switcher: ^2.0.10  
-  slang: ^4.5.0
-  slang_flutter: ^4.5.0
-  flutter_native_splash: ^2.4.5
+  
 
   flutter_localizations:
     sdk: flutter
