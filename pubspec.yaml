@@ -47,11 +47,11 @@ flutter_launcher_icons:
 flutter:  
   uses-material-design: true
 
-  fonts:
-    - family: DS Goose
-      fonts:
-          - asset: assets/fonts/DS Goose.ttf
-    # - family: Permanent Marker
+  # fonts:
+  #   - family: DS Goose
+  #     fonts:
+  #         - asset: assets/fonts/DS Goose.ttf
+  #   # - family: Permanent Marker
     #   fonts:
     #       - asset: assets/Permanent_Marker/PermanentMarker-Regular.ttf
     # - family: Roboto
@@ -61,7 +61,7 @@ flutter:
     #         weight: 700
   assets:
     - assets/icon/
-    - assets/rive/
+    # - assets/rive/
     - assets/data/
     
 # flutter_icons:

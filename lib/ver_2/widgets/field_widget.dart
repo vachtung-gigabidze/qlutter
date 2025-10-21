@@ -98,16 +98,16 @@ class _FieldWidgetState extends State<FieldWidget> {
             const SizedBox(height: AppConstants.smallPadding),
 
             // Управление историей (блокируем во время анимации)
-            HistoryControlWidget(
-              canUndo: _engine.canUndo && !_isAnimating,
-              canRedo: _engine.canRedo && !_isAnimating,
-              canReset: _engine.canReset && !_isAnimating,
-              historySize: _engine.historySize,
-              onUndo: _isAnimating ? () {} : _undo,
-              onRedo: _isAnimating ? () {} : _redo,
-              onReset: _isAnimating ? () {} : _resetToBeginning,
-            ),
-            const SizedBox(height: AppConstants.smallPadding),
+            // HistoryControlWidget(
+            //   canUndo: _engine.canUndo && !_isAnimating,
+            //   canRedo: _engine.canRedo && !_isAnimating,
+            //   canReset: _engine.canReset && !_isAnimating,
+            //   historySize: _engine.historySize,
+            //   onUndo: _isAnimating ? () {} : _undo,
+            //   onRedo: _isAnimating ? () {} : _redo,
+            //   onReset: _isAnimating ? () {} : _resetToBeginning,
+            // ),
+            // const SizedBox(height: AppConstants.smallPadding),
 
             // Игровое поле
             widget.wrap_level_navigation(

@@ -58,9 +58,9 @@ class AppConstants {
 
   // Размеры
   static const double defaultPadding = 8;
-  static const double smallPadding = 8;
-  static const double elementMinSizeMobile = 28;
-  static const double elementMaxSizeMobile = 55;
+  static const double smallPadding = 4;
+  static const double elementMinSizeMobile = 24;
+  static const double elementMaxSizeMobile = 24;
   static const double elementMinSizeTablet = 35;
   static const double elementMaxSizeTablet = 70;
   static const double elementMinSizeDesktop = 40;
