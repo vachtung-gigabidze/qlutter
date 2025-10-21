@@ -67,36 +67,21 @@ class LevelStatsWidget extends StatelessWidget {
     ],
   );
 
-  Widget _buildBallsVisualStats() => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      // Заголовок
-      // const Row(
-      //   children: [
-      //     // Icon(
-      //     //   Icons.sports_baseball,
-      //     //   size: 16,
-      //     //   color: AppConstants.primaryColor,
-      //     // ),
-      //     // SizedBox(width: 4),
-      //     Text(
-      //       AppConstants.ballsProgressText,
-      //       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-      //     ),
-      //   ],
-      // ),
-      // const SizedBox(height: 6),
+  Widget _buildBallsVisualStats() => Container(
+    padding: const EdgeInsets.all(4),
+    decoration: BoxDecoration(
+      color: AppConstants.surfaceColor,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          blurRadius: 2,
+          offset: const Offset(2, 2),
+        ),
+      ],
+      borderRadius: BorderRadius.circular(14),
+    ),
 
-      // Визуальное отображение шаров
-      _buildBallsIcons(),
-
-      // Текстовый прогресс
-      // const SizedBox(height: 4),
-      // Text(
-      //   '${stats.totalBallsCaptured}/$initialBallsCount',
-      //   style: const TextStyle(fontSize: 11, color: Colors.grey),
-      // ),
-    ],
+    child: _buildBallsIcons(),
   );
 
   Widget _buildBallsIcons() {

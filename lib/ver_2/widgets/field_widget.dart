@@ -497,16 +497,16 @@ class _FieldWidgetState extends State<FieldWidget> {
 
   void _onPanUpdate(DragUpdateDetails details, int x, int y) {
     // print('swipe $x $y ${details.delta.dx}');
-    if (details.delta.dx > 5)
+    if (details.delta.dx > AppConstants.swipeSensitivity)
       _makeMove(Coordinates(x, y), Direction.right);
     // print('Dragging in +X direction ${details.delta.dx}');
-    else if (details.delta.dx < -5)
+    else if (details.delta.dx < -AppConstants.swipeSensitivity)
       _makeMove(Coordinates(x, y), Direction.left);
     // print('Dragging in -X direction ${details.delta.dx}');
-    else if (details.delta.dy > 5)
+    else if (details.delta.dy > AppConstants.swipeSensitivity)
       _makeMove(Coordinates(x, y), Direction.down);
     // print('Dragging in +Y direction ${details.delta.dy}');
-    else if (details.delta.dy < -5)
+    else if (details.delta.dy < -AppConstants.swipeSensitivity)
       _makeMove(Coordinates(x, y), Direction.up);
     // print('Dragging in -Y direction ${details.delta.dy}');
   }

@@ -43,6 +43,10 @@ class AppConstants {
   static const warningColor = Color(0xFFFF9800);
   static const infoColor = Color(0xFF2196F3);
 
+  //Градиент кнопок
+  static const buttonGradientStart = Color(0xFF722FC0);
+  static const buttonGradientEnd = Color(0xFF8F5CEC);
+
   // Цвета элементов игры
   static const ballGreen = Color(0xFF4CAF50);
   static const ballRed = Color(0xFFF44336);
@@ -73,7 +77,7 @@ class AppConstants {
   static const animationDuration = Duration(milliseconds: 300);
 
   // Прочее
-  static const swipeSensitivity = 0.8;
+  static const swipeSensitivity = 2;
   static const elementPaddingRatio = 0.04;
   static const elementBorderRadius = 0.15;
 
