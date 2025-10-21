@@ -13,7 +13,7 @@ jobs:
         with:
           flutter-version: '3.35.0'
           channel: 'stable'
-      - uses: bluefireteam/flutter-gh-pages@v7   
+      - uses: bluefireteam/flutter-gh-pages@v9   
         with:
           # webRenderer: canvaskit
           baseHref: /qlutter/
