@@ -15,5 +15,5 @@ jobs:
           channel: 'stable'
       - uses: bluefireteam/flutter-gh-pages@v9   
         with:
-          # webRenderer: canvaskit
+          webRenderer: canvaskit
           baseHref: /qlutter/
