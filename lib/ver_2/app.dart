@@ -404,10 +404,8 @@ class _GameScreenState extends State<GameScreen> {
     //     ),
     //   ],
     // ),
-    body: Column(
-      children: [
-        // Навигация по уровням (показываем только после инициализации)
-        if (_isInitialized)
+    body: _isInitialized
+        ?
           // Padding(
           //   padding: const EdgeInsets.all(AppConstants.defaultPadding),
           //   child: LevelNavigationWidget(
@@ -430,10 +428,7 @@ class _GameScreenState extends State<GameScreen> {
               wrap_level_navigation: wrap_level_navigation,
             ),
           )
-        else
-          const SizedBox(height: AppConstants.defaultPadding),
-      ],
-    ),
+        : const SizedBox(height: AppConstants.defaultPadding),
   );
   void _showHowToPlay() {
     showDialog(

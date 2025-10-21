@@ -78,7 +78,7 @@ class AppConstants {
   static const elementBorderRadius = 0.15;
 
   // Размеры и отступы для навигации
-  static const double navButtonSize = 48;
+  static const double navButtonSize = 44;
   static const double navIconSize = 32;
 
   // Максимальная глубина истории

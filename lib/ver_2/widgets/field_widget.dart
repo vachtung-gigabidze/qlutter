@@ -88,14 +88,21 @@ class _FieldWidgetState extends State<FieldWidget> {
         final fieldHeight = (_elementSize * _engine.level.height) + 4;
 
         return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Статистика уровня
-            LevelStatsWidget(
-              stats: _engine.stats,
-              initialBallsCount: _engine.initialBallsCount,
-              currentBallsCount: _engine.ballsCount,
+            widget.wrap_level_navigation(
+              SizedBox(
+                width: fieldWidth - 15,
+                child: LevelStatsWidget(
+                  stats: _engine.stats,
+                  initialBallsCount: _engine.initialBallsCount,
+                  currentBallsCount: _engine.ballsCount,
+                ),
+              ),
             ),
-            const SizedBox(height: AppConstants.smallPadding),
+            const Spacer(),
+            // const SizedBox(height: AppConstants.smallPadding),
 
             // Управление историей (блокируем во время анимации)
             // HistoryControlWidget(
@@ -110,47 +117,44 @@ class _FieldWidgetState extends State<FieldWidget> {
             // const SizedBox(height: AppConstants.smallPadding),
 
             // Игровое поле
-            widget.wrap_level_navigation(
-              Center(
-                child: SizedBox(
-                  width: fieldWidth + _elementSize,
-                  height: fieldHeight + _elementSize,
-                  // decoration: BoxDecoration(
-                  //   color: AppConstants.backgroundColor,
-                  //   border: Border.all(color: Colors.grey.shade300, width: 2),
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.black.withOpacity(0.1),
-                  //       blurRadius: 8,
-                  //       offset: const Offset(2, 2),
-                  //     ),
-                  //   ],
-                  // ),
-                  // child: ClipRRect(
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   child:
-                  // ),
-                  child: PlayGround(
-                    elementSize: _elementSize,
-                    levelId: widget.levelNumber - 1,
-                    middle: Stack(
-                      children: [
-                        // Статичное игровое поле
-                        // _buildPlayGround(),
-                        _buildFieldGrid(),
-                        // Анимированные шары поверх статичного поля
-                        if (_engine.isAnimating &&
-                            _engine.currentAnimatedBall != null)
-                          _buildAnimatedBall(_engine.currentAnimatedBall!),
-                      ],
-                    ),
-                    h: _engine.level.height + 1,
-                    w: _engine.level.width + 1,
-                  ),
+            SizedBox(
+              width: fieldWidth + _elementSize,
+              height: fieldHeight + _elementSize,
+              // decoration: BoxDecoration(
+              //   color: AppConstants.backgroundColor,
+              //   border: Border.all(color: Colors.grey.shade300, width: 2),
+              //   borderRadius: BorderRadius.circular(12),
+              //   boxShadow: [
+              //     BoxShadow(
+              //       color: Colors.black.withOpacity(0.1),
+              //       blurRadius: 8,
+              //       offset: const Offset(2, 2),
+              //     ),
+              //   ],
+              // ),
+              // child: ClipRRect(
+              //   borderRadius: BorderRadius.circular(12),
+              //   child:
+              // ),
+              child: PlayGround(
+                elementSize: _elementSize,
+                levelId: widget.levelNumber - 1,
+                middle: Stack(
+                  children: [
+                    // Статичное игровое поле
+                    // _buildPlayGround(),
+                    _buildFieldGrid(),
+                    // Анимированные шары поверх статичного поля
+                    if (_engine.isAnimating &&
+                        _engine.currentAnimatedBall != null)
+                      _buildAnimatedBall(_engine.currentAnimatedBall!),
+                  ],
                 ),
+                h: _engine.level.height + 1,
+                w: _engine.level.width + 1,
               ),
             ),
+            const Spacer(),
           ],
         );
       },
