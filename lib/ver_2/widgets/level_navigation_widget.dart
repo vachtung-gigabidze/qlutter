@@ -31,12 +31,8 @@ class LevelNavigationWidget extends StatelessWidget {
         tooltip: AppConstants.previousLevelTooltip,
         onPressed: onPreviousLevel,
       ),
+      fieldGame,
 
-      SizedBox(
-        height: MediaQuery.of(context).size.height - 100,
-        width: MediaQuery.of(context).size.width - 130,
-        child: fieldGame,
-      ),
       // Expanded(child: fieldGame),
       // Информация о текущем уровне
       //_buildLevelInfo(),

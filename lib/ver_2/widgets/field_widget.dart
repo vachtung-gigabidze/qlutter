@@ -12,6 +12,7 @@ import 'package:qlutter/ver_2/models/level.dart';
 import 'package:qlutter/ver_2/widgets/advanced_animated_ball_widget.dart';
 // import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
 import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
+import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 import 'package:ui/ui.dart';
 
@@ -19,12 +20,14 @@ class FieldWidget extends StatefulWidget {
   const FieldWidget({
     required this.level,
     required this.levelNumber,
+    required this.wrap_level_navigation,
     super.key,
     this.onLevelComplete,
   });
   final Level level;
   final int levelNumber;
   final VoidCallback? onLevelComplete;
+  final Widget Function(Widget child) wrap_level_navigation;
 
   @override
   State<FieldWidget> createState() => _FieldWidgetState();
@@ -107,8 +110,8 @@ class _FieldWidgetState extends State<FieldWidget> {
             const SizedBox(height: AppConstants.smallPadding),
 
             // Игровое поле
-            Expanded(
-              child: Center(
+            widget.wrap_level_navigation(
+              Center(
                 child: SizedBox(
                   width: fieldWidth + _elementSize,
                   height: fieldHeight + _elementSize,
@@ -236,7 +239,7 @@ class _FieldWidgetState extends State<FieldWidget> {
     final availableWidth =
         constraints.maxWidth - AppConstants.defaultPadding * 2;
     final availableHeight =
-        constraints.maxHeight * (isLandscape ? 0.75 : 0.65) -
+        constraints.maxHeight * (isLandscape ? 0.65 : 0.85) -
         AppConstants.statusBarHeight;
 
     final widthBasedSize = availableWidth / _engine.level.width;
@@ -259,46 +262,46 @@ class _FieldWidgetState extends State<FieldWidget> {
     return elementSize.clamp(minSize, maxSize);
   }
 
-  Widget _buildStatusBar() => Container(
-    height: AppConstants.statusBarHeight,
-    padding: const EdgeInsets.symmetric(
-      horizontal: AppConstants.defaultPadding,
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        // Простая кнопка сброса уровня
-        IconButton(
-          icon: const Icon(Icons.refresh, size: AppConstants.iconSize),
-          onPressed: _resetLevel,
-          tooltip: 'Быстрый сброс уровня',
-        ),
+  // Widget _buildStatusBar() => Container(
+  //   height: AppConstants.statusBarHeight,
+  //   padding: const EdgeInsets.symmetric(
+  //     horizontal: AppConstants.defaultPadding,
+  //   ),
+  //   child: Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       // Простая кнопка сброса уровня
+  //       IconButton(
+  //         icon: const Icon(Icons.refresh, size: AppConstants.iconSize),
+  //         onPressed: _resetLevel,
+  //         tooltip: 'Быстрый сброс уровня',
+  //       ),
 
-        // Счетчик шаров
-        Text(
-          '${AppConstants.ballCountText}${_engine.ballsCount}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
+  //       // Счетчик шаров
+  //       Text(
+  //         '${AppConstants.ballCountText}${_engine.ballsCount}',
+  //         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+  //       ),
 
-        // Индикатор истории
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-          decoration: BoxDecoration(
-            color: AppConstants.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            'Ходы: ${_engine.historySize - 1}',
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: AppConstants.primaryColor,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+  //       // Индикатор истории
+  //       Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+  //         decoration: BoxDecoration(
+  //           color: AppConstants.primaryColor.withOpacity(0.1),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Text(
+  //           'Ходы: ${_engine.historySize - 1}',
+  //           style: const TextStyle(
+  //             fontSize: 12,
+  //             fontWeight: FontWeight.w500,
+  //             color: AppConstants.primaryColor,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   ),
+  // );
 
   Widget _buildFieldGrid() => Column(
     children: [
@@ -366,21 +369,7 @@ class _FieldWidgetState extends State<FieldWidget> {
       onTap: () => _onElementTap(x, y),
       // onPanStart: _onDragStart,
       // onPanEnd: _onDragEnd,
-      onPanUpdate: (details) {
-        // print('swipe $x $y ${details.delta.dx}');
-        if (details.delta.dx > 5)
-          _makeMove(Coordinates(x, y), Direction.right);
-        // print('Dragging in +X direction ${details.delta.dx}');
-        else if (details.delta.dx < -5)
-          _makeMove(Coordinates(x, y), Direction.left);
-        // print('Dragging in -X direction ${details.delta.dx}');
-        else if (details.delta.dy > 5)
-          _makeMove(Coordinates(x, y), Direction.down);
-        // print('Dragging in +Y direction ${details.delta.dy}');
-        else if (details.delta.dy < -5)
-          _makeMove(Coordinates(x, y), Direction.up);
-        // print('Dragging in -Y direction ${details.delta.dy}');
-      },
+      onPanUpdate: (details) => _onPanUpdate(details, x, y),
       child: Container(
         // padding: padding,
         child: Container(
@@ -502,43 +491,59 @@ class _FieldWidgetState extends State<FieldWidget> {
     );
   }
 
-  void _onDragStart(DragStartDetails details) {
-    final renderBox = context.findRenderObject() as RenderBox;
-    final localPosition = renderBox.globalToLocal(details.globalPosition);
-
-    final x = (localPosition.dx / _elementSize).floor();
-    final y = (localPosition.dy / _elementSize).floor();
-
-    if (x >= 0 &&
-        x < _engine.level.width &&
-        y >= 0 &&
-        y < _engine.level.height) {
-      _startDragCoords = Coordinates(x, y);
-    }
+  void _onPanUpdate(DragUpdateDetails details, int x, int y) {
+    // print('swipe $x $y ${details.delta.dx}');
+    if (details.delta.dx > 5)
+      _makeMove(Coordinates(x, y), Direction.right);
+    // print('Dragging in +X direction ${details.delta.dx}');
+    else if (details.delta.dx < -5)
+      _makeMove(Coordinates(x, y), Direction.left);
+    // print('Dragging in -X direction ${details.delta.dx}');
+    else if (details.delta.dy > 5)
+      _makeMove(Coordinates(x, y), Direction.down);
+    // print('Dragging in +Y direction ${details.delta.dy}');
+    else if (details.delta.dy < -5)
+      _makeMove(Coordinates(x, y), Direction.up);
+    // print('Dragging in -Y direction ${details.delta.dy}');
   }
 
-  // В методе _onDragEnd
-  void _onDragEnd(DragEndDetails details) {
-    if (_startDragCoords == null) return;
+  // void _onDragStart(DragStartDetails details) {
+  //   final renderBox = context.findRenderObject() as RenderBox;
+  //   final localPosition = renderBox.globalToLocal(details.globalPosition);
 
-    final velocity = details.velocity;
-    final direction = _getSwipeDirection(velocity.pixelsPerSecond);
+  //   final x = (localPosition.dx / _elementSize).floor();
+  //   final y = (localPosition.dy / _elementSize).floor();
 
-    if (direction != Direction.nowhere) {
-      final result = _engine.makeTurn(_startDragCoords!, direction);
+  //   if (x >= 0 &&
+  //       x < _engine.level.width &&
+  //       y >= 0 &&
+  //       y < _engine.level.height) {
+  //     _startDragCoords = Coordinates(x, y);
+  //   }
+  // }
 
-      if (result.moved) {
-        setState(() {});
+  // // В методе _onDragEnd
+  // void _onDragEnd(DragEndDetails details) {
+  //   if (_startDragCoords == null) return;
 
-        // Проверяем победу только если уровень завершен
-        if (result.levelComplete) {
-          widget.onLevelComplete?.call();
-        }
-      }
-    }
+  //   final velocity = details.velocity;
+  //   final direction = _getSwipeDirection(velocity.pixelsPerSecond);
 
-    _startDragCoords = null;
-  }
+  //   if (direction != Direction.nowhere) {
+  //     final result = _engine.makeTurn(_startDragCoords!, direction);
+
+  //     if (result.moved) {
+  //       setState(() {});
+
+  //       // Проверяем победу только если уровень завершен
+  //       if (result.levelComplete) {
+  //         widget.onLevelComplete?.call();
+  //       }
+  //     }
+  //   }
+
+  //   _startDragCoords = null;
+  // }
 
   // В методе _buildDirectionButton
   Widget _buildDirectionButton(
@@ -558,18 +563,18 @@ class _FieldWidgetState extends State<FieldWidget> {
     ),
   );
 
-  Direction _getSwipeDirection(Offset velocity) {
-    final dx = velocity.dx.abs();
-    final dy = velocity.dy.abs();
-    final swipeLength = sqrt(dx * dx + dy * dy);
+  // Direction _getSwipeDirection(Offset velocity) {
+  //   final dx = velocity.dx.abs();
+  //   final dy = velocity.dy.abs();
+  //   final swipeLength = sqrt(dx * dx + dy * dy);
 
-    final sensitivity = _elementSize * AppConstants.swipeSensitivity;
-    if (swipeLength < sensitivity) return Direction.nowhere;
+  //   final sensitivity = _elementSize * AppConstants.swipeSensitivity;
+  //   if (swipeLength < sensitivity) return Direction.nowhere;
 
-    if (dx >= dy) {
-      return velocity.dx > 0 ? Direction.right : Direction.left;
-    } else {
-      return velocity.dy > 0 ? Direction.down : Direction.up;
-    }
-  }
+  //   if (dx >= dy) {
+  //     return velocity.dx > 0 ? Direction.right : Direction.left;
+  //   } else {
+  //     return velocity.dy > 0 ? Direction.down : Direction.up;
+  //   }
+  // }
 }

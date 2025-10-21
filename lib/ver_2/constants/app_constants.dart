@@ -57,7 +57,7 @@ class AppConstants {
   static const statsBorderColor = Color(0xffF8F4FF);
 
   // Размеры
-  static const double defaultPadding = 16;
+  static const double defaultPadding = 8;
   static const double smallPadding = 8;
   static const double elementMinSizeMobile = 28;
   static const double elementMaxSizeMobile = 55;

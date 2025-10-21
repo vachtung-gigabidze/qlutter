@@ -375,6 +375,16 @@ class _GameScreenState extends State<GameScreen> {
     _checkNextLevelUnlock();
   }
 
+  Widget wrap_level_navigation(Widget child) => LevelNavigationWidget(
+    currentLevel: widget.levelNumber,
+    totalLevels: widget.totalLevels,
+    onPreviousLevel: widget.onPreviousLevel,
+    onNextLevel: widget.onNextLevel,
+    isNextLevelUnlocked: _isNextLevelUnlocked,
+    // Игровое поле
+    fieldGame: child,
+  );
+
   @override
   Widget build(BuildContext context) => Scaffold(
     // appBar: AppBar(
@@ -397,20 +407,26 @@ class _GameScreenState extends State<GameScreen> {
       children: [
         // Навигация по уровням (показываем только после инициализации)
         if (_isInitialized)
-          Padding(
-            padding: const EdgeInsets.all(AppConstants.defaultPadding),
-            child: LevelNavigationWidget(
-              currentLevel: widget.levelNumber,
-              totalLevels: widget.totalLevels,
-              onPreviousLevel: widget.onPreviousLevel,
-              onNextLevel: widget.onNextLevel,
-              isNextLevelUnlocked: _isNextLevelUnlocked,
-              // Игровое поле
-              fieldGame: FieldWidget(
-                level: widget.level,
-                levelNumber: widget.levelNumber,
-                onLevelComplete: widget.onLevelComplete,
-              ),
+          // Padding(
+          //   padding: const EdgeInsets.all(AppConstants.defaultPadding),
+          //   child: LevelNavigationWidget(
+          //     currentLevel: widget.levelNumber,
+          //     totalLevels: widget.totalLevels,
+          //     onPreviousLevel: widget.onPreviousLevel,
+          //     onNextLevel: widget.onNextLevel,
+          //     isNextLevelUnlocked: _isNextLevelUnlocked,
+          //     // Игровое поле
+          //     fieldGame:
+          //   ),
+          // )
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: FieldWidget(
+              level: widget.level,
+              levelNumber: widget.levelNumber,
+              onLevelComplete: widget.onLevelComplete,
+              wrap_level_navigation: wrap_level_navigation,
             ),
           )
         else
