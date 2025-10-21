@@ -54,38 +54,61 @@ class LevelNavigationWidget extends StatelessWidget {
     required bool isEnabled,
     required String tooltip,
     required VoidCallback onPressed,
-  }) => SizedBox(
+  }) => Container(
     width: AppConstants.navButtonSize,
     height: AppConstants.navButtonSize,
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        begin: AlignmentGeometry.topCenter,
+        end: AlignmentGeometry.bottomCenter,
+        colors: [
+          AppConstants.buttonGradientStart,
+          AppConstants.buttonGradientEnd,
+        ],
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.4),
+          blurRadius: 4,
+          offset: const Offset(2, 2),
+        ),
+      ],
+      borderRadius: BorderRadius.circular(14),
+    ),
     child: IconButton(
       icon: Icon(
         icon,
         size: AppConstants.navIconSize,
-        color: isEnabled ? AppConstants.primaryColor : Colors.grey.shade400,
+        color: isEnabled ? AppConstants.surfaceColor : Colors.grey.shade400,
       ),
       onPressed: isEnabled ? onPressed : null,
       tooltip: tooltip,
-      style: IconButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: isEnabled
-            ? const Color.fromARGB(255, 237, 239, 241).withOpacity(0.1)
-            : Colors.grey.shade100,
-      ),
+      // style: IconButton.styleFrom(
+      //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      //   backgroundColor: isEnabled
+      //       ? AppConstants.surfaceColor
+      //       : Colors.grey.shade100,
+      // ),
     ),
   );
 
   Widget _buildLevelInfo() => Container(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     decoration: BoxDecoration(
-      color: AppConstants.primaryColor.withOpacity(0.1),
-      borderRadius: BorderRadius.circular(20),
+      gradient: const LinearGradient(
+        colors: [
+          AppConstants.buttonGradientStart,
+          AppConstants.buttonGradientEnd,
+        ],
+      ),
+      borderRadius: BorderRadius.circular(28),
     ),
     child: Text(
       '$currentLevel/$totalLevels',
       style: const TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
-        color: AppConstants.primaryColor,
+        color: AppConstants.surfaceColor,
       ),
     ),
   );
