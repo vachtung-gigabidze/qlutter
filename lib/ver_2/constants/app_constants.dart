@@ -17,8 +17,8 @@ class AppConstants {
       'Вы уверены, что хотите сбросить прогресс?';
   static const String resetSuccess = 'Прогресс успешно сброшен!';
 
-  static const String stepsText = 'Шаги: ';
-  static const String timeText = 'Время: ';
+  static const String stepsText = ': ';
+  static const String timeText = ' ';
   static const String ballsText = 'Шары: ';
   static const String statsTitle = 'Статистика уровня';
   // Навигация по уровням

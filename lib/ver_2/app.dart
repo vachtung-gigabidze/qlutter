@@ -387,6 +387,7 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+    backgroundColor: AppConstants.surfaceColor,
     // appBar: AppBar(
     //   title: Text('${AppConstants.levelText}${widget.levelNumber}'),
     //   centerTitle: true,
