@@ -347,6 +347,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   bool _isNextLevelUnlocked = false;
   bool _isInitialized = false;
+  late Widget fieldWidget;
 
   @override
   void initState() {
@@ -396,61 +397,17 @@ class _GameScreenState extends State<GameScreen> {
     child: Center(child: child), // const Icon(Icons.refresh),
   );
 
-  Widget _create_header(Widget child) => Column(
-    mainAxisAlignment: MainAxisAlignment.start,
+  Widget _create_header(Widget child) => Row(
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Row(
-        children: [
-          AppMenuButton(
-            onTap: () {},
-            child: const Icon(
-              Icons.refresh,
-              size: 24,
-              color: Color(0xffD9C8FB),
-            ),
-          ),
-          const Spacer(),
-          _level_title(
-            Text(
-              '${widget.levelNumber} / ${widget.totalLevels}',
-              style: const TextStyle(
-                color: Color(0xff6549AE),
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const Spacer(),
-
-          // AppMenuButton(
-          //   onTap: () {
-
-          //   },
-          //   child: const Icon(Icons.edit, size: 24, color: Color(0xffD9C8FB)),
-          // ),
-          AppMenuButton(
-            onTap: () {},
-            child: const Icon(
-              Icons.settings,
-              size: 24,
-              color: Color(0xffD9C8FB),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          LevelNavigationWidget(
-            currentLevel: widget.levelNumber,
-            totalLevels: widget.totalLevels,
-            onPreviousLevel: widget.onPreviousLevel,
-            onNextLevel: widget.onNextLevel,
-            isNextLevelUnlocked: _isNextLevelUnlocked,
-            // Игровое поле
-            fieldGame: child,
-          ),
-        ],
+      LevelNavigationWidget(
+        currentLevel: widget.levelNumber,
+        totalLevels: widget.totalLevels,
+        onPreviousLevel: widget.onPreviousLevel,
+        onNextLevel: widget.onNextLevel,
+        isNextLevelUnlocked: _isNextLevelUnlocked,
+        // Игровое поле
+        fieldGame: child,
       ),
     ],
   );
@@ -466,50 +423,70 @@ class _GameScreenState extends State<GameScreen> {
   // );
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppConstants.surfaceColor,
-    // appBar: AppBar(
-    //   title: Text('${AppConstants.levelText}${widget.levelNumber}'),
-    //   centerTitle: true,
-    //   actions: [
-    //     IconButton(
-    //       icon: const Icon(Icons.help_outline),
-    //       onPressed: _showHowToPlay,
-    //       tooltip: AppConstants.howToPlayTitle,
-    //     ),
-    //     IconButton(
-    //       icon: const Icon(Icons.settings),
-    //       onPressed: _showSettings,
-    //       tooltip: AppConstants.settingsTitle,
-    //     ),
-    //   ],
-    // ),
-    body: _isInitialized
-        ?
-          // Padding(
-          //   padding: const EdgeInsets.all(AppConstants.defaultPadding),
-          //   child: LevelNavigationWidget(
-          //     currentLevel: widget.levelNumber,
-          //     totalLevels: widget.totalLevels,
-          //     onPreviousLevel: widget.onPreviousLevel,
-          //     onNextLevel: widget.onNextLevel,
-          //     isNextLevelUnlocked: _isNextLevelUnlocked,
-          //     // Игровое поле
-          //     fieldGame:
-          //   ),
-          // )
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: FieldWidget(
-              level: widget.level,
-              levelNumber: widget.levelNumber,
-              onLevelComplete: widget.onLevelComplete,
-              wrap_level_navigation: _create_header,
+  Widget build(BuildContext context) {
+    fieldWidget = FieldWidget(
+      key: ValueKey(widget.level),
+      level: widget.level,
+      levelNumber: widget.levelNumber,
+      onLevelComplete: widget.onLevelComplete,
+      wrap_level_navigation: _create_header,
+    );
+    return Scaffold(
+      backgroundColor: AppConstants.surfaceColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+
+        title: _level_title(
+          Text(
+            '${widget.levelNumber} / ${widget.totalLevels}',
+            style: const TextStyle(
+              color: Color(0xff6549AE),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
-          )
-        : const SizedBox(height: AppConstants.defaultPadding),
-  );
+          ),
+        ),
+        centerTitle: true,
+        leading: AppMenuButton(
+          onTap: () {},
+          child: const Icon(Icons.refresh, size: 24, color: Color(0xffD9C8FB)),
+        ),
+
+        actions: [
+          AppMenuButton(
+            onTap: () {},
+            child: const Icon(
+              Icons.settings,
+              size: 24,
+              color: Color(0xffD9C8FB),
+            ),
+          ),
+        ],
+      ),
+      body: _isInitialized
+          ?
+            // Padding(
+            //   padding: const EdgeInsets.all(AppConstants.defaultPadding),
+            //   child: LevelNavigationWidget(
+            //     currentLevel: widget.levelNumber,
+            //     totalLevels: widget.totalLevels,
+            //     onPreviousLevel: widget.onPreviousLevel,
+            //     onNextLevel: widget.onNextLevel,
+            //     isNextLevelUnlocked: _isNextLevelUnlocked,
+            //     // Игровое поле
+            //     fieldGame:
+            //   ),
+            // )
+            SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: fieldWidget,
+            )
+          : const SizedBox(height: AppConstants.defaultPadding),
+    );
+  }
+
   void _showHowToPlay() {
     showDialog(
       context: context,
