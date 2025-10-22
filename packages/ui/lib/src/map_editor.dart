@@ -371,7 +371,7 @@ class _MapEditorState extends State<MapEditor> {
   Widget _buildGridLines(double cellSize) {
     return Positioned.fill(
       child: CustomPaint(
-        painter: _GridPainter(
+        painter: GridPainter(
           gridWidth: gridWidth,
           gridHeight: gridHeight,
           cellSize: cellSize,
@@ -863,40 +863,4 @@ class _MapEditorState extends State<MapEditor> {
       _showError('Ошибка при загрузке уровня: $e');
     }
   }
-}
-
-// Painter для сетки
-class _GridPainter extends CustomPainter {
-  final int gridWidth;
-  final int gridHeight;
-  final double cellSize;
-
-  const _GridPainter({
-    required this.gridWidth,
-    required this.gridHeight,
-    required this.cellSize,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white24
-      ..strokeWidth = 1
-      ..style = PaintingStyle.stroke;
-
-    // Вертикальные линии
-    for (int i = 0; i <= gridWidth; i++) {
-      final x = i * cellSize;
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    // Горизонтальные линии
-    for (int i = 0; i <= gridHeight; i++) {
-      final y = i * cellSize;
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
