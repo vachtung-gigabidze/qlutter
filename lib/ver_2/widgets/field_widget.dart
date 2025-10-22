@@ -11,8 +11,6 @@ import 'package:qlutter/ver_2/models/item.dart';
 import 'package:qlutter/ver_2/models/level.dart';
 import 'package:qlutter/ver_2/widgets/advanced_animated_ball_widget.dart';
 // import 'package:qlutter/ver_2/widgets/animated_ball_widget.dart';
-import 'package:qlutter/ver_2/widgets/history_control_widget.dart';
-import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_stats_widget.dart';
 import 'package:ui/ui.dart';
 
@@ -84,8 +82,8 @@ class _FieldWidgetState extends State<FieldWidget> {
           isLandscape,
           mediaQuery,
         );
-        final fieldWidth = (_elementSize * _engine.level.width) + 4;
-        final fieldHeight = (_elementSize * _engine.level.height) + 4;
+        final fieldWidth = (_elementSize * (_engine.level.width + 1)) + 4;
+        final fieldHeight = (_elementSize * (_engine.level.height + 1)) + 4;
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +91,7 @@ class _FieldWidgetState extends State<FieldWidget> {
             // Статистика уровня
             widget.wrap_level_navigation(
               SizedBox(
-                width: fieldWidth - 15,
+                width: fieldWidth - ((isLandscape ? 1 : 3) * _elementSize),
                 child: LevelStatsWidget(
                   stats: _engine.stats,
                   initialBallsCount: _engine.initialBallsCount,
@@ -243,11 +241,11 @@ class _FieldWidgetState extends State<FieldWidget> {
     final availableWidth =
         constraints.maxWidth - AppConstants.defaultPadding * 2;
     final availableHeight =
-        constraints.maxHeight * (isLandscape ? 0.65 : 0.85) -
+        constraints.maxHeight * (isLandscape ? 0.85 : 0.95) -
         AppConstants.statusBarHeight;
 
-    final widthBasedSize = availableWidth / _engine.level.width;
-    final heightBasedSize = availableHeight / _engine.level.height;
+    final widthBasedSize = availableWidth / (_engine.level.width + 1);
+    final heightBasedSize = availableHeight / (_engine.level.height + 1);
 
     double elementSize = min(widthBasedSize, heightBasedSize);
 
@@ -475,6 +473,9 @@ class _FieldWidgetState extends State<FieldWidget> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        elevation: 1,
+        surfaceTintColor: Colors.transparent,
         title: const Text('Выберите направление'),
         content: Column(
           mainAxisSize: MainAxisSize.min,

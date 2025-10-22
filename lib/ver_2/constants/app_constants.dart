@@ -64,7 +64,7 @@ class AppConstants {
   static const double defaultPadding = 8;
   static const double smallPadding = 4;
   static const double elementMinSizeMobile = 24;
-  static const double elementMaxSizeMobile = 24;
+  static const double elementMaxSizeMobile = 48;
   static const double elementMinSizeTablet = 35;
   static const double elementMaxSizeTablet = 70;
   static const double elementMinSizeDesktop = 40;
