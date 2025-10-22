@@ -22,31 +22,28 @@ class PlayGround extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: h * elementSize,
-      width: w * elementSize,
-      child: Stack(
-        //color: const Color(0xFF50427D),
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: (elementSize / 2),
-              top: (elementSize / 1.5),
-            ),
-            child: Container(
-              height: ((h - 1) * elementSize),
-              width: ((w - 1) * elementSize),
-              color: const Color(0xFF50427D),
-              child: _buildGridLines(elementSize, w - 1, h - 1),
-            ),
+    print('show levelId size $h $w');
+    return Stack(
+      //color: const Color(0xFF50427D),
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: (elementSize / 2),
+            top: (elementSize / 1.5),
           ),
-          DynamicWallWidget(
-            board: GameBoard(LevelMaps.levels[levelId]),
-            elementSize: elementSize,
-            middle: middle,
+          child: Container(
+            height: ((h - 1) * elementSize),
+            width: ((w - 1) * elementSize),
+            color: const Color(0xFF50427D),
+            //child: _buildGridLines(elementSize, w - 1, h - 1),
           ),
-        ],
-      ),
+        ),
+        DynamicWallWidget(
+          board: GameBoard(LevelMaps.levels[levelId]),
+          elementSize: elementSize,
+          middle: middle,
+        ),
+      ],
     );
   }
 

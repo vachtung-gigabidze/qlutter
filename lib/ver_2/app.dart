@@ -441,15 +441,15 @@ class _GameScreenState extends State<GameScreen> {
     ],
   );
 
-  Widget _create_header_with_nav(Widget child) => LevelNavigationWidget(
-    currentLevel: widget.levelNumber,
-    totalLevels: widget.totalLevels,
-    onPreviousLevel: widget.onPreviousLevel,
-    onNextLevel: widget.onNextLevel,
-    isNextLevelUnlocked: _isNextLevelUnlocked,
-    // Игровое поле
-    fieldGame: child,
-  );
+  // Widget _create_header_with_nav(Widget child) => LevelNavigationWidget(
+  //   currentLevel: widget.levelNumber,
+  //   totalLevels: widget.totalLevels,
+  //   onPreviousLevel: widget.onPreviousLevel,
+  //   onNextLevel: widget.onNextLevel,
+  //   isNextLevelUnlocked: _isNextLevelUnlocked,
+  //   // Игровое поле
+  //   fieldGame: child,
+  // );
 
   @override
   Widget build(BuildContext context) => Scaffold(
