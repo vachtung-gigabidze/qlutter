@@ -30,12 +30,12 @@ class PlayGround extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(
-              left: elementSize / 2,
-              top: elementSize / 1.5,
+              left: (elementSize / 2),
+              top: (elementSize / 1.5),
             ),
             child: Container(
-              height: (h - 1) * elementSize,
-              width: (w - 1) * elementSize,
+              height: ((h - 1) * elementSize),
+              width: ((w - 1) * elementSize),
               color: const Color(0xFF50427D),
               child: _buildGridLines(elementSize, w - 1, h - 1),
             ),
