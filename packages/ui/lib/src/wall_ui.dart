@@ -31,12 +31,13 @@ class PlayGround extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
               left: elementSize / 2,
-              top: elementSize / 2,
+              top: elementSize / 1.5,
             ),
             child: Container(
               height: (h - 1) * elementSize,
               width: (w - 1) * elementSize,
               color: const Color(0xFF50427D),
+              child: _buildGridLines(elementSize, w - 1, h - 1),
             ),
           ),
           DynamicWallWidget(
@@ -45,6 +46,14 @@ class PlayGround extends StatelessWidget {
             middle: middle,
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGridLines(double cellSize, int w, int h) {
+    return Positioned.fill(
+      child: CustomPaint(
+        painter: GridPainter(gridWidth: w, gridHeight: h, cellSize: cellSize),
       ),
     );
   }

@@ -68,18 +68,18 @@ class LevelNavigationWidget extends StatelessWidget {
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.4),
+          color: Colors.black.withOpacity(0.6),
           blurRadius: 4,
           offset: const Offset(2, 2),
         ),
       ],
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(AppConstants.navButtonRound),
     ),
     child: IconButton(
       icon: Icon(
         icon,
         size: AppConstants.navIconSize,
-        color: isEnabled ? AppConstants.surfaceColor : Colors.grey.shade400,
+        color: isEnabled ? AppConstants.navIconColor : Colors.grey.shade400,
       ),
       onPressed: isEnabled ? onPressed : null,
       tooltip: tooltip,

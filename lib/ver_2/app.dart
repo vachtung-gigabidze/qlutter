@@ -13,6 +13,7 @@ import 'package:qlutter/ver_2/providers/app_state_provider.dart';
 // import 'package:qlutter/ver_2/models/level.dart';
 // import 'package:qlutter/ver_2/game/field_engine.dart';
 import 'package:qlutter/ver_2/services/storage_service.dart';
+import 'package:qlutter/ver_2/widgets/app_menu_button.dart';
 import 'package:qlutter/ver_2/widgets/app_state_container.dart';
 import 'package:qlutter/ver_2/widgets/field_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
@@ -375,7 +376,72 @@ class _GameScreenState extends State<GameScreen> {
     _checkNextLevelUnlock();
   }
 
-  Widget wrap_level_navigation(Widget child) => LevelNavigationWidget(
+  Widget _level_title(Widget child) => Container(
+    width: 148,
+    height: 48,
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [Color(0xffD9C8FB), Color(0xffD9C8FB)],
+      ),
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          offset: const Offset(2, 2),
+          color: Colors.black.withOpacity(0.6),
+          blurRadius: 4,
+        ),
+      ],
+    ),
+    child: Center(child: child), // const Icon(Icons.refresh),
+  );
+
+  Widget _create_header(Widget child) => Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Row(
+        children: [
+          const AppMenuButton(
+            child: Icon(Icons.refresh, size: 24, color: Color(0xffD9C8FB)),
+          ),
+          const Spacer(),
+          _level_title(
+            Text(
+              '${widget.levelNumber} / ${widget.totalLevels}',
+              style: const TextStyle(
+                color: Color(0xff6549AE),
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Spacer(),
+          const AppMenuButton(
+            child: Icon(Icons.edit, size: 24, color: Color(0xffD9C8FB)),
+          ),
+
+          const AppMenuButton(
+            child: Icon(Icons.settings, size: 24, color: Color(0xffD9C8FB)),
+          ),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LevelNavigationWidget(
+            currentLevel: widget.levelNumber,
+            totalLevels: widget.totalLevels,
+            onPreviousLevel: widget.onPreviousLevel,
+            onNextLevel: widget.onNextLevel,
+            isNextLevelUnlocked: _isNextLevelUnlocked,
+            // Игровое поле
+            fieldGame: child,
+          ),
+        ],
+      ),
+    ],
+  );
+
+  Widget _create_header_with_nav(Widget child) => LevelNavigationWidget(
     currentLevel: widget.levelNumber,
     totalLevels: widget.totalLevels,
     onPreviousLevel: widget.onPreviousLevel,
@@ -425,7 +491,7 @@ class _GameScreenState extends State<GameScreen> {
               level: widget.level,
               levelNumber: widget.levelNumber,
               onLevelComplete: widget.onLevelComplete,
-              wrap_level_navigation: wrap_level_navigation,
+              wrap_level_navigation: _create_header,
             ),
           )
         : const SizedBox(height: AppConstants.defaultPadding),

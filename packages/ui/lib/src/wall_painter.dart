@@ -536,3 +536,39 @@ class LeftBridgesShadow extends CustomPainter {
     return true;
   }
 }
+
+// Painter для сетки
+class GridPainter extends CustomPainter {
+  final int gridWidth;
+  final int gridHeight;
+  final double cellSize;
+
+  const GridPainter({
+    required this.gridWidth,
+    required this.gridHeight,
+    required this.cellSize,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Color(0xff3D2F6B)
+      ..strokeWidth = 1
+      ..style = PaintingStyle.stroke;
+
+    // Вертикальные линии
+    for (int i = 0; i <= gridWidth; i++) {
+      final x = i * cellSize;
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
+    }
+
+    // Горизонтальные линии
+    for (int i = 0; i <= gridHeight; i++) {
+      final y = i * cellSize;
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
