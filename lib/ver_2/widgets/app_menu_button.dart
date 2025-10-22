@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:qlutter/ver_2/constants/app_constants.dart';
 
 class AppMenuButton extends StatelessWidget {
-  const AppMenuButton({required this.child, super.key});
+  const AppMenuButton({required this.child, required this.onTap, super.key});
 
   final Widget child;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) => Padding(

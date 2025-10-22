@@ -22,7 +22,7 @@ class PlayGround extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('show levelId size $h $w');
+    // print('show levelId size $h $w');
     return Stack(
       //color: const Color(0xFF50427D),
       children: [
@@ -38,6 +38,7 @@ class PlayGround extends StatelessWidget {
             //child: _buildGridLines(elementSize, w - 1, h - 1),
           ),
         ),
+        _buildGridLines(elementSize, w - 1, h - 1),
         DynamicWallWidget(
           board: GameBoard(LevelMaps.levels[levelId]),
           elementSize: elementSize,
@@ -48,9 +49,17 @@ class PlayGround extends StatelessWidget {
   }
 
   Widget _buildGridLines(double cellSize, int w, int h) {
-    return Positioned.fill(
-      child: CustomPaint(
-        painter: GridPainter(gridWidth: w, gridHeight: h, cellSize: cellSize),
+    return Padding(
+      padding: EdgeInsets.only(
+        left: (elementSize / 2),
+        top: (elementSize / 1.5),
+      ),
+      child: SizedBox(
+        height: cellSize * h,
+        width: cellSize * w,
+        child: CustomPaint(
+          painter: GridPainter(gridWidth: w, gridHeight: h, cellSize: cellSize),
+        ),
       ),
     );
   }
