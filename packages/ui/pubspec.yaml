@@ -1,6 +1,6 @@
 name: ui
 description: "Qlutter UI kit"
-version: 0.0.1
+version: 0.0.2
 homepage:
 
 environment:
