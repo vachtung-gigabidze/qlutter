@@ -15,5 +15,5 @@ jobs:
           channel: 'stable'
       - uses: bluefireteam/flutter-gh-pages@v9   
         with:
-          webRenderer: canvaskit
+          compileToWasm: true
           baseHref: /
