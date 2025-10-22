@@ -17,6 +17,7 @@ import 'package:qlutter/ver_2/widgets/app_menu_button.dart';
 import 'package:qlutter/ver_2/widgets/app_state_container.dart';
 import 'package:qlutter/ver_2/widgets/field_widget.dart';
 import 'package:qlutter/ver_2/widgets/level_navigation_widget.dart';
+import 'package:ui/ui.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:qlutter/ver_2/widgets/field_widget.dart';
 
@@ -400,8 +401,13 @@ class _GameScreenState extends State<GameScreen> {
     children: [
       Row(
         children: [
-          const AppMenuButton(
-            child: Icon(Icons.refresh, size: 24, color: Color(0xffD9C8FB)),
+          AppMenuButton(
+            onTap: () {},
+            child: const Icon(
+              Icons.refresh,
+              size: 24,
+              color: Color(0xffD9C8FB),
+            ),
           ),
           const Spacer(),
           _level_title(
@@ -415,12 +421,20 @@ class _GameScreenState extends State<GameScreen> {
             ),
           ),
           const Spacer(),
-          const AppMenuButton(
-            child: Icon(Icons.edit, size: 24, color: Color(0xffD9C8FB)),
-          ),
 
-          const AppMenuButton(
-            child: Icon(Icons.settings, size: 24, color: Color(0xffD9C8FB)),
+          // AppMenuButton(
+          //   onTap: () {
+
+          //   },
+          //   child: const Icon(Icons.edit, size: 24, color: Color(0xffD9C8FB)),
+          // ),
+          AppMenuButton(
+            onTap: () {},
+            child: const Icon(
+              Icons.settings,
+              size: 24,
+              color: Color(0xffD9C8FB),
+            ),
           ),
         ],
       ),
