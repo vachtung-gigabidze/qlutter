@@ -5,12 +5,14 @@
   
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Color Pool Puzzle - Flutter Game">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="tic_tac_toe">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Color Pool Puzzle">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
@@ -18,21 +20,50 @@
 
   <title>Color Pool Puzzle</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- VK Bridge для сигнала готовности -->
+  <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+  
+  <script>
+    // Очищаем VK параметры из URL при загрузке
+    (function() {
+      if (window.location.search.indexOf('vk_') !== -1) {
+        var cleanUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    })();
+
+    // Отправляем сигнал готовности в VK
+    window.addEventListener('DOMContentLoaded', function() {
+      if (window.vkBridge) {
+        vkBridge.send('VKWebAppInit', {})
+          .then(function() {
+            console.log('✅ VK App initialized successfully');
+          })
+          .catch(function(error) {
+            console.error('❌ VK Init error:', error);
+            // Fallback: пробуем через postMessage
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage(JSON.stringify({
+                type: 'VKWebAppInit',
+                handler: 'VKWebAppInitResult'
+              }), '*');
+            }
+          });
+      } else {
+        // Если vkBridge не загрузился, пробуем postMessage напрямую
+        console.warn('vkBridge not loaded, using postMessage fallback');
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(JSON.stringify({
+            type: 'VKWebAppInit',
+            handler: 'VKWebAppInitResult'
+          }), '*');
+        }
+      }
+    });
+  </script>
 </head>
 <body> 
-  <script>
-  // Очищаем VK параметры из URL при загрузке
-  (function() {
-    if (window.location.search.indexOf('vk_') !== -1) {
-      // Удаляем search params
-      var cleanUrl = window.location.pathname;
-      window.history.replaceState({}, document.title, cleanUrl);
-    }
-  })();
-</script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
-
-<!DOCTYPE html>
-<html>
