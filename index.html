@@ -20,6 +20,16 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body> 
+  <script>
+  // Очищаем VK параметры из URL при загрузке
+  (function() {
+    if (window.location.search.indexOf('vk_') !== -1) {
+      // Удаляем search params
+      var cleanUrl = window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
+    }
+  })();
+</script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
