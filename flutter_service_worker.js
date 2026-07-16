@@ -46,8 +46,8 @@ const RESOURCES = {"favicon.png": "b908c1f47f9cd240284ea5f572083fd8",
 "icons/Icon-512.png": "db679210b9a4b622d75351dde4251bf8",
 "main.dart.wasm": "b42a94fe57078d7c461173eb055e8453",
 "CNAME": "c4c87192ce8c765aa8660cc4bdf04e73"};
-// The application shell files that are downloaded before a service worker can
-// start.
+
+// The application shell files that are downloaded before a service worker can start.
 const CORE = ["main.dart.js",
 "main.dart.wasm",
 "main.dart.mjs",
@@ -56,19 +56,46 @@ const CORE = ["main.dart.js",
 "assets/AssetManifest.bin.json",
 "assets/FontManifest.json"];
 
+// Вспомогательная функция для очистки URL от параметров
+function stripUrlParams(url) {
+  var origin = self.location.origin;
+  var path = url.substring(origin.length + 1);
+  // Удаляем все параметры запроса
+  var queryIndex = path.indexOf('?');
+  if (queryIndex != -1) {
+    path = path.substring(0, queryIndex);
+  }
+  // Удаляем hash если есть
+  var hashIndex = path.indexOf('#');
+  if (hashIndex != -1) {
+    path = path.substring(0, hashIndex);
+  }
+  // Убираем начальный и конечный слеши
+  path = path.replace(/^\/+|\/+$/g, '');
+  return path || '/';
+}
+
 // During install, the TEMP cache is populated with the application shell files.
 self.addEventListener("install", (event) => {
   self.skipWaiting();
   return event.waitUntil(
     caches.open(TEMP).then((cache) => {
-      return cache.addAll(
-        CORE.map((value) => new Request(value, {'cache': 'reload'})));
+      // Добавляем CORS и игнорируем ошибки для отдельных файлов
+      return Promise.allSettled(
+        CORE.map((value) => {
+          return cache.add(new Request(value, {
+            cache: 'reload',
+            mode: 'no-cors' // Игнорируем CORS ошибки
+          })).catch(err => {
+            console.warn('Failed to cache:', value, err);
+          });
+        })
+      );
     })
   );
 });
-// During activate, the cache is populated with the temp files downloaded in
-// install. If this service worker is upgrading from one with a saved
-// MANIFEST, then use this to retain unchanged resource files.
+
+// During activate, the cache is populated with the temp files downloaded in install.
 self.addEventListener("activate", function(event) {
   return event.waitUntil(async function() {
     try {
@@ -76,6 +103,7 @@ self.addEventListener("activate", function(event) {
       var tempCache = await caches.open(TEMP);
       var manifestCache = await caches.open(MANIFEST);
       var manifest = await manifestCache.match('manifest');
+      
       // When there is no prior manifest, clear the entire cache.
       if (!manifest) {
         await caches.delete(CACHE_NAME);
@@ -91,13 +119,11 @@ self.addEventListener("activate", function(event) {
         self.clients.claim();
         return;
       }
+      
       var oldManifest = await manifest.json();
       var origin = self.location.origin;
       for (var request of await contentCache.keys()) {
-        var key = request.url.substring(origin.length + 1);
-        if (key == "") {
-          key = "/";
-        }
+        var key = stripUrlParams(request.url);
         // If a resource from the old manifest is not in the new cache, or if
         // the MD5 sum has changed, delete it. Otherwise the resource is left
         // in the cache and can be reused by the new service worker.
@@ -105,8 +131,8 @@ self.addEventListener("activate", function(event) {
           await contentCache.delete(request);
         }
       }
-      // Populate the cache with the app shell TEMP files, potentially overwriting
-      // cache files preserved above.
+      
+      // Populate the cache with the app shell TEMP files
       for (var request of await tempCache.keys()) {
         var response = await tempCache.match(request);
         await contentCache.put(request, response);
@@ -126,37 +152,48 @@ self.addEventListener("activate", function(event) {
     }
   }());
 });
-// The fetch handler redirects requests for RESOURCE files to the service
-// worker cache.
+
+// The fetch handler redirects requests for RESOURCE files to the service worker cache.
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== 'GET') {
     return;
   }
+  
   var origin = self.location.origin;
-  var key = event.request.url.substring(origin.length + 1);
-  // Redirect URLs to the index.html
-  if (key.indexOf('?v=') != -1) {
-    key = key.split('?v=')[0];
+  var requestUrl = event.request.url;
+  
+  // Игнорируем запросы к сторонним серверам (VK Portal stats и т.д.)
+  if (!requestUrl.startsWith(origin)) {
+    return;
   }
-  if (event.request.url == origin || event.request.url.startsWith(origin + '/#') || key == '') {
+  
+  var key = stripUrlParams(requestUrl);
+  
+  // Redirect URLs to the index.html
+  if (event.request.url == origin || key == '/' || key == '') {
     key = '/';
   }
+  
   // If the URL is not the RESOURCE list then return to signal that the
   // browser should take over.
   if (!RESOURCES[key]) {
     return;
   }
+  
   // If the URL is the index.html, perform an online-first request.
   if (key == '/') {
     return onlineFirst(event);
   }
+  
   event.respondWith(caches.open(CACHE_NAME)
     .then((cache) =>  {
       return cache.match(event.request).then((response) => {
         // Either respond with the cached resource, or perform a fetch and
         // lazily populate the cache only if the resource was successfully fetched.
-        return response || fetch(event.request).then((response) => {
-          if (response && Boolean(response.ok)) {
+        return response || fetch(event.request, {
+          mode: 'no-cors' // Добавлено для обхода CORS
+        }).then((response) => {
+          if (response && Boolean(response.ok || response.type === 'opaque')) {
             cache.put(event.request, response.clone());
           }
           return response;
@@ -165,9 +202,8 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
 self.addEventListener('message', (event) => {
-  // SkipWaiting can be used to immediately activate a waiting service worker.
-  // This will also require a page refresh triggered by the main worker.
   if (event.data === 'skipWaiting') {
     self.skipWaiting();
     return;
@@ -177,14 +213,14 @@ self.addEventListener('message', (event) => {
     return;
   }
 });
+
 // Download offline will check the RESOURCES for all files not in the cache
-// and populate them.
 async function downloadOffline() {
   var resources = [];
   var contentCache = await caches.open(CACHE_NAME);
   var currentContent = {};
   for (var request of await contentCache.keys()) {
-    var key = request.url.substring(origin.length + 1);
+    var key = stripUrlParams(request.url);
     if (key == "") {
       key = "/";
     }
@@ -197,11 +233,13 @@ async function downloadOffline() {
   }
   return contentCache.addAll(resources);
 }
-// Attempt to download the resource online before falling back to
-// the offline cache.
+
+// Attempt to download the resource online before falling back to the offline cache.
 function onlineFirst(event) {
   return event.respondWith(
-    fetch(event.request).then((response) => {
+    fetch(event.request, {
+      mode: 'no-cors' // Добавлено для обхода CORS
+    }).then((response) => {
       return caches.open(CACHE_NAME).then((cache) => {
         cache.put(event.request, response.clone());
         return response;
